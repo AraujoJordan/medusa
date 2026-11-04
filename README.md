@@ -10,7 +10,7 @@
   <img alt="Needs the Android CLI" src="https://img.shields.io/badge/needs-Android%20CLI-3ddc84">
 </p>
 
-<p align="center"><img src="docs/media/hero.png" alt="Goldens recorded by Medusa from the sample app's previews" width="720"></p>
+<p align="center"><img src="docs/media/hero.png" alt="A @Preview, its light and dark goldens next to ProfileCard.kt, and a passing medusaVerify" width="760"></p>
 
 Screenshot tests for Jetpack Compose, rendered by Google's [Android CLI](https://developer.android.com/tools/agents/android-cli/overview)
 (`android preview render`). No device, no emulator, no Android Studio, and **no test code**: every `@Preview` you already wrote is a test.
@@ -78,7 +78,7 @@ Everything else (tasks, `--preview` filters, the `medusa { }` block) is in [docs
 
 ## 🖼️ What a failure looks like
 
-<p align="center"><img src="docs/media/failure.png" alt="expected, diff and actual images side by side" width="720"></p>
+<p align="center"><img src="docs/media/failure.png" alt="expected, diff and actual images side by side, with captions" width="720"></p>
 
 Left to right: expected, diff, actual (Paparazzi's own failure image format). Here a dark theme sneaked into a button:
 
