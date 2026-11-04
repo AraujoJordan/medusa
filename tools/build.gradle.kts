@@ -1,4 +1,5 @@
 import com.vanniktech.maven.publish.MavenPublishBaseExtension
+import org.gradle.plugins.signing.SigningExtension
 
 plugins {
   kotlin("jvm") version "2.3.20" apply false
@@ -14,12 +15,20 @@ subprojects {
   group = if (onJitpack) "com.github.AraujoJordan.medusa" else "io.github.araujojordan"
   version = providers.gradleProperty("medusaVersion").getOrElse("0.1.0")
 
+  plugins.withId("signing") {
+    if (providers.gradleProperty("medusa.gpgAgent").isPresent) {
+      extensions.configure<SigningExtension> { useGpgCmd() }
+    }
+  }
+
   plugins.withId("com.vanniktech.maven.publish") {
     extensions.configure<MavenPublishBaseExtension> {
       publishToMavenCentral()
       // Signing needs a key; without one (local builds, JitPack, pull requests) artifacts are published unsigned.
+      // `-Pmedusa.gpgAgent=true -Psigning.gnupg.keyName=<key id>` signs with the local gpg agent, so the private key never leaves the machine.
+      val viaGpgAgent = providers.gradleProperty("medusa.gpgAgent").isPresent
       val hasKey = providers.gradleProperty("signingInMemoryKey").isPresent || providers.gradleProperty("signing.keyId").isPresent
-      if (hasKey) signAllPublications()
+      if (hasKey || viaGpgAgent) signAllPublications()
 
       coordinates(group.toString(), project.name, version.toString())
 
