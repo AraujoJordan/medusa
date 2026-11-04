@@ -1,0 +1,47 @@
+{
+  "machine": "Apple M1 Max",
+  "memory_bytes": 68719476736,
+  "os": "macOS-27.0.1-arm64-arm-64bit-Mach-O",
+  "cores": 10,
+  "jdk": "JetBrains 21.0.10",
+  "android_cli": "1.1.16717390",
+  "compose_bom": "2026.03.01",
+  "robolectric": "4.14.1",
+  "robolectric_api": 35,
+  "emulator": {
+    "api": 35,
+    "abi": "arm64-v8a",
+    "gpu": "swiftshader_indirect",
+    "screen_pixels": [
+      320,
+      720
+    ],
+    "density_dpi": 160,
+    "boot_included": false
+  },
+  "image_pixels": [
+    320,
+    640
+  ],
+  "gradle": {
+    "medusa": "9.1.0",
+    "paparazzi": "9.1.0",
+    "roborazzi": "9.1.0",
+    "google": "9.6.0",
+    "dropshots": "9.1.0",
+    "shot": "8.13"
+  },
+  "agp": {
+    "medusa": "9.0.1",
+    "paparazzi": "9.0.1",
+    "roborazzi": "9.0.1",
+    "google": "9.5.0-alpha03",
+    "dropshots": "9.0.1",
+    "shot": "8.13.2"
+  },
+  "host_gradle_parallel": true,
+  "host_max_workers": 3,
+  "device_gradle_parallel": false,
+  "base_commit": "88f61a3d60e1c41cd028d86d9c3ee9fac0e5c8ac",
+  "corpus_sha256": "730087dc825aa6f99e4303a25a069234b17138280a24b249d4a75f9a2e0b9e54"
+}

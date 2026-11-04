@@ -1,6 +1,27 @@
-# Speed compared with Paparazzi
+# Screenshot benchmark measurements
 
-Latest isolated measurement (50 previews, five runs per scenario, M1 Max, JDK 21, build cache off;
+## Six-library single- and multi-module benchmark
+
+| Library | Single record | Single verify | Multi record | Multi verify |
+|---|---:|---:|---:|---:|
+| **Medusa** | 6.5 s | 12.5 s | 6.2 s | 6.9 s |
+| [Paparazzi](https://github.com/cashapp/paparazzi) | 7.6 s | 8.3 s | 10.3 s | 10.3 s |
+| [Roborazzi](https://github.com/takahirom/roborazzi) | 9.2 s | 9.5 s | 14.1 s | 14.5 s |
+| [Google Compose Screenshot Testing](https://developer.android.com/studio/preview/compose-screenshot-testing-with-testsuites) | 6.7 s | 6.6 s | 10.5 s | 10.6 s |
+| [Shot](https://github.com/pedrovgs/Shot) | 41.1 s | 41.1 s | 76.9 s | 78.1 s |
+| [Dropshots](https://github.com/dropbox/dropshots) | 41.6 s | 40.9 s | 75.3 s | 75.4 s |
+
+50 screenshots in each project: **single** is one app; **multi** is an app plus four libraries with 10 screenshots each. Wall-clock medians of three runs on M1 Max / JDK 21, after an untimed warm-up. Record includes editing one composable; verify forces fresh rendering. Build/configuration caches are off. Host tools use three parallel Gradle workers; Shot and Dropshots use one already-booted API 35 emulator, including installation and image transfer.
+
+All fixtures passed a deliberate-mismatch control. Renderers and default tolerances differ; these results compare full workflows, not equivalent pixels or maximum throughput. [Versions, setup and methodology](../benchmark/libraries/README.md) · [Ranges](../benchmark/libraries/RESULTS.md) · [Raw runs](../benchmark/libraries/results.json).
+
+These measurements replace the README's earlier Paparazzi-only speed table. Medusa's single-module verify
+median is higher than its record median in this run; all 50 tests passed and no renderer retry was logged.
+The measured result is retained. This workload does not establish a universal winner.
+
+## Earlier Paparazzi comparison
+
+Historical isolated measurement (50 previews, five runs per scenario, M1 Max, JDK 21, build cache off;
 Gradle and Medusa renderer daemons warm, odiff default, Paparazzi one fork):
 
 | Task | Medusa | Paparazzi | Less elapsed time |
@@ -11,7 +32,7 @@ Gradle and Medusa renderer daemons warm, odiff default, Paparazzi one fork):
 
 These measurements do **not** establish a 2× speedup or a win at every suite size. The existing synthetic fixture
 uses different device framing and night-mode settings between renderers: this measures time to a verdict, not equivalent
-image fidelity. Clean build does not mean a cold renderer. Other tools were not benchmarked.
+image fidelity. Clean build does not mean a cold renderer. This historical run covered only Medusa and Paparazzi.
 Raw measurements: [50-preview results](../benchmark/results/N50.json); full tables: [benchmark results](../benchmark/RESULTS.md).
 
 Daemon reuse is now enabled by default (`useDaemon = false` opts out). Source reads are reused within discovery,
