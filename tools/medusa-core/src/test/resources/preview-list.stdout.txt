@@ -1,0 +1,42 @@
+Build log: /tmp/build-log-4135847575438951522.log
+Resolved Gradle project ':sample' from working directory '/home/user/dev/kotlin/medusa'
+{
+  "success": true,
+  "previews": [
+    {
+      "methodFqn": "dev.medusa.sample.ui.components.ButtonKt.ButtonsColumnPreview",
+      "previewParams": {
+        "showBackground": "true"
+      }
+    },
+    {
+      "methodFqn": "dev.medusa.sample.ui.components.ButtonKt.PrimaryButtonDarkPreview",
+      "previewParams": {
+        "showBackground": "true",
+        "uiMode": "32"
+      }
+    },
+    {
+      "methodFqn": "dev.medusa.sample.ui.components.ButtonKt.PrimaryButtonLabelsPreview",
+      "previewParams": {
+        "showBackground": "true"
+      },
+      "parameterProvider": {
+        "provider": "dev.medusa.sample.ui.components.ButtonLabelProvider"
+      }
+    },
+    {
+      "methodFqn": "dev.medusa.sample.ui.components.ButtonKt.PrimaryButtonPreview",
+      "previewParams": {
+        "showBackground": "true"
+      }
+    },
+    {
+      "methodFqn": "dev.medusa.sample.ui.main.MainScreenKt.MainScreenPreview",
+      "previewParams": {
+        "showSystemUi": "true",
+        "showBackground": "true"
+      }
+    }
+  ]
+}

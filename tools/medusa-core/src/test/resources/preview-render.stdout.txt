@@ -1,0 +1,43 @@
+Build log: /tmp/build-log-7556543772429829021.log
+Resolved Gradle project ':sample' from working directory '/home/user/dev/kotlin/medusa'
+{
+  "success": true,
+  "results": [
+    {
+      "previewId": "ButtonsColumnPreview",
+      "methodFqn": "dev.medusa.sample.ui.components.ButtonKt.ButtonsColumnPreview",
+      "imagePath": "/tmp/medusa/render/dev/medusa/sample/ui/components/ButtonKt/ButtonsColumnPreview_0.png",
+      "componentTreePath": "/tmp/medusa/render/dev/medusa/sample/ui/components/ButtonKt/ButtonsColumnPreview_0.json"
+    },
+    {
+      "previewId": "PrimaryButtonDarkPreview",
+      "methodFqn": "dev.medusa.sample.ui.components.ButtonKt.PrimaryButtonDarkPreview",
+      "imagePath": "/tmp/medusa/render/dev/medusa/sample/ui/components/ButtonKt/PrimaryButtonDarkPreview_0.png",
+      "componentTreePath": "/tmp/medusa/render/dev/medusa/sample/ui/components/ButtonKt/PrimaryButtonDarkPreview_0.json"
+    },
+    {
+      "previewId": "PrimaryButtonLabelsPreview",
+      "methodFqn": "dev.medusa.sample.ui.components.ButtonKt.PrimaryButtonLabelsPreview",
+      "imagePath": "/tmp/medusa/render/dev/medusa/sample/ui/components/ButtonKt/PrimaryButtonLabelsPreview_0.png",
+      "componentTreePath": "/tmp/medusa/render/dev/medusa/sample/ui/components/ButtonKt/PrimaryButtonLabelsPreview_0.json"
+    },
+    {
+      "previewId": "PrimaryButtonLabelsPreview",
+      "methodFqn": "dev.medusa.sample.ui.components.ButtonKt.PrimaryButtonLabelsPreview",
+      "imagePath": "/tmp/medusa/render/dev/medusa/sample/ui/components/ButtonKt/PrimaryButtonLabelsPreview_1.png",
+      "componentTreePath": "/tmp/medusa/render/dev/medusa/sample/ui/components/ButtonKt/PrimaryButtonLabelsPreview_1.json"
+    },
+    {
+      "previewId": "PrimaryButtonPreview",
+      "methodFqn": "dev.medusa.sample.ui.components.ButtonKt.PrimaryButtonPreview",
+      "imagePath": "/tmp/medusa/render/dev/medusa/sample/ui/components/ButtonKt/PrimaryButtonPreview_0.png",
+      "componentTreePath": "/tmp/medusa/render/dev/medusa/sample/ui/components/ButtonKt/PrimaryButtonPreview_0.json"
+    },
+    {
+      "previewId": "MainScreenPreview",
+      "methodFqn": "dev.medusa.sample.ui.main.MainScreenKt.MainScreenPreview",
+      "imagePath": "/tmp/medusa/render/dev/medusa/sample/ui/main/MainScreenKt/MainScreenPreview_0.png",
+      "componentTreePath": "/tmp/medusa/render/dev/medusa/sample/ui/main/MainScreenKt/MainScreenPreview_0.json"
+    }
+  ]
+}

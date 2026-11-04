@@ -1,0 +1,86 @@
+Build log: /tmp/build-log-7927916721667300763.log
+{
+  "success": true,
+  "results": [
+    {
+      "previewId": "NestedAnnotationsPreview",
+      "methodFqn": "dev.medusa.sample.ui.components.CustomAnnotationsKt.NestedAnnotationsPreview",
+      "imagePath": "/tmp/medusa/ca/dev/medusa/sample/ui/components/CustomAnnotationsKt/NestedAnnotationsPreview_0.png"
+    },
+    {
+      "previewId": "NestedAnnotationsPreview",
+      "methodFqn": "dev.medusa.sample.ui.components.CustomAnnotationsKt.NestedAnnotationsPreview",
+      "imagePath": "/tmp/medusa/ca/dev/medusa/sample/ui/components/CustomAnnotationsKt/NestedAnnotationsPreview_1.png"
+    },
+    {
+      "previewId": "NestedAnnotationsPreview",
+      "methodFqn": "dev.medusa.sample.ui.components.CustomAnnotationsKt.NestedAnnotationsPreview",
+      "imagePath": "/tmp/medusa/ca/dev/medusa/sample/ui/components/CustomAnnotationsKt/NestedAnnotationsPreview_2.png"
+    },
+    {
+      "previewId": "NestedAnnotationsPreview",
+      "methodFqn": "dev.medusa.sample.ui.components.CustomAnnotationsKt.NestedAnnotationsPreview",
+      "imagePath": "/tmp/medusa/ca/dev/medusa/sample/ui/components/CustomAnnotationsKt/NestedAnnotationsPreview_3.png"
+    },
+    {
+      "previewId": "ThemesPreview",
+      "methodFqn": "dev.medusa.sample.ui.components.CustomAnnotationsKt.ThemesPreview",
+      "imagePath": "/tmp/medusa/ca/dev/medusa/sample/ui/components/CustomAnnotationsKt/ThemesPreview_0.png"
+    },
+    {
+      "previewId": "ThemesPreview",
+      "methodFqn": "dev.medusa.sample.ui.components.CustomAnnotationsKt.ThemesPreview",
+      "imagePath": "/tmp/medusa/ca/dev/medusa/sample/ui/components/CustomAnnotationsKt/ThemesPreview_1.png"
+    },
+    {
+      "previewId": "ThemesPreview",
+      "methodFqn": "dev.medusa.sample.ui.components.CustomAnnotationsKt.ThemesPreview",
+      "imagePath": "/tmp/medusa/ca/dev/medusa/sample/ui/components/CustomAnnotationsKt/ThemesPreview_2.png"
+    },
+    {
+      "previewId": "WidthsLabelsPreview",
+      "methodFqn": "dev.medusa.sample.ui.components.CustomAnnotationsKt.WidthsLabelsPreview",
+      "imagePath": "/tmp/medusa/ca/dev/medusa/sample/ui/components/CustomAnnotationsKt/WidthsLabelsPreview_0.png"
+    },
+    {
+      "previewId": "WidthsLabelsPreview",
+      "methodFqn": "dev.medusa.sample.ui.components.CustomAnnotationsKt.WidthsLabelsPreview",
+      "imagePath": "/tmp/medusa/ca/dev/medusa/sample/ui/components/CustomAnnotationsKt/WidthsLabelsPreview_1.png"
+    },
+    {
+      "previewId": "WidthsLabelsPreview",
+      "methodFqn": "dev.medusa.sample.ui.components.CustomAnnotationsKt.WidthsLabelsPreview",
+      "imagePath": "/tmp/medusa/ca/dev/medusa/sample/ui/components/CustomAnnotationsKt/WidthsLabelsPreview_2.png"
+    },
+    {
+      "previewId": "WidthsLabelsPreview",
+      "methodFqn": "dev.medusa.sample.ui.components.CustomAnnotationsKt.WidthsLabelsPreview",
+      "imagePath": "/tmp/medusa/ca/dev/medusa/sample/ui/components/CustomAnnotationsKt/WidthsLabelsPreview_3.png"
+    },
+    {
+      "previewId": "WidthsLabelsPreview",
+      "methodFqn": "dev.medusa.sample.ui.components.CustomAnnotationsKt.WidthsLabelsPreview",
+      "imagePath": "/tmp/medusa/ca/dev/medusa/sample/ui/components/CustomAnnotationsKt/WidthsLabelsPreview_4.png"
+    },
+    {
+      "previewId": "WidthsLabelsPreview",
+      "methodFqn": "dev.medusa.sample.ui.components.CustomAnnotationsKt.WidthsLabelsPreview",
+      "imagePath": "/tmp/medusa/ca/dev/medusa/sample/ui/components/CustomAnnotationsKt/WidthsLabelsPreview_5.png"
+    },
+    {
+      "previewId": "WidthsPreview",
+      "methodFqn": "dev.medusa.sample.ui.components.CustomAnnotationsKt.WidthsPreview",
+      "imagePath": "/tmp/medusa/ca/dev/medusa/sample/ui/components/CustomAnnotationsKt/WidthsPreview_0.png"
+    },
+    {
+      "previewId": "WidthsPreview",
+      "methodFqn": "dev.medusa.sample.ui.components.CustomAnnotationsKt.WidthsPreview",
+      "imagePath": "/tmp/medusa/ca/dev/medusa/sample/ui/components/CustomAnnotationsKt/WidthsPreview_1.png"
+    },
+    {
+      "previewId": "WidthsPreview",
+      "methodFqn": "dev.medusa.sample.ui.components.CustomAnnotationsKt.WidthsPreview",
+      "imagePath": "/tmp/medusa/ca/dev/medusa/sample/ui/components/CustomAnnotationsKt/WidthsPreview_2.png"
+    }
+  ]
+}

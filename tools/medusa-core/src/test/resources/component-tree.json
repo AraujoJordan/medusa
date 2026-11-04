@@ -1,0 +1,375 @@
+{
+  "previewId": "ButtonsColumnPreview",
+  "methodFQN": "dev.medusa.sample.ui.components.ButtonKt.ButtonsColumnPreview",
+  "width": 384,
+  "height": 357,
+  "densityDpi": 420,
+  "fontScale": 1.0,
+  "uiMode": 0,
+  "deviceId": "medium_phone",
+  "components": [
+    {
+      "name": "ButtonsColumnPreview",
+      "bounds": {
+        "left": 42,
+        "top": 42,
+        "right": 342,
+        "bottom": 315,
+        "width": 300,
+        "height": 273
+      },
+      "children": [
+        {
+          "name": "MedusaSampleTheme",
+          "bounds": {
+            "left": 42,
+            "top": 42,
+            "right": 342,
+            "bottom": 315,
+            "width": 300,
+            "height": 273
+          },
+          "sourceLocation": {
+            "fileName": "Button.kt",
+            "lineNumber": 43,
+            "packageHash": 1015512170
+          },
+          "children": [
+            {
+              "name": "Column",
+              "bounds": {
+                "left": 42,
+                "top": 42,
+                "right": 342,
+                "bottom": 315,
+                "width": 300,
+                "height": 273
+              },
+              "sourceLocation": {
+                "fileName": "Button.kt",
+                "lineNumber": 44,
+                "packageHash": 1015512170
+              },
+              "children": [
+                {
+                  "name": "Column",
+                  "bounds": {
+                    "left": 42,
+                    "top": 42,
+                    "right": 342,
+                    "bottom": 315,
+                    "width": 300,
+                    "height": 273
+                  },
+                  "sourceLocation": {
+                    "fileName": "Composables.kt",
+                    "lineNumber": 400,
+                    "packageHash": 575200393
+                  },
+                  "children": [
+                    {
+                      "name": "PrimaryButton",
+                      "bounds": {
+                        "left": 42,
+                        "top": 53,
+                        "right": 297,
+                        "bottom": 158,
+                        "width": 255,
+                        "height": 105
+                      },
+                      "sourceLocation": {
+                        "fileName": "Button.kt",
+                        "lineNumber": 45,
+                        "packageHash": 1015512170
+                      },
+                      "children": [
+                        {
+                          "name": "Button",
+                          "bounds": {
+                            "left": 42,
+                            "top": 53,
+                            "right": 297,
+                            "bottom": 158,
+                            "width": 255,
+                            "height": 105
+                          },
+                          "sourceLocation": {
+                            "fileName": "Button.kt",
+                            "lineNumber": 20,
+                            "packageHash": 1015512170
+                          },
+                          "children": [
+                            {
+                              "name": "Surface",
+                              "bounds": {
+                                "left": 42,
+                                "top": 53,
+                                "right": 297,
+                                "bottom": 158,
+                                "width": 255,
+                                "height": 105
+                              },
+                              "sourceLocation": {
+                                "fileName": "Button.kt",
+                                "lineNumber": 128,
+                                "packageHash": 1842882507
+                              },
+                              "children": [
+                                {
+                                  "name": "Box",
+                                  "bounds": {
+                                    "left": 42,
+                                    "top": 53,
+                                    "right": 297,
+                                    "bottom": 158,
+                                    "width": 255,
+                                    "height": 105
+                                  },
+                                  "sourceLocation": {
+                                    "fileName": "Surface.kt",
+                                    "lineNumber": 216,
+                                    "packageHash": 1842882507
+                                  },
+                                  "children": [
+                                    {
+                                      "name": "ProvideContentColorTextStyle",
+                                      "bounds": {
+                                        "left": 105,
+                                        "top": 74,
+                                        "right": 234,
+                                        "bottom": 137,
+                                        "width": 129,
+                                        "height": 63
+                                      },
+                                      "sourceLocation": {
+                                        "fileName": "Button.kt",
+                                        "lineNumber": 139,
+                                        "packageHash": 1842882507
+                                      },
+                                      "children": [
+                                        {
+                                          "name": "Row",
+                                          "bounds": {
+                                            "left": 105,
+                                            "top": 74,
+                                            "right": 234,
+                                            "bottom": 137,
+                                            "width": 129,
+                                            "height": 63
+                                          },
+                                          "sourceLocation": {
+                                            "fileName": "Button.kt",
+                                            "lineNumber": 143,
+                                            "packageHash": 1842882507
+                                          },
+                                          "children": [
+                                            {
+                                              "name": "Text",
+                                              "bounds": {
+                                                "left": 105,
+                                                "top": 79,
+                                                "right": 234,
+                                                "bottom": 132,
+                                                "width": 129,
+                                                "height": 53
+                                              },
+                                              "sourceLocation": {
+                                                "fileName": "Button.kt",
+                                                "lineNumber": 20,
+                                                "packageHash": 1015512170
+                                              },
+                                              "semantics": {
+                                                "text": "Primary"
+                                              }
+                                            }
+                                          ]
+                                        }
+                                      ]
+                                    }
+                                  ],
+                                  "semantics": {
+                                    "role": "Button",
+                                    "actions": "OnClick"
+                                  },
+                                  "modifiers": {
+                                    "background": "#FF00506E, shape=RoundedCornerShape(topStart = CornerSize(size = 50.0%), topEnd = CornerSize(size = 50.0%), bottomEnd = CornerSize(size = 50.0%), bottomStart = CornerSize(size = 50.0%))",
+                                    "clip": "true",
+                                    "clickable": "enabled=true"
+                                  }
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "name": "SecondaryButton",
+                      "bounds": {
+                        "left": 42,
+                        "top": 200,
+                        "right": 342,
+                        "bottom": 305,
+                        "width": 300,
+                        "height": 105
+                      },
+                      "sourceLocation": {
+                        "fileName": "Button.kt",
+                        "lineNumber": 46,
+                        "packageHash": 1015512170
+                      },
+                      "children": [
+                        {
+                          "name": "OutlinedButton",
+                          "bounds": {
+                            "left": 42,
+                            "top": 200,
+                            "right": 342,
+                            "bottom": 305,
+                            "width": 300,
+                            "height": 105
+                          },
+                          "sourceLocation": {
+                            "fileName": "Button.kt",
+                            "lineNumber": 25,
+                            "packageHash": 1015512170
+                          },
+                          "children": [
+                            {
+                              "name": "Button",
+                              "bounds": {
+                                "left": 42,
+                                "top": 200,
+                                "right": 342,
+                                "bottom": 305,
+                                "width": 300,
+                                "height": 105
+                              },
+                              "sourceLocation": {
+                                "fileName": "Button.kt",
+                                "lineNumber": 361,
+                                "packageHash": 1842882507
+                              },
+                              "children": [
+                                {
+                                  "name": "Surface",
+                                  "bounds": {
+                                    "left": 42,
+                                    "top": 200,
+                                    "right": 342,
+                                    "bottom": 305,
+                                    "width": 300,
+                                    "height": 105
+                                  },
+                                  "sourceLocation": {
+                                    "fileName": "Button.kt",
+                                    "lineNumber": 128,
+                                    "packageHash": 1842882507
+                                  },
+                                  "children": [
+                                    {
+                                      "name": "Box",
+                                      "bounds": {
+                                        "left": 42,
+                                        "top": 200,
+                                        "right": 342,
+                                        "bottom": 305,
+                                        "width": 300,
+                                        "height": 105
+                                      },
+                                      "sourceLocation": {
+                                        "fileName": "Surface.kt",
+                                        "lineNumber": 216,
+                                        "packageHash": 1842882507
+                                      },
+                                      "children": [
+                                        {
+                                          "name": "ProvideContentColorTextStyle",
+                                          "bounds": {
+                                            "left": 105,
+                                            "top": 221,
+                                            "right": 279,
+                                            "bottom": 284,
+                                            "width": 174,
+                                            "height": 63
+                                          },
+                                          "sourceLocation": {
+                                            "fileName": "Button.kt",
+                                            "lineNumber": 139,
+                                            "packageHash": 1842882507
+                                          },
+                                          "children": [
+                                            {
+                                              "name": "Row",
+                                              "bounds": {
+                                                "left": 105,
+                                                "top": 221,
+                                                "right": 279,
+                                                "bottom": 284,
+                                                "width": 174,
+                                                "height": 63
+                                              },
+                                              "sourceLocation": {
+                                                "fileName": "Button.kt",
+                                                "lineNumber": 143,
+                                                "packageHash": 1842882507
+                                              },
+                                              "children": [
+                                                {
+                                                  "name": "Text",
+                                                  "bounds": {
+                                                    "left": 105,
+                                                    "top": 226,
+                                                    "right": 279,
+                                                    "bottom": 279,
+                                                    "width": 174,
+                                                    "height": 53
+                                                  },
+                                                  "sourceLocation": {
+                                                    "fileName": "Button.kt",
+                                                    "lineNumber": 25,
+                                                    "packageHash": 1015512170
+                                                  },
+                                                  "semantics": {
+                                                    "text": "Secondary"
+                                                  }
+                                                }
+                                              ]
+                                            }
+                                          ]
+                                        }
+                                      ],
+                                      "semantics": {
+                                        "role": "Button",
+                                        "actions": "OnClick"
+                                      },
+                                      "modifiers": {
+                                        "background": "#00000000, shape=RoundedCornerShape(topStart = CornerSize(size = 50.0%), topEnd = CornerSize(size = 50.0%), bottomEnd = CornerSize(size = 50.0%), bottomStart = CornerSize(size = 50.0%))",
+                                        "clip": "true",
+                                        "clickable": "enabled=true"
+                                      }
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ],
+                  "modifiers": {
+                    "padding": "16.0.dp"
+                  }
+                }
+              ],
+              "modifiers": {
+                "padding": "16.0.dp"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

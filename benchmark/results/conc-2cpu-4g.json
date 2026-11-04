@@ -1,0 +1,94 @@
+{
+  "_env": {
+    "cores": 2.0,
+    "mem_gb": 4.0,
+    "container": true,
+    "os": "Linux x86_64",
+    "modules": 8,
+    "date": "2026-11-04 04:10"
+  },
+  "1": {
+    "cold": [
+      {
+        "seconds": 254.8,
+        "ok": true,
+        "oom_kills": 0,
+        "failure": null,
+        "peak_rss_mb": 1578,
+        "baseline_rss_mb": 0,
+        "peak_procs": 5,
+        "cpu_busy_mean": 84.0,
+        "cpu_busy_max": 100.0
+      }
+    ],
+    "warm": [
+      {
+        "seconds": 207.8,
+        "ok": true,
+        "oom_kills": 0,
+        "failure": null,
+        "peak_rss_mb": 1614,
+        "baseline_rss_mb": 1155,
+        "peak_procs": 5,
+        "cpu_busy_mean": 82.6,
+        "cpu_busy_max": 100.0
+      }
+    ]
+  },
+  "2": {
+    "cold": [
+      {
+        "seconds": 261.7,
+        "ok": true,
+        "oom_kills": 0,
+        "failure": null,
+        "peak_rss_mb": 2350,
+        "baseline_rss_mb": 0,
+        "peak_procs": 8,
+        "cpu_busy_mean": 96.9,
+        "cpu_busy_max": 100.0
+      }
+    ],
+    "warm": [
+      {
+        "seconds": 197.2,
+        "ok": true,
+        "oom_kills": 0,
+        "failure": null,
+        "peak_rss_mb": 2340,
+        "baseline_rss_mb": 1203,
+        "peak_procs": 8,
+        "cpu_busy_mean": 98.1,
+        "cpu_busy_max": 100.0
+      }
+    ]
+  },
+  "3": {
+    "cold": [
+      {
+        "seconds": 251.2,
+        "ok": true,
+        "oom_kills": 0,
+        "failure": null,
+        "peak_rss_mb": 2302,
+        "baseline_rss_mb": 0,
+        "peak_procs": 8,
+        "cpu_busy_mean": 96.9,
+        "cpu_busy_max": 100.0
+      }
+    ],
+    "warm": [
+      {
+        "seconds": 205.8,
+        "ok": true,
+        "oom_kills": 0,
+        "failure": null,
+        "peak_rss_mb": 2298,
+        "baseline_rss_mb": 1168,
+        "peak_procs": 8,
+        "cpu_busy_mean": 98.0,
+        "cpu_busy_max": 100.0
+      }
+    ]
+  }
+}

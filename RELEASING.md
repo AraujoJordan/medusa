@@ -1,0 +1,28 @@
+# Releasing
+
+Version numbers come from the git tag. `./gradlew` in `tools/` reads `-PmedusaVersion` (default `0.1.0`).
+
+## Every release
+1. Update the version in the README install snippets.
+2. `git tag v0.1.1 && git push origin v0.1.1`.
+3. The **Release** workflow runs the tests, creates the GitHub release and, if enabled, publishes to Maven Central.
+4. JitPack builds the same tag on first request: https://jitpack.io/#AraujoJordan/medusa (open the page and press *Get it* to warm it).
+
+## One-time setup for Maven Central
+Medusa publishes as `io.github.araujojordan:medusa-core` and `io.github.araujojordan:medusa-gradle-plugin`
+(plugin id `io.github.araujojordan.medusa`).
+
+1. Sign in at https://central.sonatype.com with GitHub and **verify the namespace `io.github.araujojordan`**
+   (Namespaces -> Add Namespace; Central asks you to create a temporary public GitHub repository with a given name to prove ownership).
+2. Create a **user token** (Account -> Generate User Token). It is a username and a password, not your login.
+3. Make sure your GPG public key is on a keyserver (`gpg --keyserver keyserver.ubuntu.com --send-keys <KEYID>`), and export the
+   private key: `gpg --armor --export-secret-keys <KEYID>`.
+4. In the GitHub repository: Settings -> Secrets and variables -> Actions, add the secrets
+   `MAVEN_CENTRAL_USERNAME`, `MAVEN_CENTRAL_PASSWORD`, `SIGNING_KEY` (the armored private key) and, if it has one, `SIGNING_KEY_PASSWORD`.
+5. Add the repository **variable** `PUBLISH_TO_CENTRAL` = `true`.
+
+A Maven Central release cannot be deleted or changed afterwards, so tag only what you mean to keep.
+
+To publish by hand instead: put the same four values in `~/.gradle/gradle.properties` as `mavenCentralUsername`,
+`mavenCentralPassword`, `signingInMemoryKey`, `signingInMemoryKeyPassword`, then
+`cd tools && ./gradlew publishAndReleaseToMavenCentral --no-configuration-cache`.
