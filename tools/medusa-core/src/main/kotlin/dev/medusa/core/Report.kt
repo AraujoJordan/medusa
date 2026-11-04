@@ -52,7 +52,12 @@ $cases
   }
 
   private fun renderHtml(reportDir: File, results: List<VerifyResult>, orphans: List<File>): String {
-    fun rel(f: File) = escape(f.relativeToOrSelf(reportDir).path.let { if (f.isAbsolute) "file://${f.absolutePath}" else it })
+    fun rel(f: File): String {
+      val relative = f.relativeToOrSelf(reportDir)
+      val uri = if (relative.isAbsolute) relative.toURI().toASCIIString()
+        else java.net.URI(null, null, relative.path.replace(File.separatorChar, '/'), null).toASCIIString()
+      return escape(uri)
+    }
     val rows = results.joinToString("\n") { r ->
       val artifacts = r.attempts.flatMap { attempt -> listOfNotNull(attempt.actual, (attempt.outcome as? Outcome.Failed)?.delta) }.distinct()
         .joinToString(" ") { "<a href=\"${rel(it)}\">${escape(it.name)}</a>" }

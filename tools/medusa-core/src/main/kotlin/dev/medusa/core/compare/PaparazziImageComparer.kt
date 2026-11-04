@@ -11,6 +11,7 @@ class PaparazziImageComparer(
   private val differ: Differ,
   private val maxPercentDifference: Double,
 ) : ImageComparer {
+  override val environment: Map<String, String> get() = mapOf("effectiveComparer" to javaClass.simpleName, "effectiveDiffer" to differ.javaClass.name)
   override fun compare(golden: File, actual: File): Comparison {
     val expected = Images.read(golden)
     if (java.nio.file.Files.mismatch(golden.toPath(), actual.toPath()) == -1L) return Comparison.Passed(0f)

@@ -53,6 +53,10 @@ class ReliabilityTest {
     assertTrue(first.delta!!.isFile)
     assertTrue(File(output, "test-results/medusa.xml").readText().contains("FLAKY"))
     assertTrue(File(output, "results.json").readText().contains("recovered"))
+    assertTrue(File(output, "results.json").readText().contains("effectiveDiffer"))
+    val html = File(output, "report/index.html").readText()
+    assertFalse("src=\"file:" in html)
+    assertTrue("../failures/" in html)
   }
   @Test fun `diagnostic retry cannot silently recover strict verdict`() {
     runner().record(); mismatch()
