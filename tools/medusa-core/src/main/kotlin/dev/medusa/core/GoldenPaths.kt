@@ -59,27 +59,37 @@ object SourceLocator {
    * (`dev.app.ButtonKt` -> `dev/app/Button.kt`), then falls back to scanning for `fun <Name>`,
    * which covers `@file:JvmName`, previews inside classes/objects and mismatched file names.
    */
-  fun locate(preview: PreviewInfo, sourceRoots: List<File>): File? {
-    val packagePath = preview.className.substringBeforeLast('.', "").replace('.', '/')
-    val simpleClass = preview.className.substringAfterLast('.').substringBefore('$')
-    val stems = listOfNotNull(simpleClass.removeSuffix("Kt").takeIf { it.isNotEmpty() }, simpleClass).distinct()
+  fun locate(preview: PreviewInfo, sourceRoots: List<File>): File? = Index(sourceRoots).locate(preview)
 
-    val declaration = Regex("""\bfun\s+(?:<[^>]*>\s*)?(?:[\w.]+\.)?${Regex.escape(preview.name)}\s*\(""")
-
-    for (root in sourceRoots) {
-      for (stem in stems) {
-        val candidate = File(root, "$packagePath/$stem.kt".removePrefix("/"))
-        if (candidate.isFile && declaration.containsMatchIn(candidate.readText())) return candidate
+  /** One index per discovery, never retained across source edits. */
+  class Index(private val sourceRoots: List<File>) {
+    private val texts = mutableMapOf<File, String>()
+    private fun text(file: File) = texts.getOrPut(file) { file.readText() }
+    private val files by lazy {
+      sourceRoots.filter { it.isDirectory }.flatMap { root ->
+        root.walkTopDown().filter { it.isFile && it.extension == "kt" }.toList()
       }
     }
-    val matches = sourceRoots.asSequence()
-      .filter { it.isDirectory }
-      .flatMap { root -> root.walkTopDown().filter { it.isFile && it.extension == "kt" } }
-      .filter { declaration.containsMatchIn(it.readText()) }
-      .toList()
-    // Several hits are ambiguous (same function name in different packages): prefer the matching package.
-    return matches.singleOrNull()
-      ?: matches.firstOrNull { it.readText().contains(Regex("""(?m)^package\s+${Regex.escape(preview.className.substringBeforeLast('.', ""))}\s*$""")) }
+    fun locate(preview: PreviewInfo): File? {
+      val packagePath = preview.className.substringBeforeLast('.', "").replace('.', '/')
+      val simpleClass = preview.className.substringAfterLast('.').substringBefore('$')
+      val stems = listOfNotNull(simpleClass.removeSuffix("Kt").takeIf { it.isNotEmpty() }, simpleClass).distinct()
+
+      val declaration = Regex("""\bfun\s+(?:<[^>]*>\s*)?(?:[\w.]+\.)?${Regex.escape(preview.name)}\s*\(""")
+
+      for (root in sourceRoots) {
+        for (stem in stems) {
+          val candidate = File(root, "$packagePath/$stem.kt".removePrefix("/"))
+          if (candidate.isFile && declaration.containsMatchIn(text(candidate))) return candidate
+        }
+      }
+      val matches = files.asSequence()
+        .filter { declaration.containsMatchIn(text(it)) }
+        .toList()
+      // Several hits are ambiguous (same function name in different packages): prefer the matching package.
+      return matches.singleOrNull()
+        ?: matches.firstOrNull { text(it).contains(Regex("""(?m)^package\s+${Regex.escape(preview.className.substringBeforeLast('.', ""))}\s*$""")) }
+    }
   }
 }
 

@@ -12,13 +12,14 @@ ORG_GRADLE_PROJECT_mavenCentralUsername=<token user> ORG_GRADLE_PROJECT_mavenCen
 The `io.github.araujojordan` namespace is verified on Central. Create a short-lived token for each release at
 https://central.sonatype.com/usertoken and revoke it afterwards. The CI route below is the alternative if you prefer not to publish by hand.
 
-Version numbers come from the git tag. `./gradlew` in `tools/` reads `-PmedusaVersion` (default `0.1.0`).
+The release workflow passes the git tag as `-PmedusaVersion`. Local builds default to `0.2.0`.
 
 ## Every release
-1. Update the version in the README install snippets.
-2. `git tag v0.1.1 && git push origin v0.1.1`.
-3. The **Release** workflow runs the tests, creates the GitHub release and, if enabled, publishes to Maven Central.
-4. JitPack builds the same tag on first request: https://jitpack.io/#AraujoJordan/medusa (open the page and press *Get it* to warm it).
+1. Update the version, changelog and README install snippets. Run the tests and verify the signed artifacts in a consumer build.
+2. Wait for Linux and macOS CI on the release commit.
+3. Publish that commit locally using the command above with `-PmedusaVersion=0.2.0`, or enable CI publishing below. Do not publish the same version twice.
+4. `git tag v0.2.0 && git push origin v0.2.0`. The **Release** workflow runs the tests, creates the GitHub release and, if enabled, publishes to Maven Central.
+5. JitPack builds the same tag on first request: https://jitpack.io/#AraujoJordan/medusa (open the page and press *Get it* to warm it).
 
 ## One-time setup for Maven Central
 Medusa publishes as `io.github.araujojordan:medusa-core` and `io.github.araujojordan:medusa-gradle-plugin`

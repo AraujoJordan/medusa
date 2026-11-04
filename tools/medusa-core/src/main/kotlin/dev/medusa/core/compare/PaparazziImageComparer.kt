@@ -11,6 +11,9 @@ class PaparazziImageComparer(
   private val differ: Differ,
   private val maxPercentDifference: Double,
 ) : ImageComparer {
-  override fun compare(golden: File, actual: File): Comparison =
-    PaparazziComparison.compare(Images.read(golden), Images.read(actual), differ, maxPercentDifference)
+  override fun compare(golden: File, actual: File): Comparison {
+    val expected = Images.read(golden)
+    if (java.nio.file.Files.mismatch(golden.toPath(), actual.toPath()) == -1L) return Comparison.Passed(0f)
+    return PaparazziComparison.compare(expected, Images.read(actual), differ, maxPercentDifference)
+  }
 }

@@ -1,0 +1,194 @@
+[
+  {
+    "round": 0,
+    "seconds": 8.139393917022971,
+    "modules": [
+      {
+        "module": ":app",
+        "list": 1.559455042006448,
+        "render": 1.7543376249959692,
+        "images": {
+          "fx.app.AppScreenKt.AppPreview/AppPreview_0.png": "4c9298d223eb369ea8400fdef61e0602f181c59b32d5211c6912cc581c142d33"
+        }
+      },
+      {
+        "module": ":feature:home",
+        "list": 6.20945337502053,
+        "render": 1.9288297080202028,
+        "images": {
+          "fx.feature.home.HomeScreenKt.HomeAllPreview/HomeAllPreview_0.png": "058f552db53f5eb1fc02dede3271d77eb834b38c825b6ac10b5f6bd9c096484c",
+          "fx.feature.home.HomeScreenKt.HomeAllPreview/HomeAllPreview_1.png": "0b9cac4544c414182e9fd254f853be597b8178952fcd0fb37dd1aa3bd619a693",
+          "fx.feature.home.HomeScreenKt.HomeAllPreview/HomeAllPreview_2.png": "44684257f263509e05d672a3b94fbedac31c67f0d32220e47e03df5d6591b823",
+          "fx.feature.home.HomeScreenKt.HomeAllPreview/HomeAllPreview_3.png": "3a8fe154656686dfb41e8ff2de90a99ee16aea1ba065c08a2dfaeff86440678d",
+          "fx.feature.home.HomeScreenKt.HomePlainPreview/HomePlainPreview_0.png": "b410c8635453228b97d1d8973719f25d1720c8964c1e14b0a9d1e31f1f5f423b",
+          "fx.feature.home.HomeScreenKt.HomePreview/HomePreview_0.png": "058f552db53f5eb1fc02dede3271d77eb834b38c825b6ac10b5f6bd9c096484c",
+          "fx.feature.home.HomeScreenKt.HomePreview/HomePreview_1.png": "0b9cac4544c414182e9fd254f853be597b8178952fcd0fb37dd1aa3bd619a693",
+          "fx.feature.home.HomeScreenKt.HomePreview/HomePreview_2.png": "44684257f263509e05d672a3b94fbedac31c67f0d32220e47e03df5d6591b823",
+          "fx.feature.home.HomeScreenKt.HomeThemePreview/HomeThemePreview_0.png": "3a8fe154656686dfb41e8ff2de90a99ee16aea1ba065c08a2dfaeff86440678d",
+          "fx.feature.home.HomeScreenKt.HomeThemePreview/HomeThemePreview_1.png": "3a8fe154656686dfb41e8ff2de90a99ee16aea1ba065c08a2dfaeff86440678d",
+          "fx.feature.home.HomeScreenKt.HomeThemePreview/HomeThemePreview_2.png": "97e689f95bf2b7c4c5abce72fef9ddc3b1a67ac4f07bf2e455dfdf23ceed4410",
+          "fx.feature.home.HomeScreenKt.HomeThemePreview/HomeThemePreview_3.png": "3a8fe154656686dfb41e8ff2de90a99ee16aea1ba065c08a2dfaeff86440678d",
+          "fx.feature.home.HomeScreenKt.HomeThemePreview/HomeThemePreview_4.png": "85180acfd1783066097b1cd2992e8f30a07264d107868eb28fd9fd9847f9af57",
+          "fx.feature.home.HomeScreenKt.HomeThemePreview/HomeThemePreview_5.png": "dea8f1755da2f2fd6d487f341c8918dfe8e20b5edd989bbbd47bb8a62a9d8873",
+          "fx.feature.home.HomeScreenKt.HomeThemePreview/HomeThemePreview_6.png": "d1312ba765e56a35314d40597722a11fe9b1be1205063e51e7aa07173df9502a",
+          "fx.feature.home.HomeScreenKt.HomeThemePreview/HomeThemePreview_7.png": "aaba41952d27ec3e038112a94c7614f436a690213d153571d2a59066b8de46dd",
+          "fx.feature.home.HomeScreenKt.HomeThemePreview/HomeThemePreview_8.png": "161e47914e1f1665a10a08a4b88765ea6d821fb26751d88721ba8e48ff4768d3"
+        }
+      },
+      {
+        "module": ":core:designsystem",
+        "list": 1.922681249998277,
+        "render": 2.591062999999849,
+        "images": {
+          "fx.core.designsystem.BadgeKt.BadgePreview/BadgePreview_0.png": "97f70b9b73166c0702f8b31710ed90ea925a950cd01a7f85efb307ed4b04cead",
+          "fx.core.designsystem.BadgeKt.BadgePreview/BadgePreview_1.png": "1793c3c3ae834302dfdf31f8bcb4e6730361a46fab48b0b9dabfaf83cbb68dee",
+          "fx.core.designsystem.BadgeKt.BadgePreview/BadgePreview_2.png": "a8cc9d408eb9c8054be567845ddd18b6576f3ad11bb540388b5ddb321bc4f9fd"
+        }
+      }
+    ]
+  },
+  {
+    "round": 1,
+    "seconds": 8.130720249988372,
+    "modules": [
+      {
+        "module": ":app",
+        "list": 1.4502223339804914,
+        "render": 1.7618990420014597,
+        "images": {
+          "fx.app.AppScreenKt.AppPreview/AppPreview_0.png": "4c9298d223eb369ea8400fdef61e0602f181c59b32d5211c6912cc581c142d33"
+        }
+      },
+      {
+        "module": ":feature:home",
+        "list": 6.214944042003481,
+        "render": 1.9134892919973936,
+        "images": {
+          "fx.feature.home.HomeScreenKt.HomeAllPreview/HomeAllPreview_0.png": "058f552db53f5eb1fc02dede3271d77eb834b38c825b6ac10b5f6bd9c096484c",
+          "fx.feature.home.HomeScreenKt.HomeAllPreview/HomeAllPreview_1.png": "0b9cac4544c414182e9fd254f853be597b8178952fcd0fb37dd1aa3bd619a693",
+          "fx.feature.home.HomeScreenKt.HomeAllPreview/HomeAllPreview_2.png": "44684257f263509e05d672a3b94fbedac31c67f0d32220e47e03df5d6591b823",
+          "fx.feature.home.HomeScreenKt.HomeAllPreview/HomeAllPreview_3.png": "3a8fe154656686dfb41e8ff2de90a99ee16aea1ba065c08a2dfaeff86440678d",
+          "fx.feature.home.HomeScreenKt.HomePlainPreview/HomePlainPreview_0.png": "b410c8635453228b97d1d8973719f25d1720c8964c1e14b0a9d1e31f1f5f423b",
+          "fx.feature.home.HomeScreenKt.HomePreview/HomePreview_0.png": "058f552db53f5eb1fc02dede3271d77eb834b38c825b6ac10b5f6bd9c096484c",
+          "fx.feature.home.HomeScreenKt.HomePreview/HomePreview_1.png": "0b9cac4544c414182e9fd254f853be597b8178952fcd0fb37dd1aa3bd619a693",
+          "fx.feature.home.HomeScreenKt.HomePreview/HomePreview_2.png": "44684257f263509e05d672a3b94fbedac31c67f0d32220e47e03df5d6591b823",
+          "fx.feature.home.HomeScreenKt.HomeThemePreview/HomeThemePreview_0.png": "3a8fe154656686dfb41e8ff2de90a99ee16aea1ba065c08a2dfaeff86440678d",
+          "fx.feature.home.HomeScreenKt.HomeThemePreview/HomeThemePreview_1.png": "3a8fe154656686dfb41e8ff2de90a99ee16aea1ba065c08a2dfaeff86440678d",
+          "fx.feature.home.HomeScreenKt.HomeThemePreview/HomeThemePreview_2.png": "97e689f95bf2b7c4c5abce72fef9ddc3b1a67ac4f07bf2e455dfdf23ceed4410",
+          "fx.feature.home.HomeScreenKt.HomeThemePreview/HomeThemePreview_3.png": "3a8fe154656686dfb41e8ff2de90a99ee16aea1ba065c08a2dfaeff86440678d",
+          "fx.feature.home.HomeScreenKt.HomeThemePreview/HomeThemePreview_4.png": "85180acfd1783066097b1cd2992e8f30a07264d107868eb28fd9fd9847f9af57",
+          "fx.feature.home.HomeScreenKt.HomeThemePreview/HomeThemePreview_5.png": "dea8f1755da2f2fd6d487f341c8918dfe8e20b5edd989bbbd47bb8a62a9d8873",
+          "fx.feature.home.HomeScreenKt.HomeThemePreview/HomeThemePreview_6.png": "d1312ba765e56a35314d40597722a11fe9b1be1205063e51e7aa07173df9502a",
+          "fx.feature.home.HomeScreenKt.HomeThemePreview/HomeThemePreview_7.png": "aaba41952d27ec3e038112a94c7614f436a690213d153571d2a59066b8de46dd",
+          "fx.feature.home.HomeScreenKt.HomeThemePreview/HomeThemePreview_8.png": "161e47914e1f1665a10a08a4b88765ea6d821fb26751d88721ba8e48ff4768d3"
+        }
+      },
+      {
+        "module": ":core:designsystem",
+        "list": 1.8460617089876905,
+        "render": 2.7077419580018613,
+        "images": {
+          "fx.core.designsystem.BadgeKt.BadgePreview/BadgePreview_0.png": "97f70b9b73166c0702f8b31710ed90ea925a950cd01a7f85efb307ed4b04cead",
+          "fx.core.designsystem.BadgeKt.BadgePreview/BadgePreview_1.png": "1793c3c3ae834302dfdf31f8bcb4e6730361a46fab48b0b9dabfaf83cbb68dee",
+          "fx.core.designsystem.BadgeKt.BadgePreview/BadgePreview_2.png": "a8cc9d408eb9c8054be567845ddd18b6576f3ad11bb540388b5ddb321bc4f9fd"
+        }
+      }
+    ]
+  },
+  {
+    "round": 2,
+    "seconds": 6.261092125001596,
+    "modules": [
+      {
+        "module": ":app",
+        "list": 4.352713291998953,
+        "render": 1.907865082990611,
+        "images": {
+          "fx.app.AppScreenKt.AppPreview/AppPreview_0.png": "4c9298d223eb369ea8400fdef61e0602f181c59b32d5211c6912cc581c142d33"
+        }
+      },
+      {
+        "module": ":feature:home",
+        "list": 3.9813857080007438,
+        "render": 1.9834912499936763,
+        "images": {
+          "fx.feature.home.HomeScreenKt.HomeAllPreview/HomeAllPreview_0.png": "058f552db53f5eb1fc02dede3271d77eb834b38c825b6ac10b5f6bd9c096484c",
+          "fx.feature.home.HomeScreenKt.HomeAllPreview/HomeAllPreview_1.png": "0b9cac4544c414182e9fd254f853be597b8178952fcd0fb37dd1aa3bd619a693",
+          "fx.feature.home.HomeScreenKt.HomeAllPreview/HomeAllPreview_2.png": "44684257f263509e05d672a3b94fbedac31c67f0d32220e47e03df5d6591b823",
+          "fx.feature.home.HomeScreenKt.HomeAllPreview/HomeAllPreview_3.png": "3a8fe154656686dfb41e8ff2de90a99ee16aea1ba065c08a2dfaeff86440678d",
+          "fx.feature.home.HomeScreenKt.HomePlainPreview/HomePlainPreview_0.png": "b410c8635453228b97d1d8973719f25d1720c8964c1e14b0a9d1e31f1f5f423b",
+          "fx.feature.home.HomeScreenKt.HomePreview/HomePreview_0.png": "058f552db53f5eb1fc02dede3271d77eb834b38c825b6ac10b5f6bd9c096484c",
+          "fx.feature.home.HomeScreenKt.HomePreview/HomePreview_1.png": "0b9cac4544c414182e9fd254f853be597b8178952fcd0fb37dd1aa3bd619a693",
+          "fx.feature.home.HomeScreenKt.HomePreview/HomePreview_2.png": "44684257f263509e05d672a3b94fbedac31c67f0d32220e47e03df5d6591b823",
+          "fx.feature.home.HomeScreenKt.HomeThemePreview/HomeThemePreview_0.png": "3a8fe154656686dfb41e8ff2de90a99ee16aea1ba065c08a2dfaeff86440678d",
+          "fx.feature.home.HomeScreenKt.HomeThemePreview/HomeThemePreview_1.png": "3a8fe154656686dfb41e8ff2de90a99ee16aea1ba065c08a2dfaeff86440678d",
+          "fx.feature.home.HomeScreenKt.HomeThemePreview/HomeThemePreview_2.png": "97e689f95bf2b7c4c5abce72fef9ddc3b1a67ac4f07bf2e455dfdf23ceed4410",
+          "fx.feature.home.HomeScreenKt.HomeThemePreview/HomeThemePreview_3.png": "3a8fe154656686dfb41e8ff2de90a99ee16aea1ba065c08a2dfaeff86440678d",
+          "fx.feature.home.HomeScreenKt.HomeThemePreview/HomeThemePreview_4.png": "85180acfd1783066097b1cd2992e8f30a07264d107868eb28fd9fd9847f9af57",
+          "fx.feature.home.HomeScreenKt.HomeThemePreview/HomeThemePreview_5.png": "dea8f1755da2f2fd6d487f341c8918dfe8e20b5edd989bbbd47bb8a62a9d8873",
+          "fx.feature.home.HomeScreenKt.HomeThemePreview/HomeThemePreview_6.png": "d1312ba765e56a35314d40597722a11fe9b1be1205063e51e7aa07173df9502a",
+          "fx.feature.home.HomeScreenKt.HomeThemePreview/HomeThemePreview_7.png": "aaba41952d27ec3e038112a94c7614f436a690213d153571d2a59066b8de46dd",
+          "fx.feature.home.HomeScreenKt.HomeThemePreview/HomeThemePreview_8.png": "161e47914e1f1665a10a08a4b88765ea6d821fb26751d88721ba8e48ff4768d3"
+        }
+      },
+      {
+        "module": ":core:designsystem",
+        "list": 3.477529499999946,
+        "render": 1.8238012499932665,
+        "images": {
+          "fx.core.designsystem.BadgeKt.BadgePreview/BadgePreview_0.png": "97f70b9b73166c0702f8b31710ed90ea925a950cd01a7f85efb307ed4b04cead",
+          "fx.core.designsystem.BadgeKt.BadgePreview/BadgePreview_1.png": "1793c3c3ae834302dfdf31f8bcb4e6730361a46fab48b0b9dabfaf83cbb68dee",
+          "fx.core.designsystem.BadgeKt.BadgePreview/BadgePreview_2.png": "a8cc9d408eb9c8054be567845ddd18b6576f3ad11bb540388b5ddb321bc4f9fd"
+        }
+      }
+    ]
+  },
+  {
+    "round": 3,
+    "seconds": 5.997028000012506,
+    "modules": [
+      {
+        "module": ":app",
+        "list": 1.8109912080108188,
+        "render": 2.665736625000136,
+        "images": {
+          "fx.app.AppScreenKt.AppPreview/AppPreview_0.png": "4c9298d223eb369ea8400fdef61e0602f181c59b32d5211c6912cc581c142d33"
+        }
+      },
+      {
+        "module": ":feature:home",
+        "list": 3.994344208011171,
+        "render": 2.0002007499861065,
+        "images": {
+          "fx.feature.home.HomeScreenKt.HomeAllPreview/HomeAllPreview_0.png": "058f552db53f5eb1fc02dede3271d77eb834b38c825b6ac10b5f6bd9c096484c",
+          "fx.feature.home.HomeScreenKt.HomeAllPreview/HomeAllPreview_1.png": "0b9cac4544c414182e9fd254f853be597b8178952fcd0fb37dd1aa3bd619a693",
+          "fx.feature.home.HomeScreenKt.HomeAllPreview/HomeAllPreview_2.png": "44684257f263509e05d672a3b94fbedac31c67f0d32220e47e03df5d6591b823",
+          "fx.feature.home.HomeScreenKt.HomeAllPreview/HomeAllPreview_3.png": "3a8fe154656686dfb41e8ff2de90a99ee16aea1ba065c08a2dfaeff86440678d",
+          "fx.feature.home.HomeScreenKt.HomePlainPreview/HomePlainPreview_0.png": "b410c8635453228b97d1d8973719f25d1720c8964c1e14b0a9d1e31f1f5f423b",
+          "fx.feature.home.HomeScreenKt.HomePreview/HomePreview_0.png": "058f552db53f5eb1fc02dede3271d77eb834b38c825b6ac10b5f6bd9c096484c",
+          "fx.feature.home.HomeScreenKt.HomePreview/HomePreview_1.png": "0b9cac4544c414182e9fd254f853be597b8178952fcd0fb37dd1aa3bd619a693",
+          "fx.feature.home.HomeScreenKt.HomePreview/HomePreview_2.png": "44684257f263509e05d672a3b94fbedac31c67f0d32220e47e03df5d6591b823",
+          "fx.feature.home.HomeScreenKt.HomeThemePreview/HomeThemePreview_0.png": "3a8fe154656686dfb41e8ff2de90a99ee16aea1ba065c08a2dfaeff86440678d",
+          "fx.feature.home.HomeScreenKt.HomeThemePreview/HomeThemePreview_1.png": "3a8fe154656686dfb41e8ff2de90a99ee16aea1ba065c08a2dfaeff86440678d",
+          "fx.feature.home.HomeScreenKt.HomeThemePreview/HomeThemePreview_2.png": "97e689f95bf2b7c4c5abce72fef9ddc3b1a67ac4f07bf2e455dfdf23ceed4410",
+          "fx.feature.home.HomeScreenKt.HomeThemePreview/HomeThemePreview_3.png": "3a8fe154656686dfb41e8ff2de90a99ee16aea1ba065c08a2dfaeff86440678d",
+          "fx.feature.home.HomeScreenKt.HomeThemePreview/HomeThemePreview_4.png": "85180acfd1783066097b1cd2992e8f30a07264d107868eb28fd9fd9847f9af57",
+          "fx.feature.home.HomeScreenKt.HomeThemePreview/HomeThemePreview_5.png": "dea8f1755da2f2fd6d487f341c8918dfe8e20b5edd989bbbd47bb8a62a9d8873",
+          "fx.feature.home.HomeScreenKt.HomeThemePreview/HomeThemePreview_6.png": "d1312ba765e56a35314d40597722a11fe9b1be1205063e51e7aa07173df9502a",
+          "fx.feature.home.HomeScreenKt.HomeThemePreview/HomeThemePreview_7.png": "aaba41952d27ec3e038112a94c7614f436a690213d153571d2a59066b8de46dd",
+          "fx.feature.home.HomeScreenKt.HomeThemePreview/HomeThemePreview_8.png": "161e47914e1f1665a10a08a4b88765ea6d821fb26751d88721ba8e48ff4768d3"
+        }
+      },
+      {
+        "module": ":core:designsystem",
+        "list": 3.2776457919972017,
+        "render": 1.8468427920015529,
+        "images": {
+          "fx.core.designsystem.BadgeKt.BadgePreview/BadgePreview_0.png": "97f70b9b73166c0702f8b31710ed90ea925a950cd01a7f85efb307ed4b04cead",
+          "fx.core.designsystem.BadgeKt.BadgePreview/BadgePreview_1.png": "1793c3c3ae834302dfdf31f8bcb4e6730361a46fab48b0b9dabfaf83cbb68dee",
+          "fx.core.designsystem.BadgeKt.BadgePreview/BadgePreview_2.png": "a8cc9d408eb9c8054be567845ddd18b6576f3ad11bb540388b5ddb321bc4f9fd"
+        }
+      }
+    ]
+  }
+]

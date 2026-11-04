@@ -1,0 +1,78 @@
+{
+  "previews": 50,
+  "runs": 3,
+  "renderer": "daemon, one render batch",
+  "differ": "odiff",
+  "build_cache": true,
+  "results": {
+    "1": [
+      {
+        "seconds": 5.1978998339909595,
+        "timings": [
+          "Medusa discovery: list=1335 ms, sources=3 ms",
+          "Medusa pipeline: 50 image(s); first image compared after 1586 ms, render stream closed after 3226 ms, all done after 3226 ms; post-render drain=0 ms, processing worker-sum=123 ms, ready-to-processing sum=4 ms, send sum=0 ms, compare workers=1"
+        ]
+      },
+      {
+        "seconds": 5.368399166996824,
+        "timings": [
+          "Medusa discovery: list=1471 ms, sources=6 ms",
+          "Medusa pipeline: 50 image(s); first image compared after 1624 ms, render stream closed after 3214 ms, all done after 3215 ms; post-render drain=1 ms, processing worker-sum=117 ms, ready-to-processing sum=6 ms, send sum=0 ms, compare workers=1"
+        ]
+      },
+      {
+        "seconds": 5.197340499988059,
+        "timings": [
+          "Medusa discovery: list=1363 ms, sources=2 ms",
+          "Medusa pipeline: 50 image(s); first image compared after 1601 ms, render stream closed after 3179 ms, all done after 3179 ms; post-render drain=0 ms, processing worker-sum=116 ms, ready-to-processing sum=11 ms, send sum=0 ms, compare workers=1"
+        ]
+      }
+    ],
+    "2": [
+      {
+        "seconds": 5.18732662498951,
+        "timings": [
+          "Medusa discovery: list=1341 ms, sources=2 ms",
+          "Medusa pipeline: 50 image(s); first image compared after 1582 ms, render stream closed after 3188 ms, all done after 3188 ms; post-render drain=0 ms, processing worker-sum=135 ms, ready-to-processing sum=0 ms, send sum=0 ms, compare workers=2"
+        ]
+      },
+      {
+        "seconds": 5.312694125022972,
+        "timings": [
+          "Medusa discovery: list=1362 ms, sources=2 ms",
+          "Medusa pipeline: 50 image(s); first image compared after 1589 ms, render stream closed after 3294 ms, all done after 3294 ms; post-render drain=0 ms, processing worker-sum=140 ms, ready-to-processing sum=0 ms, send sum=0 ms, compare workers=2"
+        ]
+      },
+      {
+        "seconds": 5.099461457983125,
+        "timings": [
+          "Medusa discovery: list=1317 ms, sources=2 ms",
+          "Medusa pipeline: 50 image(s); first image compared after 1543 ms, render stream closed after 3146 ms, all done after 3147 ms; post-render drain=1 ms, processing worker-sum=131 ms, ready-to-processing sum=0 ms, send sum=0 ms, compare workers=2"
+        ]
+      }
+    ],
+    "10": [
+      {
+        "seconds": 5.156325041985838,
+        "timings": [
+          "Medusa discovery: list=1347 ms, sources=3 ms",
+          "Medusa pipeline: 50 image(s); first image compared after 1583 ms, render stream closed after 3187 ms, all done after 3187 ms; post-render drain=0 ms, processing worker-sum=132 ms, ready-to-processing sum=0 ms, send sum=0 ms, compare workers=10"
+        ]
+      },
+      {
+        "seconds": 5.307691124995472,
+        "timings": [
+          "Medusa discovery: list=1328 ms, sources=3 ms",
+          "Medusa pipeline: 50 image(s); first image compared after 1714 ms, render stream closed after 3354 ms, all done after 3354 ms; post-render drain=0 ms, processing worker-sum=133 ms, ready-to-processing sum=0 ms, send sum=0 ms, compare workers=10"
+        ]
+      },
+      {
+        "seconds": 5.319717082980787,
+        "timings": [
+          "Medusa discovery: list=1349 ms, sources=3 ms",
+          "Medusa pipeline: 50 image(s); first image compared after 1690 ms, render stream closed after 3339 ms, all done after 3340 ms; post-render drain=1 ms, processing worker-sum=133 ms, ready-to-processing sum=0 ms, send sum=0 ms, compare workers=10"
+        ]
+      }
+    ]
+  }
+}

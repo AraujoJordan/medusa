@@ -198,4 +198,41 @@ class AndroidCliBackendTest {
     )
     assertNull(AndroidCliBackend.fqnOf(out, File(out, "odd name.png")))
   }
+  @Test
+  fun `daemon missing class retries once without daemon`() {
+    val cli = script("""
+      echo "§*" >> "§here/calls"
+      daemon=0
+      for a in "§@"; do case "§a" in --daemon) daemon=1;; --output=*) o="§{a#--output=}";; esac; done
+      echo '{'
+      if [ §daemon = 1 ]; then
+        echo '"success":false,"results":[{"previewId":"a","methodFqn":"$fqnA","error":{"status":"VALIDATION_ERROR","message":"Class could not be found on the classpath"}}]}'
+      else
+        mkdir -p "§o/dev/app/ButtonKt"
+        cp "§here/img.png" "§o/dev/app/ButtonKt/APreview_0.png"
+        echo '"success":true,"results":[{"previewId":"a","methodFqn":"$fqnA","imagePath":"'"§o"'/dev/app/ButtonKt/APreview_0.png"}]}'
+      fi
+    """.trimIndent().replace('§', '$'))
+    val results = runBlocking { AndroidCliBackend(dir, "sample", cli, daemon = true).render(listOf(fqnA), out).toList() }
+    assertEquals(1, results.size)
+    assertNull(results.single().error)
+    assertTrue(File(results.single().imagePath!!).isFile)
+    val calls = File(dir, "calls").readLines()
+    assertEquals(2, calls.size)
+    assertTrue("--daemon" in calls[0])
+    assertFalse("--daemon" in calls[1])
+  }
+
+  @Test
+  fun `fresh renderer failure remains a failure and does not retry again`() {
+    val cli = script("""
+      echo called >> "§here/calls"
+      echo '{'
+      echo '"success":false,"results":[{"previewId":"a","methodFqn":"$fqnA","error":{"status":"VALIDATION_ERROR","message":"Class could not be found on the classpath"}}]}'
+    """.trimIndent().replace('§', '$'))
+    val results = runBlocking { AndroidCliBackend(dir, "sample", cli, daemon = true).render(listOf(fqnA), out).toList() }
+    assertEquals(2, File(dir, "calls").readLines().size)
+    assertEquals("VALIDATION_ERROR", results.single().error?.status)
+  }
+
 }

@@ -6,42 +6,33 @@ Android CLI 1.1.16717390
 Wall-clock seconds of one `./gradlew` call, median (min-max) over the measured runs, Gradle daemon warm.
 Both tools render the same generated composables (`benchmark/generate.py`).
 
-**Reading these numbers.** One machine, 2-3 measured runs per cell, synthetic composables, Gradle build cache off.
+**Reading these numbers.** One machine, run counts shown per table, synthetic composables, Gradle build cache off.
 Each call includes about 1-2 s of Gradle start-up for both tools. The tools do not render identical pixels:
 Paparazzi renders with layoutlib in a `Pixel 5` frame, the Android CLI with its own renderer on `medium_phone`,
-so this compares time to a verdict, not image fidelity. Paparazzi is 2.0.0-alpha05.1, Medusa is unreleased.
+so this compares time to a verdict, not image fidelity. Paparazzi is 2.0.0-alpha05.1, Medusa is the local working tree.
 
-## 50 previews (2026-11-03 18:35, 3 measured runs)
+## 50 previews (2026-11-04 08:59, 5 measured runs)
 
 **verify, nothing changed (rendering forced to rerun)**
 
 | configuration | seconds | previews/s (median) |
 |---|---|---|
-| medusa | 9.2  (9.1-9.3) | 5.5 |
-| paparazzi-1 | 7.0  (6.9-7.0) | 7.2 |
-| paparazzi-10 | 9.0  (8.9-9.1) | 5.6 |
-| medusa-daemon | 6.1  (6.0-6.3) | 8.2 |
-| medusa-daemon-render2 | 6.7  (6.6-8.4) | 7.5 |
+| medusa | 4.8  (4.7-4.8) | 10.4 |
+| paparazzi-1 | 6.9  (6.8-6.9) | 7.3 |
 
 **cold: `clean`, then verify**
 
 | configuration | seconds | previews/s (median) |
 |---|---|---|
-| medusa | 10.2  (10.1-10.9) | 4.9 |
-| paparazzi-1 | 8.2  (7.9-9.0) | 6.1 |
-| paparazzi-10 | 10.0  (9.9-10.0) | 5.0 |
-| medusa-daemon | 7.0  (6.8-7.2) | 7.2 |
-| medusa-daemon-render2 | 7.1  (7.0-7.2) | 7.0 |
+| medusa | 5.6  (5.5-9.7) | 8.9 |
+| paparazzi-1 | 7.6  (7.6-7.8) | 6.5 |
 
 **record after editing one composable**
 
 | configuration | seconds | previews/s (median) |
 |---|---|---|
-| medusa | 9.2  (9.2-9.5) | 5.4 |
-| paparazzi-1 | 7.9  (7.9-8.0) | 6.3 |
-| paparazzi-10 | 9.5  (9.4-9.7) | 5.2 |
-| medusa-daemon | 6.4  (6.4-6.6) | 7.8 |
-| medusa-daemon-render2 | 6.9  (6.8-8.8) | 7.3 |
+| medusa | 5.1  (5.0-5.2) | 9.8 |
+| paparazzi-1 | 7.7  (7.7-7.8) | 6.5 |
 
 ## 200 previews (2026-11-03 18:44, 2 measured runs)
 

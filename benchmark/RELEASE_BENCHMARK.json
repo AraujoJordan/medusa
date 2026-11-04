@@ -1,0 +1,97 @@
+{
+  "version": "0.2.0",
+  "images": 22,
+  "rounds": 3,
+  "build_cache": true,
+  "configuration_cache": true,
+  "parallel": true,
+  "daemon": true,
+  "differ": "odiff",
+  "record_scenario": "unchanged existing goldens",
+  "results": [
+    {
+      "operation": "Record",
+      "automatic": false,
+      "seconds": 7.175881082977867,
+      "verified_images": null,
+      "configuration_cache_reused": true
+    },
+    {
+      "operation": "Record",
+      "automatic": true,
+      "seconds": 6.736610749998363,
+      "verified_images": null,
+      "configuration_cache_reused": true
+    },
+    {
+      "operation": "Verify",
+      "automatic": false,
+      "seconds": 9.734601415984798,
+      "verified_images": 22,
+      "configuration_cache_reused": true
+    },
+    {
+      "operation": "Verify",
+      "automatic": true,
+      "seconds": 6.1642878749989904,
+      "verified_images": 22,
+      "configuration_cache_reused": true
+    },
+    {
+      "operation": "Record",
+      "automatic": true,
+      "seconds": 5.322837999992771,
+      "verified_images": null,
+      "configuration_cache_reused": true
+    },
+    {
+      "operation": "Record",
+      "automatic": false,
+      "seconds": 8.33507999998983,
+      "verified_images": null,
+      "configuration_cache_reused": true
+    },
+    {
+      "operation": "Verify",
+      "automatic": true,
+      "seconds": 6.832329124998068,
+      "verified_images": 22,
+      "configuration_cache_reused": true
+    },
+    {
+      "operation": "Verify",
+      "automatic": false,
+      "seconds": 9.42835070900037,
+      "verified_images": 22,
+      "configuration_cache_reused": true
+    },
+    {
+      "operation": "Record",
+      "automatic": false,
+      "seconds": 8.434925375011517,
+      "verified_images": null,
+      "configuration_cache_reused": true
+    },
+    {
+      "operation": "Record",
+      "automatic": true,
+      "seconds": 6.665845415991498,
+      "verified_images": null,
+      "configuration_cache_reused": true
+    },
+    {
+      "operation": "Verify",
+      "automatic": false,
+      "seconds": 8.387368166004308,
+      "verified_images": 22,
+      "configuration_cache_reused": true
+    },
+    {
+      "operation": "Verify",
+      "automatic": true,
+      "seconds": 7.079723124974407,
+      "verified_images": 22,
+      "configuration_cache_reused": true
+    }
+  ]
+}

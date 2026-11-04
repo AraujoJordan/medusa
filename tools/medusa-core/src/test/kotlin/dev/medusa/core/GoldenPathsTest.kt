@@ -18,6 +18,16 @@ class GoldenPathsTest {
     PreviewInfo(fqn, parameterProvider = if (provider) ParameterProvider("p.Provider") else null)
 
   @Test
+  fun `a new source index observes edits between discoveries`() {
+    val file = source("dev/app/Button.kt", "package dev.app\nfun Before() {}")
+    assertEquals(file, SourceLocator.Index(listOf(root)).locate(preview("dev.app.ButtonKt.Before")))
+    file.writeText("package dev.app\nfun After() {}")
+    val next = SourceLocator.Index(listOf(root))
+    assertNull(next.locate(preview("dev.app.ButtonKt.Before")))
+    assertEquals(file, next.locate(preview("dev.app.ButtonKt.After")))
+  }
+
+  @Test
   fun `golden lives flat next to the source file`() {
     val file = source("dev/app/Button.kt", "package dev.app\nfun PrimaryButtonPreview() {}")
     val snapshot = Snapshot(preview("dev.app.ButtonKt.PrimaryButtonPreview"), file)

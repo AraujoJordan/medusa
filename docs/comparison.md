@@ -7,7 +7,7 @@ is not neutral, so if something here is out of date or unfair, please [open an i
 
 | | Renders with | What you write | Needs a device | Goldens | Status |
 |---|---|---|---|---|---|
-| **Medusa** | the Android CLI's preview renderer (it bundles layoutlib) | nothing: every `@Preview` is a test | no | next to the `.kt` file | 0.1.0 |
+| **Medusa** | the Android CLI's preview renderer (it bundles layoutlib) | nothing: every `@Preview` is a test | no | next to the `.kt` file | 0.2.0 |
 | **[Paparazzi](https://github.com/cashapp/paparazzi)** | layoutlib on the JVM | a JUnit test with the `Paparazzi` rule and `snapshot { }` per screen (Compose or Views) | no | `src/test/snapshots` | 2.0.0-alpha05.1 (2026-09-28), Apache-2.0 |
 | **[Roborazzi](https://github.com/takahirom/roborazzi)** | Robolectric Native Graphics on the JVM | a Robolectric test; or the *experimental* generator that turns `@Preview`s into tests | no | `build/outputs/roborazzi` by default | 1.77.0 (2026-10-22), Apache-2.0 |
 | **[Compose Preview Screenshot Testing](https://developer.android.com/studio/preview/compose-screenshot-testing)** (Google) | host-side, layoutlib | `@PreviewTest` on previews placed in a separate `screenshotTest` source set | no | `src/<suite>.../reference/` | the standalone plugin is **no longer maintained**; its replacement (AGP test suites) is **experimental** and needs AGP 9.5.0-alpha03 or newer |
@@ -49,7 +49,7 @@ Sources: [Shot](https://github.com/pedrovgs/Shot#readme), [Dropshots](https://gi
 ## Which one should you use?
 
 - **Use Medusa** if you already write Compose `@Preview`s, want screenshot tests without writing tests, and can live with the debug variant, no
-  animations and a tool at version 0.1.0 that depends on Google's new Android CLI.
+  animations and a tool at version 0.2.0 that depends on Google's new Android CLI.
 - **Use Paparazzi** if you have XML Views, need per-test device configuration or animation snapshots, or want the most established option.
 - **Use Roborazzi** if you need Robolectric (interaction, dependency injection) or GIFs and video, or you want to test behaviour, not only appearance.
 - **Use Google's tool** if you want first-party support and the IDE workflow and can accept an experimental setup.
@@ -60,5 +60,20 @@ more.
 
 ## Speed
 
-Only Paparazzi was benchmarked; there is no measured speed claim against Roborazzi, Google's tool, Shot or Dropshots. Measured against Paparazzi on the same generated composables: [benchmarks](benchmarks.md). In short, Paparazzi is faster for small projects, and Medusa
-(with the daemon) was about 13% faster at 50 previews and 30% faster at 200 on the one machine tested.
+Latest isolated measurement (50 previews, five runs per scenario, M1 Max, JDK 21, build cache off;
+Gradle and Medusa renderer daemons warm, odiff default, Paparazzi one fork):
+
+| Task | Medusa | Paparazzi | Less elapsed time |
+|---|---|---|---|
+| Verify, rendering forced | 4.8 s | 6.9 s | 30% |
+| Clean build then verify | 5.6 s | 7.6 s | 27% |
+| Record after editing one composable | 5.1 s | 7.7 s | 34% |
+
+These measurements do **not** establish a 2× speedup or a win at every suite size. The existing synthetic fixture
+uses different device framing and night-mode settings between renderers: this measures time to a verdict, not equivalent
+image fidelity. Clean build does not mean a cold renderer. Other tools were not benchmarked.
+Raw measurements: [50-preview results](../benchmark/results/N50.json); full tables: [benchmark results](../benchmark/RESULTS.md).
+
+Daemon reuse is now enabled by default (`useDaemon = false` opts out). Source reads are reused within discovery,
+clean-record discovers once, polling visits expected output directories, and comparison tools initialize only when needed.
+Record still preserves goldens within the configured tolerance; verify still renders previews on each invocation.
