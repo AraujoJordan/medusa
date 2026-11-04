@@ -2,6 +2,8 @@
 
 <p align="center"><b>Your <code>@Preview</code>s are already your tests. Medusa just checks them.</b></p>
 
+<p align="center"><i>One look and your screens are turned to stone. Change a pixel and she'll notice.</i></p>
+
 <p align="center">
   <a href="https://central.sonatype.com/artifact/io.github.araujojordan/medusa-gradle-plugin"><img alt="Maven Central" src="https://img.shields.io/maven-central/v/io.github.araujojordan/medusa-gradle-plugin"></a>
   <a href="https://github.com/AraujoJordan/medusa/actions/workflows/ci.yml"><img alt="CI" src="https://github.com/AraujoJordan/medusa/actions/workflows/ci.yml/badge.svg"></a>
@@ -21,6 +23,10 @@ Golden images live **right next to the Kotlin file** that declares the preview.
 Because you already wrote the preview. Paparazzi and Roborazzi want a test class per screen. Google's own tool wants your previews in a
 second source set. Shot and Dropshots want an emulator in CI. Medusa asks the Android CLI which `@Preview`s exist, renders them, and
 compares the pictures with last time's. That's it. That's the library.
+
+**Why "Medusa"?** In the myth, one look from Medusa turns you to stone. This plugin gives your `@Preview`s that same look:
+`medusaRecord` petrifies every screen as a golden image, and `medusaVerify` checks that nothing has moved since. Unlike the myth,
+`medusaRecord` undoes it.
 
 ## ⚡ 30 seconds
 
