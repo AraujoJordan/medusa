@@ -13,7 +13,7 @@ val onJitpack = System.getenv("JITPACK") == "true"
 subprojects {
   // Maven Central wants a namespace you can verify (io.github.<user>); JitPack wants com.github.<user>.<repo>.
   group = if (onJitpack) "com.github.AraujoJordan.medusa" else "io.github.araujojordan"
-  version = providers.gradleProperty("medusaVersion").getOrElse("0.2.0")
+  version = providers.gradleProperty("medusaVersion").getOrElse("0.3.0")
 
   plugins.withId("signing") {
     if (providers.gradleProperty("medusa.gpgAgent").isPresent) {

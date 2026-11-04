@@ -3,4 +3,4 @@
 jdk:
   - openjdk21
 install:
-  - cd tools && ./gradlew publishToMavenLocal -x test -PmedusaVersion="${VERSION:-0.2.0}"
+  - cd tools && ./gradlew publishToMavenLocal -x test -PmedusaVersion="${VERSION:-0.3.0}"

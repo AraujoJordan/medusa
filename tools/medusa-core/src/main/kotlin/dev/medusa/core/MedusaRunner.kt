@@ -49,6 +49,8 @@ data class MedusaConfig(
   val comparer: ImageComparer? = null,
   /** Aggregated runs keep reports and artifacts in each source module's output directory. */
   val outputBySourceRoot: Map<File, File> = emptyMap(),
+  val reliability: ReliabilityOptions = ReliabilityOptions(),
+  val environment: Map<String, String> = emptyMap(),
 )
 
 /** Previews that matched the filter, and previews whose source file could not be found. */
@@ -70,7 +72,9 @@ sealed interface Outcome {
   data class Failed(val message: String, val delta: File?, val actual: File?) : Outcome
 }
 
-data class VerifyResult(val name: String, val golden: File?, val outcome: Outcome)
+data class VerifyAttempt(val number: Int, val outcome: Outcome, val actual: File?, val infrastructure: Boolean = false)
+data class VerifyResult(val name: String, val golden: File?, val outcome: Outcome,
+  val attempts: List<VerifyAttempt> = emptyList(), val recovered: Boolean = false, val infrastructure: Boolean = false)
 
 data class VerifySummary(
   val results: List<VerifyResult>,
@@ -83,7 +87,51 @@ data class VerifySummary(
 
 class MedusaRunner(private val config: MedusaConfig) {
   private val comparer: ImageComparer = config.comparer ?: PaparazziImageComparer(config.differ, config.maxPercentDifference)
-  private val renderedDir = File(config.outputDir, "rendered")
+  private var runId = java.util.UUID.randomUUID().toString()
+  private var operation = "idle"
+  private var attempt = 0
+  private var activeBackend = config.backend
+  private var renderedDir = File(config.outputDir, "rendered/$runId/0")
+  private var pendingSnapshots: List<Snapshot> = emptyList()
+  private val completed = java.util.concurrent.ConcurrentLinkedQueue<Pair<Rendered, VerifyResult>>()
+  private val outputs get() = (config.outputBySourceRoot.values + config.outputDir).distinct()
+  private val metadata get() = config.environment + comparer.environment + mapOf("runId" to runId, "operation" to operation, "attempt" to attempt.toString(), "infrastructureRecovery" to (config.backend.events + activeBackend.events).distinct().joinToString("; "),
+    "visualRetryCount" to config.reliability.visualRetryCount.toString(), "allowRecoveredPass" to config.reliability.allowRecoveredPass.toString())
+
+  private fun <T> guarded(operation: String, block: () -> T): T {
+    val directories = config.sourceRoots.filter { it.exists() }.flatMap { root ->
+      root.walkTopDown().filter { (it.isFile && it.extension == "kt") || (it.isDirectory && File(it, ".medusa-journal").exists()) }.map { if (it.isFile) it.parentFile else it }.toList() + root
+    }
+    return RunLocks.withLocks(directories + outputs, onLocked = {
+      this.operation = operation
+      runId = java.util.UUID.randomUUID().toString()
+      attempt = 0
+      activeBackend = config.backend
+      renderedDir = File(config.outputDir, "rendered/$runId/0")
+      completed.clear()
+      pendingSnapshots = emptyList()
+      outputs.forEach { Report.write(it, listOf(VerifyResult("medusa.$operation", null,
+        Outcome.Failed("Run $runId is in progress; previous results are obsolete", null, null))), emptyList(), metadata + ("status" to "running")) }
+    }, onRecoveryFailure = { failure ->
+      outputs.forEach { output -> runCatching { Report.write(output, listOf(VerifyResult("medusa.recovery", null,
+        Outcome.Failed(DiagnosticText.redact(failure.message ?: "Golden recovery failed"), null, null), infrastructure = true)), emptyList(), metadata + ("status" to "failed")) }
+        .exceptionOrNull()?.let { failure.addSuppressed(it) } }
+    }) {
+      try { block() } catch (failure: Throwable) {
+        val results = completed.map { it.second }.toMutableList()
+        val finished = results.map { it.name }.toSet()
+        pendingSnapshots.forEach { snapshot ->
+          (0 until snapshot.entryCount).forEach { index ->
+            if (snapshot.displayName(index) !in finished) results += VerifyResult(snapshot.displayName(index), snapshot.goldenFile(index),
+              Outcome.Failed("Not completed because the invocation failed", null, null), infrastructure = true)
+          }
+        }
+        results += VerifyResult("medusa.infrastructure", null, Outcome.Failed(DiagnosticText.redact(failure.message ?: failure.javaClass.simpleName), null, null))
+        outputs.forEach { output -> runCatching { Report.write(output, results.filter { it.golden == null || outputFor(it.golden) == output }, emptyList(), metadata + ("status" to "failed")) }.exceptionOrNull()?.let { failure.addSuppressed(it) } }
+        throw failure
+      }
+    }
+  }
 
   private fun outputFor(file: File): File = config.outputBySourceRoot.entries
     .filter { file.canonicalFile.toPath().startsWith(it.key.canonicalFile.toPath()) }
@@ -114,6 +162,7 @@ class MedusaRunner(private val config: MedusaConfig) {
       throw MedusaException("No preview matches the --preview filter. Available: ${available.joinToString()}")
     }
     config.log("Medusa discovery: list=${(listed - started) / 1_000_000} ms, sources=${(System.nanoTime() - listed) / 1_000_000} ms")
+    pendingSnapshots = snapshots
     return Discovery(snapshots, missing)
   }
 
@@ -133,48 +182,111 @@ class MedusaRunner(private val config: MedusaConfig) {
     }
   }
 
-  fun record(): RecordSummary = record(discover())
+  fun record(): RecordSummary = guarded("record") { record(discover()).also(::recordReport) }
 
-  private fun record(discovery: Discovery): RecordSummary {
-    val errors = discovery.unlocated.map(::unlocatedMessage).toMutableList()
-    val outcomes = pipeline(discovery.snapshots, ::recordOne)
-    val recorded = outcomes.mapNotNull { it.second.first }
-    outcomes.mapNotNull { it.second.second }.forEach { errors += it }
-    removeStaleIndexedGoldens(outcomes.filter { it.second.second == null }.map { it.first })
-    return RecordSummary(recorded, errors)
+  private fun recordReport(summary: RecordSummary) {
+    val results = summary.recorded.map { VerifyResult(it.name, it.golden, Outcome.Passed) } +
+      summary.errors.map { VerifyResult("medusa.record", null, Outcome.Failed(it, null, null)) }
+    outputs.forEach { output -> Report.write(output, results.filter { it.golden == null || outputFor(it.golden) == output }, emptyList(), metadata + ("status" to if (summary.ok) "passed" else "failed")) }
   }
 
-  fun verify(): VerifySummary {
+  private val staged = ConcurrentHashMap<File, File>()
+
+  private fun stage(destination: File, bytes: ByteArray) {
+    destination.parentFile.mkdirs()
+    val temporary = java.nio.file.Files.createTempFile(destination.parentFile.toPath(), ".medusa-", ".tmp").toFile()
+    temporary.writeBytes(bytes)
+    staged.put(destination, temporary)?.delete()
+  }
+
+  private fun record(discovery: Discovery, force: Boolean = false): RecordSummary {
+    try {
+      return recordStaged(discovery, force)
+    } finally {
+      staged.values.forEach { it.delete() }
+      staged.clear()
+    }
+  }
+
+  private fun recordStaged(discovery: Discovery, force: Boolean): RecordSummary {
+    val errors = discovery.unlocated.map(::unlocatedMessage).toMutableList()
+    val outcomes = pipeline(discovery.snapshots) { rendered ->
+      try { recordOne(rendered, force) } catch (failure: Exception) { null to "${rendered.name}: ${DiagnosticText.redact(failure.message ?: "Record failed")}" }
+    }
+    val recorded = outcomes.mapNotNull { it.second.first }
+    outcomes.mapNotNull { it.second.second }.forEach { errors += it }
+    if (errors.isEmpty()) {
+      val mutations = staged.mapValues { it.value as File? }.toMutableMap()
+      staleIndexedGoldens(outcomes.map { it.first }).forEach { mutations[it] = null }
+      GoldenTransaction.commit(mutations)
+    }
+    return RecordSummary(if (errors.isEmpty()) recorded else emptyList(), errors)
+  }
+
+  fun verify(): VerifySummary = guarded("verify") { verifyInternal() }
+
+  private fun verifyInternal(): VerifySummary {
     val discovery = discover()
-    (config.outputBySourceRoot.values + config.outputDir).distinct().forEach { File(it, "failures").deleteRecursively() }
     val results = mutableListOf<VerifyResult>()
     discovery.unlocated.forEach {
       results += VerifyResult(it.methodFqn, null, Outcome.Failed(unlocatedMessage(it), null, null))
     }
-    results += pipeline(discovery.snapshots, ::verifyOne).map { it.second }
+    completed.clear()
+    val first = pipeline(discovery.snapshots) { rendered ->
+      val result = checkedVerify(rendered)
+      completed.add(rendered to result)
+      result
+    }
+    val final = first.toMutableList()
+    val originalNames = first.filter { it.second.outcome is Outcome.Failed && it.first.image != null && !it.second.infrastructure }.map { it.second.name }.toSet()
+    val histories = first.associate { it.second.name to mutableListOf(VerifyAttempt(0, it.second.outcome, it.first.image)) }
+    val recoveredNames = mutableSetOf<String>()
+    for (number in 1..config.reliability.visualRetryCount) {
+      val pending = final.filter { it.second.name in originalNames && it.second.name !in recoveredNames }
+      if (pending.isEmpty()) break
+      attempt = number
+      activeBackend = config.backend.withDaemon(false)
+      renderedDir = File(config.outputDir, "rendered/$runId/$number")
+      val retried = pipeline(pending.map { it.first.snapshot }.distinct()) { checkedVerify(it) }
+      for ((rendered, value) in retried) {
+        if (value.name !in originalNames) continue
+        histories.getValue(value.name) += VerifyAttempt(number, value.outcome, rendered.image)
+        if (value.outcome is Outcome.Passed) {
+          recoveredNames += value.name
+          if (config.reliability.allowRecoveredPass) {
+            val index = final.indexOfFirst { it.second.name == value.name }
+            final[index] = rendered to value.copy(recovered = true)
+          }
+        }
+      }
+    }
+    results += final.map { it.second.copy(attempts = histories[it.second.name].orEmpty()) }
+    results.filter { it.recovered }.forEach { config.notice("FLAKY: ${it.name} recovered on a visual retry; original failure retained") }
     // Orphans are only meaningful when every preview was considered.
     val expected = results.mapNotNull { it.golden }.flatMap { g ->
       listOfNotNull(g, File(g.path.removeSuffix(".png") + ".semantics.txt").takeIf { config.accessibility })
     }.map { it.canonicalFile }.toSet()
     val orphans = if (config.filter.isEmpty) findOrphans(expected) else emptyList()
     for (output in config.outputBySourceRoot.values.distinct()) {
-      Report.write(output, results.filter { it.golden?.let(::outputFor) == output }, orphans.filter { outputFor(it) == output })
+      Report.write(output, results.filter { it.golden == null || it.golden.let(::outputFor) == output }, orphans.filter { outputFor(it) == output }, metadata + ("status" to if (results.any { it.outcome !is Outcome.Passed }) "failed" else "passed"))
     }
-    val report = if (config.outputBySourceRoot.isEmpty()) Report.write(config.outputDir, results, orphans)
+    val report = if (config.outputBySourceRoot.isEmpty()) Report.write(config.outputDir, results, orphans, metadata + ("status" to if (results.any { it.outcome !is Outcome.Passed }) "failed" else "passed"))
       else File(config.outputDir, "report/index.html")
     return VerifySummary(results, orphans, report)
   }
 
   /** Deletes the goldens of the matching previews (every index). Returns the files removed. */
-  fun cleanRecord(): RecordSummary {
+  fun cleanRecord(): RecordSummary = guarded("cleanRecord") {
     val discovery = discover()
-    val deleted = discovery.snapshots.flatMap { it.existingGoldens() }.filter { it.delete() }
-    config.notice("Deleted ${deleted.count { it.extension == "png" }} golden image(s)")
-    return record(discovery)
+    record(discovery, force = true).also { recordReport(it); if (it.ok) config.notice("Re-recorded ${it.recorded.size} golden image(s)") }
   }
 
-  fun delete(): List<File> =
-    discover().snapshots.flatMap { it.existingGoldens() }.filter { it.delete() }
+  fun delete(): List<File> = guarded("delete") {
+    val files = discover().snapshots.flatMap { it.existingGoldens() }
+    GoldenTransaction.commit(files.associateWith { null })
+    outputs.forEach { Report.write(it, emptyList(), emptyList(), metadata + ("status" to "passed")) }
+    files
+  }
 
   private class Rendered(val snapshot: Snapshot, val index: Int, val image: File?, val tree: File?, val error: String?) {
     val name: String get() = snapshot.displayName(index)
@@ -182,24 +294,30 @@ class MedusaRunner(private val config: MedusaConfig) {
     val semanticsGolden: File get() = snapshot.semanticsFile(index)
   }
 
-  private fun recordOne(r: Rendered): Pair<Recorded?, String?> {
+  private fun recordOne(r: Rendered, force: Boolean = false): Pair<Recorded?, String?> {
     val image = r.image ?: return null to "${r.name}: ${r.error}"
     val golden = r.golden
+    Images.read(image) // Validate newly recorded PNGs too, before any destination changes.
     var status = when {
       !golden.exists() -> RecordStatus.NEW
+      force -> RecordStatus.CHANGED
       comparer.compare(golden, image) is Comparison.Passed -> RecordStatus.UNCHANGED
       else -> RecordStatus.CHANGED
     }
-    if (status != RecordStatus.UNCHANGED) image.copyTo(golden, overwrite = true)
+    if (status != RecordStatus.UNCHANGED) stage(golden, image.readBytes())
     if (config.accessibility) {
       val actual = AccessibilityTree.normalize(r.tree!!.readText())
       val semantics = r.semanticsGolden
       if (!semantics.exists() || semantics.readText() != actual) {
-        semantics.writeText(actual)
+        stage(semantics, actual.toByteArray(Charsets.UTF_8))
         if (status == RecordStatus.UNCHANGED) status = RecordStatus.CHANGED
       }
     }
     return Recorded(r.name, golden, status) to null
+  }
+
+  private fun checkedVerify(r: Rendered): VerifyResult = try { verifyOne(r) } catch (failure: Exception) {
+    VerifyResult(r.name, r.golden, Outcome.Failed(DiagnosticText.redact(failure.message ?: "Comparison failed"), null, r.image), infrastructure = true)
   }
 
   private fun verifyOne(r: Rendered): VerifyResult {
@@ -213,7 +331,7 @@ class MedusaRunner(private val config: MedusaConfig) {
     if (config.accessibility && image != null && outcome !is Outcome.Missing) {
       outcome = withSemantics(r, outcome)
     }
-    return VerifyResult(r.name, golden, outcome)
+    return VerifyResult(r.name, golden, outcome, infrastructure = image == null)
   }
 
   /** Adds the accessibility verdict: a changed or missing snapshot fails an otherwise passing image. */
@@ -226,7 +344,7 @@ class MedusaRunner(private val config: MedusaConfig) {
     } ?: return imageOutcome
     val base = r.name.replace(Regex("""[^A-Za-z0-9._-]"""), "_")
     // Kept beside the image failures so the new snapshot can be diffed against the golden by hand.
-    File(File(outputFor(r.golden), "failures"), "$base.semantics.actual.txt").also { it.parentFile.mkdirs() }.writeText(actual)
+    File(File(outputFor(r.golden), "failures/$runId/$attempt"), "$base.semantics.actual.txt").also { it.parentFile.mkdirs() }.writeText(actual)
     return when (imageOutcome) {
       Outcome.Passed -> Outcome.Failed(problem, null, null)
       is Outcome.Failed -> imageOutcome.copy(message = "${imageOutcome.message}; $problem")
@@ -237,7 +355,7 @@ class MedusaRunner(private val config: MedusaConfig) {
   private fun compare(name: String, golden: File, actual: File): Outcome {
     val result = comparer.compare(golden, actual)
     if (result !is Comparison.Failed) return Outcome.Passed
-    val failuresDir = File(outputFor(golden), "failures")
+    val failuresDir = File(outputFor(golden), "failures/$runId/$attempt")
     val base = name.replace(Regex("""[^A-Za-z0-9._-]"""), "_")
     val delta = File(failuresDir, "delta-$base.png").also { Images.write(result.delta, it) }
     val actualCopy = File(failuresDir, "${base}_actual.png").also { actual.copyTo(it, overwrite = true) }
@@ -261,6 +379,7 @@ class MedusaRunner(private val config: MedusaConfig) {
     val byFqn = snapshots.associateBy { it.preview.methodFqn }
     val position = snapshots.withIndex().associate { it.value.preview.methodFqn to it.index }
     val seen = ConcurrentHashMap.newKeySet<String>()
+    val indices = ConcurrentHashMap<String, MutableSet<Int>>()
     val fallbackIndex = ConcurrentHashMap<String, Int>()
     val chunkSize = max(1, ceil(snapshots.size / max(1, config.renderParallelism).toDouble()).toInt())
     val chunks = snapshots.chunked(chunkSize)
@@ -270,12 +389,13 @@ class MedusaRunner(private val config: MedusaConfig) {
       val snapshot = byFqn[r.methodFqn] ?: return null
       val index = r.index ?: (fallbackIndex.merge(r.methodFqn, 1, Int::plus)!! - 1)
       seen += r.methodFqn
+      val unique = indices.computeIfAbsent(r.methodFqn) { ConcurrentHashMap.newKeySet() }.add(index)
       val image = r.imagePath?.let(::File)?.takeIf { it.isFile }
       val tree = r.componentTreePath?.let(::File)?.takeIf { it.isFile }
-      var error = r.error?.let { "${it.status ?: "ERROR"}: ${it.message}" }
+      var error = if (!unique || index < 0) "duplicate or invalid rendered variant index $index" else r.error?.let { DiagnosticText.redact("${it.status ?: "ERROR"}: ${it.message}") }
         ?: if (image == null) "no image was rendered" else null
       if (error == null && config.accessibility && tree == null) error = "no component tree was rendered for the accessibility snapshot"
-      if (error == null && index > 0 && !snapshot.indexed) {
+      if (error == null && ((!snapshot.preview.hasParameterProvider && index >= snapshot.entryCount) || (index > 0 && !snapshot.indexed))) {
         error = "the CLI rendered several images (index $index) for a preview that `preview list` reported once"
       }
       return Rendered(snapshot, index, image.takeIf { error == null }, tree, error)
@@ -300,7 +420,7 @@ class MedusaRunner(private val config: MedusaConfig) {
                 firstCompared.compareAndSet(-1, sinceStart())
                 val processingStarted = System.nanoTime()
                 readyAt.remove(r)?.let { queueNanos.addAndGet(processingStarted - it) }
-                add(r to handle(r))
+                add(r to kotlinx.coroutines.runInterruptible { handle(r) })
                 processingNanos.addAndGet(System.nanoTime() - processingStarted)
               }
             }
@@ -309,7 +429,7 @@ class MedusaRunner(private val config: MedusaConfig) {
         chunks.mapIndexed { i, chunk ->
           launch(Dispatchers.IO) {
             val out = File(renderedDir, "$i")
-            config.backend.render(chunk.map { it.preview.methodFqn }, out).collect { preview ->
+            activeBackend.render(chunk.map { it.preview.methodFqn }, out).collect { preview ->
               toRendered(preview)?.let {
                 val ready = System.nanoTime()
                 readyAt[it] = ready
@@ -338,15 +458,20 @@ class MedusaRunner(private val config: MedusaConfig) {
     val missing = snapshots.filter { it.preview.methodFqn !in seen }.map {
       Rendered(it, 0, null, null, "the CLI returned no result for this preview").let { r -> r to handle(r) }
     }
-    return (handled + missing).sortedWith(compareBy({ position.getValue(it.first.snapshot.preview.methodFqn) }, { it.first.index }))
+    val omitted = snapshots.filter { it.preview.methodFqn in seen }.flatMap { snapshot ->
+      val expectedCount = if (snapshot.preview.hasParameterProvider) (indices[snapshot.preview.methodFqn]?.maxOrNull() ?: -1) + 1 else snapshot.entryCount
+      (0 until expectedCount).filter { it !in indices[snapshot.preview.methodFqn].orEmpty() }.map { index ->
+        Rendered(snapshot, index, null, null, "the CLI omitted variant $index").let { it to handle(it) }
+      }
+    }
+    return (handled + missing + omitted).sortedWith(compareBy({ position.getValue(it.first.snapshot.preview.methodFqn) }, { it.first.index }))
   }
 
   /** A preview that now renders fewer images must not leave the extra goldens behind. */
-  private fun removeStaleIndexedGoldens(rendered: List<Rendered>) {
+  private fun staleIndexedGoldens(rendered: List<Rendered>): List<File> {
     val highest = rendered.filter { it.snapshot.indexed }.groupBy { it.snapshot }.mapValues { (_, r) -> r.maxOf { it.index } }
-    for ((snapshot, last) in highest) {
+    return highest.flatMap { (snapshot, last) ->
       snapshot.existingGoldens().filter { f -> Regex("""_(\d+)\.(png|semantics\.txt)$""").find(f.name)!!.groupValues[1].toInt() > last }
-        .forEach { it.delete() }
     }
   }
 
@@ -363,6 +488,71 @@ class MedusaRunner(private val config: MedusaConfig) {
         stems.any { golden.name.startsWith("${it}_") } && golden.canonicalFile !in expected
       }
       .toList()
+  }
+
+  fun diagnose(): Boolean = guarded("diagnose") {
+    val discovery = discover()
+    val profiles = mutableListOf<kotlinx.serialization.json.JsonElement>()
+    val captures = ConcurrentHashMap<String, File>()
+    val semanticCaptures = ConcurrentHashMap<String, String>()
+    var baselineNames: Set<String>? = null
+    var unstable = false
+    var infrastructure = false
+    var failed = discovery.unlocated.isNotEmpty()
+    for (daemon in listOf(true, false)) for (repetition in 0 until 5) {
+      attempt++
+      activeBackend = config.backend.withDaemon(daemon)
+      renderedDir = File(config.outputDir, "diagnostics/$runId/${if (daemon) "warm" else "fresh"}/$repetition")
+      val profileStarted = System.nanoTime()
+      val snapshots = if (repetition % 2 == 0) discovery.snapshots else discovery.snapshots.reversed()
+      val outcomes = try { pipeline(snapshots) { rendered ->
+        val result = checkedVerify(rendered)
+        val previous = captures[rendered.name]
+        val semantics = rendered.tree?.let { AccessibilityTree.normalize(it.readText()) }
+        val previousSemantics = if (semantics != null) semanticCaptures.putIfAbsent(rendered.name, semantics) else null
+        if (semantics != null && previousSemantics != null && semantics != previousSemantics) synchronized(captures) { unstable = true }
+        val varies = try { rendered.image != null && previous != null && comparer.compare(previous, rendered.image) !is Comparison.Passed }
+          catch (_: Exception) { synchronized(captures) { infrastructure = true }; false }
+        if (rendered.image == null || result.infrastructure) synchronized(captures) { infrastructure = true }
+        if (rendered.image != null) captures.putIfAbsent(rendered.name, rendered.image)
+        if (varies) synchronized(captures) { unstable = true }
+        if (result.outcome !is Outcome.Passed) synchronized(captures) { failed = true }
+        kotlinx.serialization.json.buildJsonObject {
+          put("name", kotlinx.serialization.json.JsonPrimitive(rendered.name))
+          put("daemon", kotlinx.serialization.json.JsonPrimitive(daemon))
+          put("repetition", kotlinx.serialization.json.JsonPrimitive(repetition))
+          put("elapsedMillis", kotlinx.serialization.json.JsonPrimitive((System.nanoTime() - profileStarted) / 1_000_000))
+          put("unstable", kotlinx.serialization.json.JsonPrimitive(varies))
+          put("outcome", kotlinx.serialization.json.JsonPrimitive(result.outcome.toString()))
+          put("image", kotlinx.serialization.json.JsonPrimitive(rendered.image?.absolutePath))
+        }
+      }
+      } catch (failure: Exception) {
+        if (failure is kotlinx.coroutines.CancellationException || failure is InterruptedException) throw failure
+        infrastructure = true
+        profiles += kotlinx.serialization.json.buildJsonObject {
+          put("daemon", kotlinx.serialization.json.JsonPrimitive(daemon))
+          put("repetition", kotlinx.serialization.json.JsonPrimitive(repetition))
+          put("elapsedMillis", kotlinx.serialization.json.JsonPrimitive((System.nanoTime() - profileStarted) / 1_000_000))
+          put("error", kotlinx.serialization.json.JsonPrimitive(DiagnosticText.redact(failure.message ?: "Infrastructure failure")))
+        }
+        emptyList()
+      }
+      val names = outcomes.map { it.first.name }.toSet()
+      if (baselineNames == null) baselineNames = names else if (names != baselineNames) unstable = true
+      profiles += outcomes.map { it.second }
+    }
+    val classification = if (infrastructure) "infrastructure-failure" else if (unstable) "unstable" else if (failed) "stable-difference" else "stable-match"
+    val document = kotlinx.serialization.json.buildJsonObject {
+      put("classification", kotlinx.serialization.json.JsonPrimitive(classification))
+      put("attempts", kotlinx.serialization.json.JsonArray(profiles))
+    }
+    outputs.forEach { output ->
+      File(output, "diagnostics.json").apply { parentFile.mkdirs(); writeText(document.toString()) }
+      Report.write(output, listOf(VerifyResult("medusa.diagnose", null, if (!failed && !unstable && !infrastructure) Outcome.Passed else Outcome.Failed(classification, null, null))), emptyList(), metadata + ("diagnosticClassification" to classification))
+    }
+    config.notice("Medusa diagnosis: $classification; artifacts in ${config.outputDir}/diagnostics/$runId")
+    !failed && !unstable && !infrastructure
   }
 
   private fun unlocatedMessage(preview: PreviewInfo) =

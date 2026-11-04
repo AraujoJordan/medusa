@@ -1,0 +1,32 @@
+{
+  "version": "0.3.0",
+  "repository": "mavenLocal",
+  "results": [
+    {
+      "step": "record",
+      "exit": 0,
+      "seconds": 27.52497637498891,
+      "configuration_cache_reused": false
+    },
+    {
+      "step": "verify-1",
+      "exit": 0,
+      "seconds": 7.016291125008138,
+      "configuration_cache_reused": false,
+      "tests": 22
+    },
+    {
+      "step": "verify-2",
+      "exit": 0,
+      "seconds": 6.196392500016373,
+      "configuration_cache_reused": true,
+      "tests": 22
+    },
+    {
+      "step": "diagnose",
+      "exit": 0,
+      "seconds": 40.36675941597787,
+      "configuration_cache_reused": false
+    }
+  ]
+}

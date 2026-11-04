@@ -173,7 +173,7 @@ class ExternalComparersTest {
       done
       """.trimIndent(),
     )
-    odiff(binary = broken).use { c ->
+    odiff(binary = broken, parallelism = 1).use { c ->
       repeat(2) {
         val e = assertFailsWith<MedusaException> { c.compare(image(), image()) }
         assertTrue("boom" in e.message!!, e.message)
@@ -314,4 +314,12 @@ class ExternalComparersTest {
     assertTrue("brew install zzz" in e.message!!, e.message)
     assertNotNull(e)
   }
+  @Test fun `a server that never greets times out and leaves the pool usable`() {
+    val binary = script("silent-server", "sleep 30")
+    OdiffImageComparer(binary, 0.1, false, emptyList(), 0.01, File(dir, "silent-work"),
+      parallelism = 1, timeoutSeconds = 1).use { comparer ->
+      repeat(2) { assertFailsWith<MedusaException> { comparer.compare(image(), image()) } }
+    }
+  }
+
 }

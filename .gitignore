@@ -23,3 +23,8 @@ benchmark/corpus/
 
 __pycache__/
 *.pyc
+
+# Interrupted golden transactions must be recovered, never committed.
+.medusa-journal
+.medusa-transaction-*/
+.medusa-*.tmp

@@ -78,6 +78,7 @@ class MedusaMultiModuleFunctionalTest {
   private fun writeCli() {
     val script = """
       #!/bin/bash
+      if [ "§1" = -V ] || [ "§2" = -V ]; then echo "fake-cli 1.0"; exit 0; fi
       here="§(cd "§(dirname "§0")" && pwd)"
       echo "§*" >> "§here/calls.log"
       ref="§{@: -1}"

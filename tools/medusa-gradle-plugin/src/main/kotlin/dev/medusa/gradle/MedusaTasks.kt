@@ -47,6 +47,8 @@ abstract class MedusaTask : DefaultTask() {
 
   @get:Internal abstract val includeDependentModules: Property<Boolean>
 
+  @get:Internal abstract val reliability: Property<dev.medusa.core.ReliabilityOptions>
+
   @get:Internal abstract val useDaemon: Property<Boolean>
 
   @get:Internal abstract val renderParallelism: Property<Int>
@@ -74,10 +76,14 @@ abstract class MedusaTask : DefaultTask() {
       daemon = useDaemon.getOrElse(true),
       componentTree = accessibility,
       log = { logger.info(it) },
+      reliability = reliability.get(), notice = { logger.lifecycle(it) },
     )
     return MedusaRunner(
       MedusaConfig(
         backend = backend,
+        reliability = reliability.get(),
+        environment = mapOf("androidCliVersion" to dev.medusa.core.ToolIdentity.version(cli, "-V"), "module" to moduleRef.get(), "daemon" to useDaemon.getOrElse(true).toString(),
+          "comparer" to comparerSpec.get().toString(), "java" to System.getProperty("java.version")),
         sourceRoots = sourceRoots.files.toList(),
         outputDir = medusaOutputDir.get().asFile,
         comparer = comparer,
@@ -100,7 +106,7 @@ abstract class MedusaTask : DefaultTask() {
       // Closing stops the `odiff --server` processes, if that is what compares.
       val parallelism = compareParallelism.getOrElse(Runtime.getRuntime().availableProcessors())
       dev.medusa.core.compare.DeferredImageComparer {
-        ImageComparers.create(spec, File(medusaOutputDir.get().asFile, "compare"), parallelism, notice = { logger.lifecycle(it) })
+        ImageComparers.create(spec, File(medusaOutputDir.get().asFile, "compare/${java.util.UUID.randomUUID()}"), parallelism, notice = { logger.lifecycle(it) })
       }.use {
         run(newRunner(it))
       }
@@ -209,3 +215,10 @@ internal fun MedusaTask.record(runner: MedusaRunner, clean: Boolean = false) {
 }
 
 internal fun validateComparer(spec: ComparerSpec) = ImageComparers.validate(spec)
+
+abstract class MedusaDiagnoseTask : MedusaTask() {
+  init { description = "Repeat previews with warm and fresh renderers, retaining instability evidence without changing goldens." }
+  override fun run(runner: MedusaRunner) {
+    if (!runner.diagnose()) throw GradleException("Medusa diagnosis found unstable screenshots, differences or infrastructure failures; see diagnostics.json")
+  }
+}

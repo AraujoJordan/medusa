@@ -16,6 +16,7 @@ import org.gradle.api.tasks.options.Option
 internal data class ModuleSettings(
   val cli: String?, val comparer: ComparerSpec, val daemon: Boolean,
   val renders: Int, val compares: Int, val accessibility: Boolean,
+  val reliability: ReliabilityOptions = ReliabilityOptions(),
 ) : Serializable
 
 internal data class GroupModule(
@@ -42,13 +43,17 @@ abstract class MedusaAggregateTask : DefaultTask() {
       File(workingDirectory.get()), module.path, AndroidCliLocator.locate(explicit = module.settings.cli),
       includeDependentModules = all, daemon = module.settings.daemon,
       componentTree = module.settings.accessibility, log = { logger.info(it) },
+      reliability = module.settings.reliability, notice = { logger.lifecycle(it) },
     )
     if (modules.size == 1) {
       executeRun(owner, modules, backend(owner, owner.manual), emptyMap())
       return
     }
     val engine = backend(owner, true)
-    val listed = engine.list()
+    val listed = try { engine.list() } catch (failure: Exception) {
+      modules.forEach { Report.write(File(it.output), listOf(VerifyResult("medusa.discovery", null, Outcome.Failed(failure.message ?: "Discovery failed", null, null))), emptyList()) }
+      throw failure
+    }
     val indexes = universe.get().associate { it.path to SourceLocator.Index(it.sources.map(::File)) }
     val allowed = modules.map { it.path }.toSet()
     val selected = mutableListOf<PreviewInfo>()
@@ -63,28 +68,34 @@ abstract class MedusaAggregateTask : DefaultTask() {
       modules.forEach { executeRun(it, listOf(it), backend(it, it.manual), emptyMap()) }
       return
     }
-    val selectedBackend = object : PreviewBackend {
+    fun selectedEngine(renderer: PreviewBackend): PreviewBackend = object : PreviewBackend {
+      override fun withDaemon(enabled: Boolean) = selectedEngine(engine.withDaemon(enabled))
+      override val events get() = renderer.events
       override fun list() = listed.copy(previews = selected)
-      override fun render(fqns: List<String>, outputDir: File) = engine.render(fqns, outputDir)
+      override fun render(fqns: List<String>, outputDir: File) = renderer.render(fqns, outputDir)
     }
     logger.lifecycle("Medusa: ${modules.joinToString { it.path }} rendered through ${owner.path}")
     val outputs = modules.flatMap { module -> module.sources.map { File(it) to File(module.output) } }.toMap()
-    executeRun(owner, modules, selectedBackend, outputs)
+    executeRun(owner, modules, selectedEngine(engine), outputs)
   }
 
   private fun executeRun(owner: GroupModule, modules: List<GroupModule>, backend: PreviewBackend, outputs: Map<File, File>) {
     val settings = owner.settings
     DeferredImageComparer {
-      ImageComparers.create(settings.comparer, File(owner.output, "compare"), settings.compares, notice = { logger.lifecycle(it) })
+      ImageComparers.create(settings.comparer, File(owner.output, "compare/${java.util.UUID.randomUUID()}"), settings.compares, notice = { logger.lifecycle(it) })
     }.use { comparer ->
       val runner = MedusaRunner(MedusaConfig(
         backend, modules.flatMap { it.sources }.distinct().map(::File), File(owner.output),
+        reliability = settings.reliability,
+        environment = mapOf("androidCliVersion" to ToolIdentity.version(AndroidCliLocator.locate(explicit = settings.cli), "-V"), "host" to owner.path, "modules" to modules.joinToString { it.path },
+          "daemon" to settings.daemon.toString(), "comparer" to settings.comparer.toString(), "java" to System.getProperty("java.version")),
         comparer = comparer, filter = PreviewFilter(previewFilter.getOrElse(emptyList())),
         renderParallelism = settings.renders, compareParallelism = settings.compares,
         accessibility = settings.accessibility, failOnNoMatch = false,
         outputBySourceRoot = outputs, log = { logger.info(it) }, notice = { logger.lifecycle(it) },
       ))
       when (operation.get()) {
+        "Diagnose" -> if (!runner.diagnose()) throw GradleException("Medusa diagnosis found differences or instability; see diagnostics.json")
         "List" -> {
           val discovered = runner.discover()
           discovered.snapshots.forEach { logger.lifecycle("${it.preview.methodFqn}: ${it.goldenFile(0)}") }

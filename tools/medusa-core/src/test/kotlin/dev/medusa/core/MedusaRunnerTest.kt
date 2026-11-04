@@ -235,7 +235,7 @@ class MedusaRunnerTest {
     val record = runner().record()
     assertFalse(record.ok)
     assertTrue("boom" in record.errors.single())
-    assertTrue(golden("Button_PrimaryPreview.png").isFile)
+    assertFalse(golden("Button_PrimaryPreview.png").isFile, "a failed batch must not commit partial goldens")
 
     val verify = runner().verify()
     assertEquals(1, verify.failures.filter { it.outcome is Outcome.Failed }.size)
@@ -408,7 +408,7 @@ class MedusaRunnerTest {
     assertEquals("dev.app.ButtonKt.PrimaryPreview", failure.name)
     val outcome = assertIs<Outcome.Failed>(failure.outcome)
     assertTrue("accessibility tree changed" in outcome.message && "Renamed" in outcome.message, outcome.message)
-    assertTrue(File(out, "failures/dev.app.ButtonKt.PrimaryPreview.semantics.actual.txt").isFile)
+    assertTrue(File(out, "failures").walkTopDown().any { it.name == "dev.app.ButtonKt.PrimaryPreview.semantics.actual.txt" })
   }
 
   @Test
@@ -480,10 +480,10 @@ class MedusaRunnerTest {
 
     // The failure artifact is written by the comparer, so it can only exist while the render is
     // still paused if the comparison ran concurrently with rendering.
-    val delta = File(out, "failures/delta-dev.app.ButtonKt.PrimaryPreview.png")
+    fun deltaExists() = File(out, "failures").walkTopDown().any { it.name == "delta-dev.app.ButtonKt.PrimaryPreview.png" }
     val deadline = System.currentTimeMillis() + 10_000
-    while (System.currentTimeMillis() < deadline && !delta.isFile) Thread.sleep(10)
-    val comparedWhileRendering = delta.isFile && worker.isAlive
+    while (System.currentTimeMillis() < deadline && !deltaExists()) Thread.sleep(10)
+    val comparedWhileRendering = deltaExists() && worker.isAlive
     backend.gate.complete(Unit)
     worker.join(10_000)
 
@@ -493,17 +493,17 @@ class MedusaRunnerTest {
   }
 
   @Test
-  fun `record writes a golden before the renderer has finished`() {
+  fun `record does not change goldens before the renderer has finished`() {
     backend.gateAfter = 1
     val worker = thread { runner().record() }
 
-    val deadline = System.currentTimeMillis() + 10_000
+    val deadline = System.currentTimeMillis() + 500
     while (System.currentTimeMillis() < deadline && allGoldens.none { golden(it).isFile }) Thread.sleep(10)
     val existedWhileRendering = allGoldens.count { golden(it).isFile }
     backend.gate.complete(Unit)
     worker.join(10_000)
 
-    assertEquals(1, existedWhileRendering, "exactly the first image is recorded while the render is paused")
+    assertEquals(0, existedWhileRendering, "goldens must remain untouched while rendering is paused")
     assertEquals(6, allGoldens.count { golden(it).isFile })
   }
 

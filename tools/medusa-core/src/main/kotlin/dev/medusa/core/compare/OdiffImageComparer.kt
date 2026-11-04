@@ -2,6 +2,7 @@ package dev.medusa.core.compare
 
 import dev.medusa.core.Comparison
 import dev.medusa.core.MedusaException
+import dev.medusa.core.ProcessSupervisor
 import dev.medusa.core.setup.OdiffInstaller
 import java.io.BufferedReader
 import java.io.BufferedWriter
@@ -38,17 +39,22 @@ class OdiffImageComparer(
   private val workDir: File,
   private val parallelism: Int = Runtime.getRuntime().availableProcessors(),
   private val useServer: Boolean = true,
+  private val timeoutSeconds: Long = 60,
 ) : ImageComparer {
   private val regions = ignoreRegions.map(Region::parse)
   private val counter = AtomicLong()
   private val idle = LinkedBlockingQueue<Server>()
   private val all = java.util.Collections.synchronizedList(mutableListOf<Server>())
-  private val lock = Any()
+  private val closed = java.util.concurrent.atomic.AtomicBoolean()
+  private val permits = java.util.concurrent.Semaphore(maxOf(1, parallelism), true)
 
   init {
     require(threshold in 0.0..1.0) { "odiff threshold must be between 0 and 1, was $threshold" }
     workDir.mkdirs()
   }
+
+  override val environment: Map<String, String> get() = mapOf("effectiveComparer" to javaClass.simpleName,
+    "comparerBinary" to binary.canonicalPath, "comparerVersion" to dev.medusa.core.ToolIdentity.version(binary))
 
   override fun compare(golden: File, actual: File): Comparison {
     DeltaImage.sizeChange(golden, actual)?.let { return it }
@@ -74,7 +80,10 @@ class OdiffImageComparer(
   }
 
   override fun close() {
-    synchronized(lock) { all.forEach { it.stop() }; all.clear(); idle.clear() }
+    closed.set(true)
+    val servers = synchronized(all) { all.toList().also { all.clear() } }
+    idle.clear()
+    servers.forEach { it.stop() }
   }
 
   private class Result(val count: Long, val layout: Boolean = false)
@@ -89,10 +98,14 @@ class OdiffImageComparer(
       if (regions.isNotEmpty()) { add("-i"); add(regions.joinToString(",")) }
     }
     val process = ProcessBuilder(cmd).redirectErrorStream(true).start()
-    val output = process.inputStream.bufferedReader().readText().trim()
-    if (!process.waitFor(60, TimeUnit.SECONDS)) {
+    val output = ProcessSupervisor.bounded(process, timeoutSeconds) {
+      val text = process.inputStream.bufferedReader().readText()
+      process.waitFor()
+      text
+    }.trim()
+    if (!process.waitFor(timeoutSeconds, TimeUnit.SECONDS)) {
       process.destroyForcibly()
-      throw MedusaException("odiff did not finish within 60 s for ${golden.name}")
+      throw MedusaException("odiff did not finish within $timeoutSeconds s for ${golden.name}")
     }
     // Exit codes: 0 match, 21 layout, 22 pixel difference. Anything else is an error, whose text is the output.
     return when {
@@ -106,33 +119,42 @@ class OdiffImageComparer(
   // ------------------------------------------------------------------ server pool
 
   private fun viaServer(golden: File, actual: File, diff: File): Result {
-    var lastError: Exception? = null
-    repeat(2) {
-      val server = borrow()
-      try {
-        val result = server.request(golden, actual, diff)
-        idle.put(server)
-        return result
-      } catch (e: java.io.IOException) {
-        // The server died or answered garbage: drop it and try once more with a fresh one.
-        server.stop()
-        synchronized(lock) { all.remove(server) }
-        lastError = e
+    val deadline = System.nanoTime() + TimeUnit.SECONDS.toNanos(timeoutSeconds)
+    fun remaining(): Long {
+      val nanos = deadline - System.nanoTime()
+      if (nanos <= 0) throw MedusaException("odiff comparison exceeded $timeoutSeconds seconds")
+      return maxOf(1L, TimeUnit.NANOSECONDS.toSeconds(nanos) + if (nanos % 1_000_000_000 != 0L) 1 else 0)
+    }
+    if (closed.get()) throw MedusaException("odiff comparer is closed")
+    if (!permits.tryAcquire(timeoutSeconds, TimeUnit.SECONDS)) throw MedusaException("Timed out waiting for an odiff server")
+    try {
+      if (closed.get()) throw MedusaException("odiff comparer is closed")
+      var lastError: Exception? = null
+      repeat(2) {
+        val server = idle.poll() ?: Server(remaining()).also { server ->
+          synchronized(all) {
+            if (closed.get()) { server.stop(); throw MedusaException("odiff comparer is closed") }
+            all += server
+          }
+        }
+        try {
+          val result = ProcessSupervisor.bounded(server.process, remaining()) { server.request(golden, actual, diff) }
+          if (closed.get()) throw MedusaException("odiff comparer is closed")
+          idle.put(server)
+          return result
+        } catch (failure: Exception) {
+          server.stop()
+          all.remove(server)
+          if (failure !is java.io.IOException) throw failure
+          lastError = failure
+        }
       }
-    }
-    throw MedusaException("odiff --server failed twice for ${golden.name}: ${lastError?.message}", lastError)
+      throw MedusaException("odiff --server failed twice for ${golden.name}: ${lastError?.message}", lastError)
+    } finally { permits.release() }
   }
 
-  private fun borrow(): Server {
-    idle.poll()?.let { return it }
-    synchronized(lock) {
-      if (all.size < maxOf(1, parallelism)) return Server().also { all += it }
-    }
-    return idle.take()
-  }
-
-  private inner class Server {
-    private val process: Process = ProcessBuilder(binary.path, "--server")
+  private inner class Server(startupSeconds: Long) {
+    val process: Process = ProcessBuilder(binary.path, "--server")
       .redirectError(ProcessBuilder.Redirect.DISCARD)
       .start()
     private val writer: BufferedWriter = process.outputStream.bufferedWriter()
@@ -140,8 +162,10 @@ class OdiffImageComparer(
     private var next = 0
 
     init {
-      val ready = reader.readLine() ?: throw java.io.IOException("odiff --server exited before it was ready")
-      if ("\"ready\"" !in ready) throw java.io.IOException("unexpected odiff --server greeting: $ready")
+      try {
+        val ready = ProcessSupervisor.bounded(process, startupSeconds) { reader.readLine() } ?: throw java.io.IOException("odiff --server exited before it was ready")
+        if ("\"ready\"" !in ready) throw java.io.IOException("unexpected odiff --server greeting: $ready")
+      } catch (failure: Exception) { ProcessSupervisor.stop(process); throw failure }
     }
 
     fun request(golden: File, actual: File, diff: File): Result {
@@ -191,8 +215,8 @@ class OdiffImageComparer(
     }
 
     fun stop() {
+      ProcessSupervisor.stop(process)
       runCatching { writer.close() }
-      process.destroy()
       if (!process.waitFor(2, TimeUnit.SECONDS)) process.destroyForcibly()
     }
   }

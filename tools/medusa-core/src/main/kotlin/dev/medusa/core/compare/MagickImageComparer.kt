@@ -2,6 +2,7 @@ package dev.medusa.core.compare
 
 import dev.medusa.core.Comparison
 import dev.medusa.core.MedusaException
+import dev.medusa.core.ProcessSupervisor
 import java.io.File
 import java.util.concurrent.TimeUnit
 import java.util.concurrent.atomic.AtomicLong
@@ -25,6 +26,7 @@ class MagickImageComparer(
   private val minPsnr: Double,
   private val maxPercentDifference: Double,
   private val workDir: File,
+  private val timeoutSeconds: Long = 60,
 ) : ImageComparer {
   private val metric = metric.uppercase()
   private val counter = AtomicLong()
@@ -35,6 +37,9 @@ class MagickImageComparer(
     }
     workDir.mkdirs()
   }
+
+  override val environment: Map<String, String> get() = mapOf("effectiveComparer" to javaClass.simpleName,
+    "comparerBinary" to binary.canonicalPath, "comparerVersion" to dev.medusa.core.ToolIdentity.version(binary))
 
   override fun compare(golden: File, actual: File): Comparison {
     DeltaImage.sizeChange(golden, actual)?.let { return it }
@@ -79,10 +84,14 @@ class MagickImageComparer(
       add(golden.path); add(actual.path); add(diff.path)
     }
     val process = ProcessBuilder(cmd).redirectErrorStream(true).start() // the value is printed on stderr
-    val output = process.inputStream.bufferedReader().readText()
-    if (!process.waitFor(60, TimeUnit.SECONDS)) {
+    val output = ProcessSupervisor.bounded(process, timeoutSeconds) {
+      val text = process.inputStream.bufferedReader().readText()
+      process.waitFor()
+      text
+    }
+    if (!process.waitFor(timeoutSeconds, TimeUnit.SECONDS)) {
       process.destroyForcibly()
-      throw MedusaException("magick did not finish within 60 s for ${golden.name}")
+      throw MedusaException("magick did not finish within $timeoutSeconds s for ${golden.name}")
     }
     return output
   }

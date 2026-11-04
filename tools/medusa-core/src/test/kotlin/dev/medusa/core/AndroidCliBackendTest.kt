@@ -172,7 +172,7 @@ class AndroidCliBackendTest {
     val cli = script(
       """
       echo "${'$'}*" > "${'$'}here/args"
-      printf '%s\n' '{' '  "success": true,' '  "results": [' '    { "previewId": "x", "methodFqn": "x", "error": { "message": "m" } }' '  ]' '}'
+      printf '%s\n' '{' '  "success": true,' '  "results": [' '    { "previewId": "x", "methodFqn": "$fqnA", "error": { "message": "m" } }' '  ]' '}'
       """.trimIndent(),
     )
 
@@ -233,6 +233,25 @@ class AndroidCliBackendTest {
     val results = runBlocking { AndroidCliBackend(dir, "sample", cli, daemon = true).render(listOf(fqnA), out).toList() }
     assertEquals(2, File(dir, "calls").readLines().size)
     assertEquals("VALIDATION_ERROR", results.single().error?.status)
+  }
+
+  @Test fun `discovery deadline captures and redacts stderr`() {
+    val cli = script("echo 'token=supersecret' >&2; sleep 30")
+    val failure = assertFailsWith<MedusaException> {
+      AndroidCliBackend(dir, "sample", cli, reliability = ReliabilityOptions(discoveryTimeoutSeconds = 1)).list()
+    }
+    assertTrue("REDACTED" in failure.message.orEmpty())
+    assertFalse("supersecret" in failure.message.orEmpty())
+  }
+
+  @Test fun `a streamed image absent from the final manifest fails`() {
+    val cli = script("""
+      mkdir -p "$out/dev/app/ButtonKt"
+      cp "§here/img.png" "$out/dev/app/ButtonKt/APreview_0.png"
+      sleep 0.1
+      printf '%s\n' '{' '"success":true,"results":[]}'
+    """.trimIndent().replace('§', '$'))
+    assertFailsWith<MedusaException> { runBlocking { backend(cli).render(listOf(fqnA), out).toList() } }
   }
 
 }
