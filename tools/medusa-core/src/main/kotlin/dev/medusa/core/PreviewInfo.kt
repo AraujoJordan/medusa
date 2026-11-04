@@ -41,7 +41,7 @@ data class RenderedPreview(
   val index: Int? get() = imagePath?.let { IMAGE_INDEX.find(it)?.groupValues?.get(1)?.toInt() }
 
   private companion object {
-    val IMAGE_INDEX = Regex("""_(\d+)\.png$""")
+    val IMAGE_INDEX = Regex("""_(-?\d+)\.png$""")
   }
 }
 

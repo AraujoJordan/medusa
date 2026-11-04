@@ -14,9 +14,10 @@ internal object RunLocks {
   private val locks = ConcurrentHashMap<String, ReentrantLock>()
   private val directory = File(System.getProperty("user.home"), ".medusa/locks")
   private class Retry(val extra: List<File>) : RuntimeException()
-  fun <T> withLocks(paths: Collection<File>, block: () -> T): T = try { locked(paths, block) }
-    catch (retry: Retry) { withLocks(paths + retry.extra, block) }
-  private fun <T> locked(paths: Collection<File>, block: () -> T): T {
+  fun <T> withLocks(paths: Collection<File>, onLocked: () -> Unit = {}, onRecoveryFailure: (Throwable) -> Unit = {}, block: () -> T): T =
+    try { locked(paths, onLocked, onRecoveryFailure, block) }
+    catch (retry: Retry) { withLocks(paths + retry.extra, onLocked, onRecoveryFailure, block) }
+  private fun <T> locked(paths: Collection<File>, onLocked: () -> Unit, onRecoveryFailure: (Throwable) -> Unit, block: () -> T): T {
     val requested = paths.map { it.canonicalFile }.toMutableSet()
     // Interrupted multi-directory commits must be recovered under all their original locks.
     while (true) {
@@ -39,7 +40,9 @@ internal object RunLocks {
       }
       val expanded = requested.flatMap { GoldenTransaction.related(it) }.filter { it !in requested }
       if (expanded.isNotEmpty()) throw Retry(expanded)
-      requested.forEach { GoldenTransaction.recover(it) }
+      onLocked()
+      try { requested.forEach { GoldenTransaction.recover(it) } }
+      catch (failure: Throwable) { onRecoveryFailure(failure); throw failure }
       return block()
     } finally { held.asReversed().forEach { runCatching { it.close() } } }
   }
@@ -50,10 +53,10 @@ internal object GoldenTransaction {
   private const val MARKER = ".medusa-journal"
   private fun manifest(directory: File): File? = File(directory, MARKER).takeIf { it.isFile }?.readText()?.let(::File)
   private fun load(file: File) = Properties().apply { file.inputStream().use { load(it) } }
-  fun related(directory: File): List<File> = manifest(directory)?.let { journal ->
+  fun related(directory: File): List<File> = runCatching { manifest(directory)?.let { journal ->
     val properties = load(journal)
     (0 until properties.getProperty("count").toInt()).map { File(properties.getProperty("target.$it")).parentFile.canonicalFile }
-  }.orEmpty()
+  }.orEmpty() }.getOrDefault(emptyList())
   fun recover(directory: File) { manifest(directory)?.let { finish(it, rollback = true) } }
   private fun replace(source: File, target: File) {
     Files.move(source.toPath(), target.toPath(), ATOMIC_MOVE, REPLACE_EXISTING)

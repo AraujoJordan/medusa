@@ -102,7 +102,7 @@ class MedusaRunner(private val config: MedusaConfig) {
     val directories = config.sourceRoots.filter { it.exists() }.flatMap { root ->
       root.walkTopDown().filter { (it.isFile && it.extension == "kt") || (it.isDirectory && File(it, ".medusa-journal").exists()) }.map { if (it.isFile) it.parentFile else it }.toList() + root
     }
-    return RunLocks.withLocks(directories + outputs) {
+    return RunLocks.withLocks(directories + outputs, onLocked = {
       this.operation = operation
       runId = java.util.UUID.randomUUID().toString()
       attempt = 0
@@ -112,6 +112,11 @@ class MedusaRunner(private val config: MedusaConfig) {
       pendingSnapshots = emptyList()
       outputs.forEach { Report.write(it, listOf(VerifyResult("medusa.$operation", null,
         Outcome.Failed("Run $runId is in progress; previous results are obsolete", null, null))), emptyList(), metadata + ("status" to "running")) }
+    }, onRecoveryFailure = { failure ->
+      outputs.forEach { output -> runCatching { Report.write(output, listOf(VerifyResult("medusa.recovery", null,
+        Outcome.Failed(DiagnosticText.redact(failure.message ?: "Golden recovery failed"), null, null), infrastructure = true)), emptyList(), metadata + ("status" to "failed")) }
+        .exceptionOrNull()?.let { failure.addSuppressed(it) } }
+    }) {
       try { block() } catch (failure: Throwable) {
         val results = completed.map { it.second }.toMutableList()
         val finished = results.map { it.name }.toSet()

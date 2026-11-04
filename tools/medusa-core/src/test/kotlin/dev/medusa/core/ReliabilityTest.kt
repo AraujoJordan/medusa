@@ -74,6 +74,8 @@ class ReliabilityTest {
     assertFalse(runner().verify().ok)
     indices = listOf(0, 0)
     assertFalse(runner().record().ok)
+    indices = listOf(-1)
+    assertFalse(runner().record().ok)
     for ((name, bytes) in before) assertEquals(bytes, File(source.parentFile, name).readBytes().toList())
   }
   @Test fun `diagnosis detects unstable renders without changing goldens`() {
@@ -159,6 +161,15 @@ class ReliabilityTest {
     assertFailsWith<MedusaException> {
       dev.medusa.core.compare.ImageComparers.resolveOdiff(spec, "", {}, systemDirs = emptyList())
     }
+  }
+
+  @Test fun `recovery failure invalidates a previous passing report`() {
+    runner().record(); assertTrue(runner().verify().ok)
+    val broken = File(source.parentFile, "broken-manifest").apply { writeText("not a journal") }
+    File(source.parentFile, ".medusa-journal").writeText(broken.path)
+    assertFailsWith<Exception> { runner().verify() }
+    assertTrue(File(output, "results.json").readText().contains("medusa.recovery"))
+    assertTrue(File(output, "test-results/medusa.xml").readText().contains("failures=\"1\""))
   }
 
   @Test fun `golden locks also serialize a separate JVM`() {
