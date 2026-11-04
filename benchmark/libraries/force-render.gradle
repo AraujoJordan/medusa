@@ -1,0 +1,8 @@
+// Benchmark policy: preserve compiled outputs, but never time a cached screenshot verdict.
+allprojects {
+    tasks.configureEach { task ->
+        if (task instanceof Test || task.name.endsWith('TestSuite') || task.name == 'connectedDebugAndroidTest') {
+            task.outputs.upToDateWhen { false }
+        }
+    }
+}

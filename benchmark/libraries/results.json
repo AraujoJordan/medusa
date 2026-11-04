@@ -1,0 +1,4510 @@
+{
+  "environment": {
+    "machine": "Apple M1 Max",
+    "memory_bytes": 68719476736,
+    "os": "macOS-27.0.1-arm64-arm-64bit-Mach-O",
+    "cores": 10,
+    "jdk": "JetBrains 21.0.10",
+    "android_cli": "1.1.16717390",
+    "compose_bom": "2026.03.01",
+    "robolectric": "4.14.1",
+    "robolectric_api": 35,
+    "emulator": {
+      "api": 35,
+      "abi": "arm64-v8a",
+      "gpu": "swiftshader_indirect",
+      "screen_pixels": [
+        320,
+        720
+      ],
+      "density_dpi": 160,
+      "boot_included": false
+    },
+    "image_pixels": [
+      320,
+      640
+    ],
+    "gradle": {
+      "medusa": "9.1.0",
+      "paparazzi": "9.1.0",
+      "roborazzi": "9.1.0",
+      "google": "9.6.0",
+      "dropshots": "9.1.0",
+      "shot": "8.13"
+    },
+    "agp": {
+      "medusa": "9.0.1",
+      "paparazzi": "9.0.1",
+      "roborazzi": "9.0.1",
+      "google": "9.5.0-alpha03",
+      "dropshots": "9.0.1",
+      "shot": "8.13.2"
+    },
+    "host_gradle_parallel": true,
+    "host_max_workers": 3,
+    "device_gradle_parallel": false,
+    "base_commit": "88f61a3d60e1c41cd028d86d9c3ee9fac0e5c8ac",
+    "corpus_sha256": "730087dc825aa6f99e4303a25a069234b17138280a24b249d4a75f9a2e0b9e54"
+  },
+  "versions": {
+    "medusa": "0.2.0",
+    "paparazzi": "2.0.0-alpha05.1",
+    "roborazzi": "1.77.0",
+    "google": "0.0.1-alpha16",
+    "shot": "6.1.0",
+    "dropshots": "0.6.0"
+  },
+  "summary": [
+    {
+      "tool": "medusa",
+      "topology": "single",
+      "scenario": "record",
+      "median_seconds": 6.500334667012794,
+      "min_seconds": 6.47506841699942,
+      "max_seconds": 6.508936833997723
+    },
+    {
+      "tool": "medusa",
+      "topology": "single",
+      "scenario": "verify",
+      "median_seconds": 12.535388417018112,
+      "min_seconds": 12.53229645799729,
+      "max_seconds": 12.685643375007203
+    },
+    {
+      "tool": "medusa",
+      "topology": "multi",
+      "scenario": "record",
+      "median_seconds": 6.1745574999949895,
+      "min_seconds": 6.168620457989164,
+      "max_seconds": 7.250986334023764
+    },
+    {
+      "tool": "medusa",
+      "topology": "multi",
+      "scenario": "verify",
+      "median_seconds": 6.913088541012257,
+      "min_seconds": 6.796128374990076,
+      "max_seconds": 14.198178542021196
+    },
+    {
+      "tool": "paparazzi",
+      "topology": "single",
+      "scenario": "record",
+      "median_seconds": 7.648387916997308,
+      "min_seconds": 7.588617915986106,
+      "max_seconds": 7.919456541974796
+    },
+    {
+      "tool": "paparazzi",
+      "topology": "single",
+      "scenario": "verify",
+      "median_seconds": 8.259918208001181,
+      "min_seconds": 8.11113012500573,
+      "max_seconds": 8.276894124981482
+    },
+    {
+      "tool": "paparazzi",
+      "topology": "multi",
+      "scenario": "record",
+      "median_seconds": 10.269554625003366,
+      "min_seconds": 10.2679041250085,
+      "max_seconds": 10.418629374995362
+    },
+    {
+      "tool": "paparazzi",
+      "topology": "multi",
+      "scenario": "verify",
+      "median_seconds": 10.276991958002327,
+      "min_seconds": 9.688711541995872,
+      "max_seconds": 10.406569625018165
+    },
+    {
+      "tool": "roborazzi",
+      "topology": "single",
+      "scenario": "record",
+      "median_seconds": 9.2032693750225,
+      "min_seconds": 8.957608459022595,
+      "max_seconds": 9.251942750008311
+    },
+    {
+      "tool": "roborazzi",
+      "topology": "single",
+      "scenario": "verify",
+      "median_seconds": 9.50235649998649,
+      "min_seconds": 9.280003208987182,
+      "max_seconds": 10.04872904199874
+    },
+    {
+      "tool": "roborazzi",
+      "topology": "multi",
+      "scenario": "record",
+      "median_seconds": 14.10310529198614,
+      "min_seconds": 13.967313332977938,
+      "max_seconds": 14.184691375005059
+    },
+    {
+      "tool": "roborazzi",
+      "topology": "multi",
+      "scenario": "verify",
+      "median_seconds": 14.459950666991062,
+      "min_seconds": 14.330652790988097,
+      "max_seconds": 14.821288917009952
+    },
+    {
+      "tool": "google",
+      "topology": "single",
+      "scenario": "record",
+      "median_seconds": 6.6539580829849,
+      "min_seconds": 6.62916645797668,
+      "max_seconds": 6.74219654200715
+    },
+    {
+      "tool": "google",
+      "topology": "single",
+      "scenario": "verify",
+      "median_seconds": 6.605903041985584,
+      "min_seconds": 6.596076292014914,
+      "max_seconds": 6.6491000420064665
+    },
+    {
+      "tool": "google",
+      "topology": "multi",
+      "scenario": "record",
+      "median_seconds": 10.543867458996829,
+      "min_seconds": 10.52243075001752,
+      "max_seconds": 10.632286000007298
+    },
+    {
+      "tool": "google",
+      "topology": "multi",
+      "scenario": "verify",
+      "median_seconds": 10.585293000011006,
+      "min_seconds": 10.579686040990055,
+      "max_seconds": 10.598036083974876
+    },
+    {
+      "tool": "shot",
+      "topology": "single",
+      "scenario": "record",
+      "median_seconds": 41.06010241698823,
+      "min_seconds": 39.99574770900654,
+      "max_seconds": 42.04011108301347
+    },
+    {
+      "tool": "shot",
+      "topology": "single",
+      "scenario": "verify",
+      "median_seconds": 41.14544287501485,
+      "min_seconds": 40.68224320799345,
+      "max_seconds": 44.89589854099904
+    },
+    {
+      "tool": "shot",
+      "topology": "multi",
+      "scenario": "record",
+      "median_seconds": 76.88227912498405,
+      "min_seconds": 76.1312947080005,
+      "max_seconds": 80.01694883301388
+    },
+    {
+      "tool": "shot",
+      "topology": "multi",
+      "scenario": "verify",
+      "median_seconds": 78.1143748750037,
+      "min_seconds": 77.4958982920216,
+      "max_seconds": 82.92096037499141
+    },
+    {
+      "tool": "dropshots",
+      "topology": "single",
+      "scenario": "record",
+      "median_seconds": 41.603202375001274,
+      "min_seconds": 41.170495124999434,
+      "max_seconds": 41.850221875007264
+    },
+    {
+      "tool": "dropshots",
+      "topology": "single",
+      "scenario": "verify",
+      "median_seconds": 40.949461332987994,
+      "min_seconds": 39.653226416005054,
+      "max_seconds": 41.1273127500026
+    },
+    {
+      "tool": "dropshots",
+      "topology": "multi",
+      "scenario": "record",
+      "median_seconds": 75.3025082910026,
+      "min_seconds": 74.64406004198827,
+      "max_seconds": 77.92875175000518
+    },
+    {
+      "tool": "dropshots",
+      "topology": "multi",
+      "scenario": "verify",
+      "median_seconds": 75.42220158298733,
+      "min_seconds": 72.36469366698293,
+      "max_seconds": 75.75947383299354
+    }
+  ],
+  "controls": [
+    {
+      "tool": "medusa",
+      "topology": "single",
+      "scenario": "record",
+      "label": "setup-record",
+      "seconds": 56.46812112501357,
+      "exit": 0,
+      "counts": {
+        "tests": 0,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "command": [
+        "./gradlew",
+        "--console=plain",
+        "--no-build-cache",
+        "--init-script",
+        "benchmark/libraries/force-render.gradle",
+        "medusaRecord"
+      ],
+      "golden_dimensions": [
+        [
+          320,
+          640
+        ]
+      ]
+    },
+    {
+      "tool": "medusa",
+      "topology": "single",
+      "scenario": "verify",
+      "label": "setup-verify",
+      "seconds": 10.785391290992266,
+      "exit": 0,
+      "counts": {
+        "tests": 50,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "command": [
+        "./gradlew",
+        "--console=plain",
+        "--no-build-cache",
+        "--init-script",
+        "benchmark/libraries/force-render.gradle",
+        "medusaVerify"
+      ],
+      "golden_dimensions": [
+        [
+          320,
+          640
+        ]
+      ]
+    },
+    {
+      "tool": "medusa",
+      "topology": "single",
+      "scenario": "verify",
+      "label": "mutation-control",
+      "seconds": 11.135964458982926,
+      "exit": 1,
+      "counts": {
+        "tests": 50,
+        "failures": 1,
+        "errors": 0,
+        "skipped": 0
+      },
+      "command": [
+        "./gradlew",
+        "--console=plain",
+        "--no-build-cache",
+        "--init-script",
+        "benchmark/libraries/force-render.gradle",
+        "medusaVerify"
+      ]
+    },
+    {
+      "tool": "medusa",
+      "topology": "single",
+      "scenario": "verify",
+      "label": "restored-verify",
+      "seconds": 9.678972499998054,
+      "exit": 0,
+      "counts": {
+        "tests": 50,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "command": [
+        "./gradlew",
+        "--console=plain",
+        "--no-build-cache",
+        "--init-script",
+        "benchmark/libraries/force-render.gradle",
+        "medusaVerify"
+      ],
+      "golden_dimensions": [
+        [
+          320,
+          640
+        ]
+      ]
+    },
+    {
+      "tool": "medusa",
+      "topology": "multi",
+      "scenario": "record",
+      "label": "setup-record",
+      "seconds": 14.712000166007783,
+      "exit": 0,
+      "counts": {
+        "tests": 0,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "command": [
+        "./gradlew",
+        "--console=plain",
+        "--no-build-cache",
+        "--init-script",
+        "benchmark/libraries/force-render.gradle",
+        "medusaRecord"
+      ],
+      "golden_dimensions": [
+        [
+          320,
+          640
+        ]
+      ]
+    },
+    {
+      "tool": "medusa",
+      "topology": "multi",
+      "scenario": "verify",
+      "label": "setup-verify",
+      "seconds": 8.095429083012277,
+      "exit": 0,
+      "counts": {
+        "tests": 50,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "command": [
+        "./gradlew",
+        "--console=plain",
+        "--no-build-cache",
+        "--init-script",
+        "benchmark/libraries/force-render.gradle",
+        "medusaVerify"
+      ],
+      "golden_dimensions": [
+        [
+          320,
+          640
+        ]
+      ]
+    },
+    {
+      "tool": "medusa",
+      "topology": "multi",
+      "scenario": "verify",
+      "label": "mutation-control",
+      "seconds": 9.108296874997905,
+      "exit": 1,
+      "counts": {
+        "tests": 50,
+        "failures": 1,
+        "errors": 0,
+        "skipped": 0
+      },
+      "command": [
+        "./gradlew",
+        "--console=plain",
+        "--no-build-cache",
+        "--init-script",
+        "benchmark/libraries/force-render.gradle",
+        "medusaVerify"
+      ]
+    },
+    {
+      "tool": "medusa",
+      "topology": "multi",
+      "scenario": "verify",
+      "label": "restored-verify",
+      "seconds": 8.82813129198621,
+      "exit": 0,
+      "counts": {
+        "tests": 50,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "command": [
+        "./gradlew",
+        "--console=plain",
+        "--no-build-cache",
+        "--init-script",
+        "benchmark/libraries/force-render.gradle",
+        "medusaVerify"
+      ],
+      "golden_dimensions": [
+        [
+          320,
+          640
+        ]
+      ]
+    },
+    {
+      "tool": "paparazzi",
+      "topology": "single",
+      "scenario": "record",
+      "label": "setup-record",
+      "seconds": 12.075455624988535,
+      "exit": 0,
+      "counts": {
+        "tests": 50,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "command": [
+        "./gradlew",
+        "--console=plain",
+        "--no-build-cache",
+        "--init-script",
+        "benchmark/libraries/force-render.gradle",
+        "recordPaparazziDebug"
+      ],
+      "golden_dimensions": [
+        [
+          320,
+          640
+        ]
+      ]
+    },
+    {
+      "tool": "paparazzi",
+      "topology": "single",
+      "scenario": "verify",
+      "label": "setup-verify",
+      "seconds": 8.602633208007319,
+      "exit": 0,
+      "counts": {
+        "tests": 50,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "command": [
+        "./gradlew",
+        "--console=plain",
+        "--no-build-cache",
+        "--init-script",
+        "benchmark/libraries/force-render.gradle",
+        "verifyPaparazziDebug"
+      ],
+      "golden_dimensions": [
+        [
+          320,
+          640
+        ]
+      ]
+    },
+    {
+      "tool": "paparazzi",
+      "topology": "single",
+      "scenario": "verify",
+      "label": "mutation-control",
+      "seconds": 9.803202832990792,
+      "exit": 1,
+      "counts": {
+        "tests": 50,
+        "failures": 1,
+        "errors": 0,
+        "skipped": 0
+      },
+      "command": [
+        "./gradlew",
+        "--console=plain",
+        "--no-build-cache",
+        "--init-script",
+        "benchmark/libraries/force-render.gradle",
+        "verifyPaparazziDebug"
+      ]
+    },
+    {
+      "tool": "paparazzi",
+      "topology": "single",
+      "scenario": "verify",
+      "label": "restored-verify",
+      "seconds": 7.220022249995964,
+      "exit": 0,
+      "counts": {
+        "tests": 50,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "command": [
+        "./gradlew",
+        "--console=plain",
+        "--no-build-cache",
+        "--init-script",
+        "benchmark/libraries/force-render.gradle",
+        "verifyPaparazziDebug"
+      ],
+      "golden_dimensions": [
+        [
+          320,
+          640
+        ]
+      ]
+    },
+    {
+      "tool": "paparazzi",
+      "topology": "multi",
+      "scenario": "record",
+      "label": "setup-record",
+      "seconds": 26.536178000009386,
+      "exit": 0,
+      "counts": {
+        "tests": 50,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "command": [
+        "./gradlew",
+        "--console=plain",
+        "--no-build-cache",
+        "--init-script",
+        "benchmark/libraries/force-render.gradle",
+        "recordPaparazziDebug"
+      ],
+      "golden_dimensions": [
+        [
+          320,
+          640
+        ]
+      ]
+    },
+    {
+      "tool": "paparazzi",
+      "topology": "multi",
+      "scenario": "verify",
+      "label": "setup-verify",
+      "seconds": 26.79312612497597,
+      "exit": 0,
+      "counts": {
+        "tests": 50,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "command": [
+        "./gradlew",
+        "--console=plain",
+        "--no-build-cache",
+        "--init-script",
+        "benchmark/libraries/force-render.gradle",
+        "verifyPaparazziDebug"
+      ],
+      "golden_dimensions": [
+        [
+          320,
+          640
+        ]
+      ]
+    },
+    {
+      "tool": "paparazzi",
+      "topology": "multi",
+      "scenario": "verify",
+      "label": "mutation-control",
+      "seconds": 15.355425333982566,
+      "exit": 1,
+      "counts": {
+        "tests": 50,
+        "failures": 1,
+        "errors": 0,
+        "skipped": 0
+      },
+      "command": [
+        "./gradlew",
+        "--console=plain",
+        "--no-build-cache",
+        "--init-script",
+        "benchmark/libraries/force-render.gradle",
+        "verifyPaparazziDebug"
+      ]
+    },
+    {
+      "tool": "paparazzi",
+      "topology": "multi",
+      "scenario": "verify",
+      "label": "restored-verify",
+      "seconds": 25.786066458997084,
+      "exit": 0,
+      "counts": {
+        "tests": 50,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "command": [
+        "./gradlew",
+        "--console=plain",
+        "--no-build-cache",
+        "--init-script",
+        "benchmark/libraries/force-render.gradle",
+        "verifyPaparazziDebug"
+      ],
+      "golden_dimensions": [
+        [
+          320,
+          640
+        ]
+      ]
+    },
+    {
+      "tool": "roborazzi",
+      "topology": "single",
+      "scenario": "record",
+      "label": "setup-record",
+      "seconds": 12.843301250017248,
+      "exit": 0,
+      "counts": {
+        "tests": 50,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "command": [
+        "./gradlew",
+        "--console=plain",
+        "--no-build-cache",
+        "--init-script",
+        "benchmark/libraries/force-render.gradle",
+        "recordRoborazziDebug"
+      ],
+      "golden_dimensions": [
+        [
+          320,
+          640
+        ]
+      ]
+    },
+    {
+      "tool": "roborazzi",
+      "topology": "single",
+      "scenario": "verify",
+      "label": "setup-verify",
+      "seconds": 10.398324375011725,
+      "exit": 0,
+      "counts": {
+        "tests": 50,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "command": [
+        "./gradlew",
+        "--console=plain",
+        "--no-build-cache",
+        "--init-script",
+        "benchmark/libraries/force-render.gradle",
+        "verifyRoborazziDebug"
+      ],
+      "golden_dimensions": [
+        [
+          320,
+          640
+        ]
+      ]
+    },
+    {
+      "tool": "roborazzi",
+      "topology": "single",
+      "scenario": "verify",
+      "label": "mutation-control",
+      "seconds": 11.47482541599311,
+      "exit": 1,
+      "counts": {
+        "tests": 50,
+        "failures": 1,
+        "errors": 0,
+        "skipped": 0
+      },
+      "command": [
+        "./gradlew",
+        "--console=plain",
+        "--no-build-cache",
+        "--init-script",
+        "benchmark/libraries/force-render.gradle",
+        "verifyRoborazziDebug"
+      ],
+      "mutation_detected": true
+    },
+    {
+      "tool": "roborazzi",
+      "topology": "single",
+      "scenario": "verify",
+      "label": "restored-verify",
+      "seconds": 14.155501041997923,
+      "exit": 0,
+      "counts": {
+        "tests": 50,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "command": [
+        "./gradlew",
+        "--console=plain",
+        "--no-build-cache",
+        "--init-script",
+        "benchmark/libraries/force-render.gradle",
+        "verifyRoborazziDebug"
+      ],
+      "golden_dimensions": [
+        [
+          320,
+          640
+        ]
+      ]
+    },
+    {
+      "tool": "roborazzi",
+      "topology": "multi",
+      "scenario": "record",
+      "label": "setup-record",
+      "seconds": 46.54972808298771,
+      "exit": 0,
+      "counts": {
+        "tests": 50,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "command": [
+        "./gradlew",
+        "--console=plain",
+        "--no-build-cache",
+        "--init-script",
+        "benchmark/libraries/force-render.gradle",
+        "recordRoborazziDebug"
+      ],
+      "golden_dimensions": [
+        [
+          320,
+          640
+        ]
+      ]
+    },
+    {
+      "tool": "roborazzi",
+      "topology": "multi",
+      "scenario": "verify",
+      "label": "setup-verify",
+      "seconds": 34.74501070799306,
+      "exit": 0,
+      "counts": {
+        "tests": 50,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "command": [
+        "./gradlew",
+        "--console=plain",
+        "--no-build-cache",
+        "--init-script",
+        "benchmark/libraries/force-render.gradle",
+        "verifyRoborazziDebug"
+      ],
+      "golden_dimensions": [
+        [
+          320,
+          640
+        ]
+      ]
+    },
+    {
+      "tool": "roborazzi",
+      "topology": "multi",
+      "scenario": "verify",
+      "label": "mutation-control",
+      "seconds": 14.586288459016941,
+      "exit": 1,
+      "counts": {
+        "tests": 50,
+        "failures": 1,
+        "errors": 0,
+        "skipped": 0
+      },
+      "command": [
+        "./gradlew",
+        "--console=plain",
+        "--no-build-cache",
+        "--init-script",
+        "benchmark/libraries/force-render.gradle",
+        "verifyRoborazziDebug"
+      ],
+      "mutation_detected": true
+    },
+    {
+      "tool": "roborazzi",
+      "topology": "multi",
+      "scenario": "verify",
+      "label": "restored-verify",
+      "seconds": 33.62172587501118,
+      "exit": 0,
+      "counts": {
+        "tests": 50,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "command": [
+        "./gradlew",
+        "--console=plain",
+        "--no-build-cache",
+        "--init-script",
+        "benchmark/libraries/force-render.gradle",
+        "verifyRoborazziDebug"
+      ],
+      "golden_dimensions": [
+        [
+          320,
+          640
+        ]
+      ]
+    },
+    {
+      "tool": "google",
+      "topology": "single",
+      "scenario": "record",
+      "label": "setup-record",
+      "seconds": 8.417071834002854,
+      "exit": 0,
+      "counts": {
+        "tests": 50,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "command": [
+        "./gradlew",
+        "--console=plain",
+        "--no-build-cache",
+        "--init-script",
+        "benchmark/libraries/force-render.gradle",
+        "updateScreenshotTestDefaultDebugTestSuite"
+      ],
+      "golden_dimensions": [
+        [
+          320,
+          640
+        ]
+      ]
+    },
+    {
+      "tool": "google",
+      "topology": "single",
+      "scenario": "verify",
+      "label": "setup-verify",
+      "seconds": 7.233157749986276,
+      "exit": 0,
+      "counts": {
+        "tests": 50,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "command": [
+        "./gradlew",
+        "--console=plain",
+        "--no-build-cache",
+        "--init-script",
+        "benchmark/libraries/force-render.gradle",
+        "testScreenshotTestDefaultDebugTestSuite"
+      ],
+      "golden_dimensions": [
+        [
+          320,
+          640
+        ]
+      ]
+    },
+    {
+      "tool": "google",
+      "topology": "single",
+      "scenario": "verify",
+      "label": "mutation-control",
+      "seconds": 8.443325333006214,
+      "exit": 1,
+      "counts": {
+        "tests": 50,
+        "failures": 1,
+        "errors": 0,
+        "skipped": 0
+      },
+      "command": [
+        "./gradlew",
+        "--console=plain",
+        "--no-build-cache",
+        "--init-script",
+        "benchmark/libraries/force-render.gradle",
+        "testScreenshotTestDefaultDebugTestSuite"
+      ],
+      "mutation_detected": true
+    },
+    {
+      "tool": "google",
+      "topology": "single",
+      "scenario": "verify",
+      "label": "restored-verify",
+      "seconds": 7.5629080409999005,
+      "exit": 0,
+      "counts": {
+        "tests": 50,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "command": [
+        "./gradlew",
+        "--console=plain",
+        "--no-build-cache",
+        "--init-script",
+        "benchmark/libraries/force-render.gradle",
+        "testScreenshotTestDefaultDebugTestSuite"
+      ],
+      "golden_dimensions": [
+        [
+          320,
+          640
+        ]
+      ]
+    },
+    {
+      "tool": "google",
+      "topology": "multi",
+      "scenario": "record",
+      "label": "setup-record",
+      "seconds": 29.040830917016137,
+      "exit": 0,
+      "counts": {
+        "tests": 50,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "command": [
+        "./gradlew",
+        "--console=plain",
+        "--no-build-cache",
+        "--init-script",
+        "benchmark/libraries/force-render.gradle",
+        "updateScreenshotTestDefaultDebugTestSuite"
+      ],
+      "golden_dimensions": [
+        [
+          320,
+          640
+        ]
+      ]
+    },
+    {
+      "tool": "google",
+      "topology": "multi",
+      "scenario": "verify",
+      "label": "setup-verify",
+      "seconds": 23.68377133400645,
+      "exit": 0,
+      "counts": {
+        "tests": 50,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "command": [
+        "./gradlew",
+        "--console=plain",
+        "--no-build-cache",
+        "--init-script",
+        "benchmark/libraries/force-render.gradle",
+        "testScreenshotTestDefaultDebugTestSuite"
+      ],
+      "golden_dimensions": [
+        [
+          320,
+          640
+        ]
+      ]
+    },
+    {
+      "tool": "google",
+      "topology": "multi",
+      "scenario": "verify",
+      "label": "mutation-control",
+      "seconds": 10.194600124988938,
+      "exit": 1,
+      "counts": {
+        "tests": 50,
+        "failures": 1,
+        "errors": 0,
+        "skipped": 0
+      },
+      "command": [
+        "./gradlew",
+        "--console=plain",
+        "--no-build-cache",
+        "--init-script",
+        "benchmark/libraries/force-render.gradle",
+        "testScreenshotTestDefaultDebugTestSuite"
+      ],
+      "mutation_detected": true
+    },
+    {
+      "tool": "google",
+      "topology": "multi",
+      "scenario": "verify",
+      "label": "restored-verify",
+      "seconds": 23.186451290996047,
+      "exit": 0,
+      "counts": {
+        "tests": 50,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "command": [
+        "./gradlew",
+        "--console=plain",
+        "--no-build-cache",
+        "--init-script",
+        "benchmark/libraries/force-render.gradle",
+        "testScreenshotTestDefaultDebugTestSuite"
+      ],
+      "golden_dimensions": [
+        [
+          320,
+          640
+        ]
+      ]
+    },
+    {
+      "tool": "dropshots",
+      "topology": "single",
+      "scenario": "record",
+      "label": "setup-record",
+      "seconds": 48.618656499980716,
+      "exit": 0,
+      "counts": {
+        "tests": 50,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "command": [
+        "./gradlew",
+        "--console=plain",
+        "--no-build-cache",
+        "--init-script",
+        "benchmark/libraries/force-render.gradle",
+        "recordDebugAndroidTestScreenshots"
+      ],
+      "golden_dimensions": [
+        [
+          320,
+          640
+        ]
+      ]
+    },
+    {
+      "tool": "dropshots",
+      "topology": "single",
+      "scenario": "verify",
+      "label": "setup-verify",
+      "seconds": 46.3435574999894,
+      "exit": 0,
+      "counts": {
+        "tests": 50,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "command": [
+        "./gradlew",
+        "--console=plain",
+        "--no-build-cache",
+        "--init-script",
+        "benchmark/libraries/force-render.gradle",
+        "connectedDebugAndroidTest"
+      ],
+      "golden_dimensions": [
+        [
+          320,
+          640
+        ]
+      ]
+    },
+    {
+      "tool": "dropshots",
+      "topology": "single",
+      "scenario": "verify",
+      "label": "mutation-control",
+      "seconds": 47.309095125005115,
+      "exit": 1,
+      "counts": {
+        "tests": 50,
+        "failures": 1,
+        "errors": 0,
+        "skipped": 0
+      },
+      "command": [
+        "./gradlew",
+        "--console=plain",
+        "--no-build-cache",
+        "--init-script",
+        "benchmark/libraries/force-render.gradle",
+        "connectedDebugAndroidTest"
+      ],
+      "mutation_detected": true
+    },
+    {
+      "tool": "dropshots",
+      "topology": "single",
+      "scenario": "verify",
+      "label": "restored-verify",
+      "seconds": 47.904117957979906,
+      "exit": 0,
+      "counts": {
+        "tests": 50,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "command": [
+        "./gradlew",
+        "--console=plain",
+        "--no-build-cache",
+        "--init-script",
+        "benchmark/libraries/force-render.gradle",
+        "connectedDebugAndroidTest"
+      ],
+      "golden_dimensions": [
+        [
+          320,
+          640
+        ]
+      ]
+    },
+    {
+      "tool": "dropshots",
+      "topology": "multi",
+      "scenario": "record",
+      "label": "setup-record",
+      "seconds": 88.72740637502284,
+      "exit": 0,
+      "counts": {
+        "tests": 50,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "command": [
+        "./gradlew",
+        "--console=plain",
+        "--no-build-cache",
+        "--init-script",
+        "benchmark/libraries/force-render.gradle",
+        "recordDebugAndroidTestScreenshots"
+      ],
+      "golden_dimensions": [
+        [
+          320,
+          640
+        ]
+      ]
+    },
+    {
+      "tool": "dropshots",
+      "topology": "multi",
+      "scenario": "verify",
+      "label": "setup-verify",
+      "seconds": 80.62451550000696,
+      "exit": 0,
+      "counts": {
+        "tests": 50,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "command": [
+        "./gradlew",
+        "--console=plain",
+        "--no-build-cache",
+        "--init-script",
+        "benchmark/libraries/force-render.gradle",
+        "connectedDebugAndroidTest"
+      ],
+      "golden_dimensions": [
+        [
+          320,
+          640
+        ]
+      ]
+    },
+    {
+      "tool": "dropshots",
+      "topology": "multi",
+      "scenario": "verify",
+      "label": "mutation-control",
+      "seconds": 87.03481516698957,
+      "exit": 1,
+      "counts": {
+        "tests": 50,
+        "failures": 1,
+        "errors": 0,
+        "skipped": 0
+      },
+      "command": [
+        "./gradlew",
+        "--console=plain",
+        "--no-build-cache",
+        "--init-script",
+        "benchmark/libraries/force-render.gradle",
+        "connectedDebugAndroidTest"
+      ],
+      "mutation_detected": true
+    },
+    {
+      "tool": "dropshots",
+      "topology": "multi",
+      "scenario": "verify",
+      "label": "restored-verify",
+      "seconds": 75.9892147500068,
+      "exit": 0,
+      "counts": {
+        "tests": 50,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "command": [
+        "./gradlew",
+        "--console=plain",
+        "--no-build-cache",
+        "--init-script",
+        "benchmark/libraries/force-render.gradle",
+        "connectedDebugAndroidTest"
+      ],
+      "golden_dimensions": [
+        [
+          320,
+          640
+        ]
+      ]
+    },
+    {
+      "tool": "shot",
+      "topology": "single",
+      "scenario": "record",
+      "label": "setup-record",
+      "seconds": 47.4813248749997,
+      "exit": 0,
+      "counts": {
+        "tests": 50,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "command": [
+        "./gradlew",
+        "--console=plain",
+        "--no-build-cache",
+        "--init-script",
+        "benchmark/libraries/force-render.gradle",
+        "executeScreenshotTests",
+        "-Precord"
+      ],
+      "golden_dimensions": [
+        [
+          320,
+          640
+        ]
+      ]
+    },
+    {
+      "tool": "shot",
+      "topology": "single",
+      "scenario": "verify",
+      "label": "setup-verify",
+      "seconds": 40.54342237501987,
+      "exit": 0,
+      "counts": {
+        "tests": 50,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "command": [
+        "./gradlew",
+        "--console=plain",
+        "--no-build-cache",
+        "--init-script",
+        "benchmark/libraries/force-render.gradle",
+        "executeScreenshotTests"
+      ],
+      "golden_dimensions": [
+        [
+          320,
+          640
+        ]
+      ]
+    },
+    {
+      "tool": "shot",
+      "topology": "single",
+      "scenario": "verify",
+      "label": "mutation-control",
+      "seconds": 43.4938661250053,
+      "exit": 1,
+      "counts": {
+        "tests": 50,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "command": [
+        "./gradlew",
+        "--console=plain",
+        "--no-build-cache",
+        "--init-script",
+        "benchmark/libraries/force-render.gradle",
+        "executeScreenshotTests"
+      ],
+      "mutation_detected": true
+    },
+    {
+      "tool": "shot",
+      "topology": "single",
+      "scenario": "verify",
+      "label": "restored-verify",
+      "seconds": 41.819692791992566,
+      "exit": 0,
+      "counts": {
+        "tests": 50,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "command": [
+        "./gradlew",
+        "--console=plain",
+        "--no-build-cache",
+        "--init-script",
+        "benchmark/libraries/force-render.gradle",
+        "executeScreenshotTests"
+      ],
+      "golden_dimensions": [
+        [
+          320,
+          640
+        ]
+      ]
+    },
+    {
+      "tool": "shot",
+      "topology": "multi",
+      "scenario": "record",
+      "label": "setup-record",
+      "seconds": 84.99300170899369,
+      "exit": 0,
+      "counts": {
+        "tests": 50,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "command": [
+        "./gradlew",
+        "--console=plain",
+        "--no-build-cache",
+        "--init-script",
+        "benchmark/libraries/force-render.gradle",
+        "executeScreenshotTests",
+        "-Precord"
+      ],
+      "golden_dimensions": [
+        [
+          320,
+          640
+        ]
+      ]
+    },
+    {
+      "tool": "shot",
+      "topology": "multi",
+      "scenario": "verify",
+      "label": "setup-verify",
+      "seconds": 79.25747687500552,
+      "exit": 0,
+      "counts": {
+        "tests": 50,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "command": [
+        "./gradlew",
+        "--console=plain",
+        "--no-build-cache",
+        "--init-script",
+        "benchmark/libraries/force-render.gradle",
+        "executeScreenshotTests"
+      ],
+      "golden_dimensions": [
+        [
+          320,
+          640
+        ]
+      ]
+    },
+    {
+      "tool": "shot",
+      "topology": "multi",
+      "scenario": "verify",
+      "label": "mutation-control",
+      "seconds": 32.48312820799765,
+      "exit": 1,
+      "counts": {
+        "tests": 50,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "command": [
+        "./gradlew",
+        "--console=plain",
+        "--no-build-cache",
+        "--init-script",
+        "benchmark/libraries/force-render.gradle",
+        "executeScreenshotTests"
+      ],
+      "mutation_detected": true
+    },
+    {
+      "tool": "shot",
+      "topology": "multi",
+      "scenario": "verify",
+      "label": "restored-verify",
+      "seconds": 80.33298525001737,
+      "exit": 0,
+      "counts": {
+        "tests": 50,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "command": [
+        "./gradlew",
+        "--console=plain",
+        "--no-build-cache",
+        "--init-script",
+        "benchmark/libraries/force-render.gradle",
+        "executeScreenshotTests"
+      ],
+      "golden_dimensions": [
+        [
+          320,
+          640
+        ]
+      ]
+    }
+  ],
+  "runs": [
+    {
+      "tool": "medusa",
+      "topology": "single",
+      "scenario": "verify",
+      "label": "round--1-verify",
+      "seconds": 16.244023332983488,
+      "exit": 0,
+      "counts": {
+        "tests": 50,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "command": [
+        "./gradlew",
+        "--console=plain",
+        "--no-build-cache",
+        "--init-script",
+        "benchmark/libraries/force-render.gradle",
+        "medusaVerify",
+        "--parallel",
+        "--max-workers=3"
+      ],
+      "golden_dimensions": [
+        [
+          320,
+          640
+        ]
+      ],
+      "round": -1
+    },
+    {
+      "tool": "medusa",
+      "topology": "single",
+      "scenario": "record",
+      "label": "round--1-record",
+      "seconds": 6.655435000022408,
+      "exit": 0,
+      "counts": {
+        "tests": 50,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "command": [
+        "./gradlew",
+        "--console=plain",
+        "--no-build-cache",
+        "--init-script",
+        "benchmark/libraries/force-render.gradle",
+        "medusaRecord",
+        "--parallel",
+        "--max-workers=3"
+      ],
+      "golden_dimensions": [
+        [
+          320,
+          640
+        ]
+      ],
+      "changed_goldens": 1,
+      "round": -1
+    },
+    {
+      "tool": "medusa",
+      "topology": "multi",
+      "scenario": "verify",
+      "label": "round--1-verify",
+      "seconds": 7.135688500013202,
+      "exit": 0,
+      "counts": {
+        "tests": 50,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "command": [
+        "./gradlew",
+        "--console=plain",
+        "--no-build-cache",
+        "--init-script",
+        "benchmark/libraries/force-render.gradle",
+        "medusaVerify",
+        "--parallel",
+        "--max-workers=3"
+      ],
+      "golden_dimensions": [
+        [
+          320,
+          640
+        ]
+      ],
+      "round": -1
+    },
+    {
+      "tool": "medusa",
+      "topology": "multi",
+      "scenario": "record",
+      "label": "round--1-record",
+      "seconds": 6.253430166980252,
+      "exit": 0,
+      "counts": {
+        "tests": 50,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "command": [
+        "./gradlew",
+        "--console=plain",
+        "--no-build-cache",
+        "--init-script",
+        "benchmark/libraries/force-render.gradle",
+        "medusaRecord",
+        "--parallel",
+        "--max-workers=3"
+      ],
+      "golden_dimensions": [
+        [
+          320,
+          640
+        ]
+      ],
+      "changed_goldens": 1,
+      "round": -1
+    },
+    {
+      "tool": "paparazzi",
+      "topology": "single",
+      "scenario": "verify",
+      "label": "round--1-verify",
+      "seconds": 8.386409541999456,
+      "exit": 0,
+      "counts": {
+        "tests": 50,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "command": [
+        "./gradlew",
+        "--console=plain",
+        "--no-build-cache",
+        "--init-script",
+        "benchmark/libraries/force-render.gradle",
+        "verifyPaparazziDebug",
+        "--parallel",
+        "--max-workers=3"
+      ],
+      "golden_dimensions": [
+        [
+          320,
+          640
+        ]
+      ],
+      "round": -1
+    },
+    {
+      "tool": "paparazzi",
+      "topology": "single",
+      "scenario": "record",
+      "label": "round--1-record",
+      "seconds": 7.816007292014547,
+      "exit": 0,
+      "counts": {
+        "tests": 50,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "command": [
+        "./gradlew",
+        "--console=plain",
+        "--no-build-cache",
+        "--init-script",
+        "benchmark/libraries/force-render.gradle",
+        "recordPaparazziDebug",
+        "--parallel",
+        "--max-workers=3"
+      ],
+      "golden_dimensions": [
+        [
+          320,
+          640
+        ]
+      ],
+      "changed_goldens": 1,
+      "round": -1
+    },
+    {
+      "tool": "paparazzi",
+      "topology": "multi",
+      "scenario": "verify",
+      "label": "round--1-verify",
+      "seconds": 9.692061959009152,
+      "exit": 0,
+      "counts": {
+        "tests": 50,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "command": [
+        "./gradlew",
+        "--console=plain",
+        "--no-build-cache",
+        "--init-script",
+        "benchmark/libraries/force-render.gradle",
+        "verifyPaparazziDebug",
+        "--parallel",
+        "--max-workers=3"
+      ],
+      "golden_dimensions": [
+        [
+          320,
+          640
+        ]
+      ],
+      "round": -1
+    },
+    {
+      "tool": "paparazzi",
+      "topology": "multi",
+      "scenario": "record",
+      "label": "round--1-record",
+      "seconds": 10.439073165995069,
+      "exit": 0,
+      "counts": {
+        "tests": 50,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "command": [
+        "./gradlew",
+        "--console=plain",
+        "--no-build-cache",
+        "--init-script",
+        "benchmark/libraries/force-render.gradle",
+        "recordPaparazziDebug",
+        "--parallel",
+        "--max-workers=3"
+      ],
+      "golden_dimensions": [
+        [
+          320,
+          640
+        ]
+      ],
+      "changed_goldens": 1,
+      "round": -1
+    },
+    {
+      "tool": "roborazzi",
+      "topology": "single",
+      "scenario": "verify",
+      "label": "round--1-verify",
+      "seconds": 10.36386812501587,
+      "exit": 0,
+      "counts": {
+        "tests": 50,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "command": [
+        "./gradlew",
+        "--console=plain",
+        "--no-build-cache",
+        "--init-script",
+        "benchmark/libraries/force-render.gradle",
+        "verifyRoborazziDebug",
+        "--parallel",
+        "--max-workers=3"
+      ],
+      "golden_dimensions": [
+        [
+          320,
+          640
+        ]
+      ],
+      "round": -1
+    },
+    {
+      "tool": "roborazzi",
+      "topology": "single",
+      "scenario": "record",
+      "label": "round--1-record",
+      "seconds": 9.276015540992375,
+      "exit": 0,
+      "counts": {
+        "tests": 50,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "command": [
+        "./gradlew",
+        "--console=plain",
+        "--no-build-cache",
+        "--init-script",
+        "benchmark/libraries/force-render.gradle",
+        "recordRoborazziDebug",
+        "--parallel",
+        "--max-workers=3"
+      ],
+      "golden_dimensions": [
+        [
+          320,
+          640
+        ]
+      ],
+      "changed_goldens": 1,
+      "round": -1
+    },
+    {
+      "tool": "roborazzi",
+      "topology": "multi",
+      "scenario": "verify",
+      "label": "round--1-verify",
+      "seconds": 14.824885209003696,
+      "exit": 0,
+      "counts": {
+        "tests": 50,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "command": [
+        "./gradlew",
+        "--console=plain",
+        "--no-build-cache",
+        "--init-script",
+        "benchmark/libraries/force-render.gradle",
+        "verifyRoborazziDebug",
+        "--parallel",
+        "--max-workers=3"
+      ],
+      "golden_dimensions": [
+        [
+          320,
+          640
+        ]
+      ],
+      "round": -1
+    },
+    {
+      "tool": "roborazzi",
+      "topology": "multi",
+      "scenario": "record",
+      "label": "round--1-record",
+      "seconds": 14.034899165999377,
+      "exit": 0,
+      "counts": {
+        "tests": 50,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "command": [
+        "./gradlew",
+        "--console=plain",
+        "--no-build-cache",
+        "--init-script",
+        "benchmark/libraries/force-render.gradle",
+        "recordRoborazziDebug",
+        "--parallel",
+        "--max-workers=3"
+      ],
+      "golden_dimensions": [
+        [
+          320,
+          640
+        ]
+      ],
+      "changed_goldens": 1,
+      "round": -1
+    },
+    {
+      "tool": "google",
+      "topology": "single",
+      "scenario": "verify",
+      "label": "round--1-verify",
+      "seconds": 6.6448646250064485,
+      "exit": 0,
+      "counts": {
+        "tests": 50,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "command": [
+        "./gradlew",
+        "--console=plain",
+        "--no-build-cache",
+        "--init-script",
+        "benchmark/libraries/force-render.gradle",
+        "testScreenshotTestDefaultDebugTestSuite",
+        "--parallel",
+        "--max-workers=3"
+      ],
+      "golden_dimensions": [
+        [
+          320,
+          640
+        ]
+      ],
+      "round": -1
+    },
+    {
+      "tool": "google",
+      "topology": "single",
+      "scenario": "record",
+      "label": "round--1-record",
+      "seconds": 6.714231249992736,
+      "exit": 0,
+      "counts": {
+        "tests": 50,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "command": [
+        "./gradlew",
+        "--console=plain",
+        "--no-build-cache",
+        "--init-script",
+        "benchmark/libraries/force-render.gradle",
+        "updateScreenshotTestDefaultDebugTestSuite",
+        "--parallel",
+        "--max-workers=3"
+      ],
+      "golden_dimensions": [
+        [
+          320,
+          640
+        ]
+      ],
+      "changed_goldens": 1,
+      "round": -1
+    },
+    {
+      "tool": "google",
+      "topology": "multi",
+      "scenario": "verify",
+      "label": "round--1-verify",
+      "seconds": 10.423760916019091,
+      "exit": 0,
+      "counts": {
+        "tests": 50,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "command": [
+        "./gradlew",
+        "--console=plain",
+        "--no-build-cache",
+        "--init-script",
+        "benchmark/libraries/force-render.gradle",
+        "testScreenshotTestDefaultDebugTestSuite",
+        "--parallel",
+        "--max-workers=3"
+      ],
+      "golden_dimensions": [
+        [
+          320,
+          640
+        ]
+      ],
+      "round": -1
+    },
+    {
+      "tool": "google",
+      "topology": "multi",
+      "scenario": "record",
+      "label": "round--1-record",
+      "seconds": 10.531684082990978,
+      "exit": 0,
+      "counts": {
+        "tests": 50,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "command": [
+        "./gradlew",
+        "--console=plain",
+        "--no-build-cache",
+        "--init-script",
+        "benchmark/libraries/force-render.gradle",
+        "updateScreenshotTestDefaultDebugTestSuite",
+        "--parallel",
+        "--max-workers=3"
+      ],
+      "golden_dimensions": [
+        [
+          320,
+          640
+        ]
+      ],
+      "changed_goldens": 1,
+      "round": -1
+    },
+    {
+      "tool": "medusa",
+      "topology": "single",
+      "scenario": "verify",
+      "label": "round-0-verify",
+      "seconds": 12.685643375007203,
+      "exit": 0,
+      "counts": {
+        "tests": 50,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "command": [
+        "./gradlew",
+        "--console=plain",
+        "--no-build-cache",
+        "--init-script",
+        "benchmark/libraries/force-render.gradle",
+        "medusaVerify",
+        "--parallel",
+        "--max-workers=3"
+      ],
+      "golden_dimensions": [
+        [
+          320,
+          640
+        ]
+      ],
+      "round": 0
+    },
+    {
+      "tool": "medusa",
+      "topology": "single",
+      "scenario": "record",
+      "label": "round-0-record",
+      "seconds": 6.508936833997723,
+      "exit": 0,
+      "counts": {
+        "tests": 50,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "command": [
+        "./gradlew",
+        "--console=plain",
+        "--no-build-cache",
+        "--init-script",
+        "benchmark/libraries/force-render.gradle",
+        "medusaRecord",
+        "--parallel",
+        "--max-workers=3"
+      ],
+      "golden_dimensions": [
+        [
+          320,
+          640
+        ]
+      ],
+      "changed_goldens": 1,
+      "round": 0
+    },
+    {
+      "tool": "medusa",
+      "topology": "multi",
+      "scenario": "verify",
+      "label": "round-0-verify",
+      "seconds": 6.913088541012257,
+      "exit": 0,
+      "counts": {
+        "tests": 50,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "command": [
+        "./gradlew",
+        "--console=plain",
+        "--no-build-cache",
+        "--init-script",
+        "benchmark/libraries/force-render.gradle",
+        "medusaVerify",
+        "--parallel",
+        "--max-workers=3"
+      ],
+      "golden_dimensions": [
+        [
+          320,
+          640
+        ]
+      ],
+      "round": 0
+    },
+    {
+      "tool": "medusa",
+      "topology": "multi",
+      "scenario": "record",
+      "label": "round-0-record",
+      "seconds": 6.168620457989164,
+      "exit": 0,
+      "counts": {
+        "tests": 50,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "command": [
+        "./gradlew",
+        "--console=plain",
+        "--no-build-cache",
+        "--init-script",
+        "benchmark/libraries/force-render.gradle",
+        "medusaRecord",
+        "--parallel",
+        "--max-workers=3"
+      ],
+      "golden_dimensions": [
+        [
+          320,
+          640
+        ]
+      ],
+      "changed_goldens": 1,
+      "round": 0
+    },
+    {
+      "tool": "paparazzi",
+      "topology": "single",
+      "scenario": "verify",
+      "label": "round-0-verify",
+      "seconds": 8.276894124981482,
+      "exit": 0,
+      "counts": {
+        "tests": 50,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "command": [
+        "./gradlew",
+        "--console=plain",
+        "--no-build-cache",
+        "--init-script",
+        "benchmark/libraries/force-render.gradle",
+        "verifyPaparazziDebug",
+        "--parallel",
+        "--max-workers=3"
+      ],
+      "golden_dimensions": [
+        [
+          320,
+          640
+        ]
+      ],
+      "round": 0
+    },
+    {
+      "tool": "paparazzi",
+      "topology": "single",
+      "scenario": "record",
+      "label": "round-0-record",
+      "seconds": 7.919456541974796,
+      "exit": 0,
+      "counts": {
+        "tests": 50,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "command": [
+        "./gradlew",
+        "--console=plain",
+        "--no-build-cache",
+        "--init-script",
+        "benchmark/libraries/force-render.gradle",
+        "recordPaparazziDebug",
+        "--parallel",
+        "--max-workers=3"
+      ],
+      "golden_dimensions": [
+        [
+          320,
+          640
+        ]
+      ],
+      "changed_goldens": 1,
+      "round": 0
+    },
+    {
+      "tool": "paparazzi",
+      "topology": "multi",
+      "scenario": "verify",
+      "label": "round-0-verify",
+      "seconds": 9.688711541995872,
+      "exit": 0,
+      "counts": {
+        "tests": 50,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "command": [
+        "./gradlew",
+        "--console=plain",
+        "--no-build-cache",
+        "--init-script",
+        "benchmark/libraries/force-render.gradle",
+        "verifyPaparazziDebug",
+        "--parallel",
+        "--max-workers=3"
+      ],
+      "golden_dimensions": [
+        [
+          320,
+          640
+        ]
+      ],
+      "round": 0
+    },
+    {
+      "tool": "paparazzi",
+      "topology": "multi",
+      "scenario": "record",
+      "label": "round-0-record",
+      "seconds": 10.269554625003366,
+      "exit": 0,
+      "counts": {
+        "tests": 50,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "command": [
+        "./gradlew",
+        "--console=plain",
+        "--no-build-cache",
+        "--init-script",
+        "benchmark/libraries/force-render.gradle",
+        "recordPaparazziDebug",
+        "--parallel",
+        "--max-workers=3"
+      ],
+      "golden_dimensions": [
+        [
+          320,
+          640
+        ]
+      ],
+      "changed_goldens": 1,
+      "round": 0
+    },
+    {
+      "tool": "roborazzi",
+      "topology": "single",
+      "scenario": "verify",
+      "label": "round-0-verify",
+      "seconds": 10.04872904199874,
+      "exit": 0,
+      "counts": {
+        "tests": 50,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "command": [
+        "./gradlew",
+        "--console=plain",
+        "--no-build-cache",
+        "--init-script",
+        "benchmark/libraries/force-render.gradle",
+        "verifyRoborazziDebug",
+        "--parallel",
+        "--max-workers=3"
+      ],
+      "golden_dimensions": [
+        [
+          320,
+          640
+        ]
+      ],
+      "round": 0
+    },
+    {
+      "tool": "roborazzi",
+      "topology": "single",
+      "scenario": "record",
+      "label": "round-0-record",
+      "seconds": 9.2032693750225,
+      "exit": 0,
+      "counts": {
+        "tests": 50,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "command": [
+        "./gradlew",
+        "--console=plain",
+        "--no-build-cache",
+        "--init-script",
+        "benchmark/libraries/force-render.gradle",
+        "recordRoborazziDebug",
+        "--parallel",
+        "--max-workers=3"
+      ],
+      "golden_dimensions": [
+        [
+          320,
+          640
+        ]
+      ],
+      "changed_goldens": 1,
+      "round": 0
+    },
+    {
+      "tool": "roborazzi",
+      "topology": "multi",
+      "scenario": "verify",
+      "label": "round-0-verify",
+      "seconds": 14.330652790988097,
+      "exit": 0,
+      "counts": {
+        "tests": 50,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "command": [
+        "./gradlew",
+        "--console=plain",
+        "--no-build-cache",
+        "--init-script",
+        "benchmark/libraries/force-render.gradle",
+        "verifyRoborazziDebug",
+        "--parallel",
+        "--max-workers=3"
+      ],
+      "golden_dimensions": [
+        [
+          320,
+          640
+        ]
+      ],
+      "round": 0
+    },
+    {
+      "tool": "roborazzi",
+      "topology": "multi",
+      "scenario": "record",
+      "label": "round-0-record",
+      "seconds": 13.967313332977938,
+      "exit": 0,
+      "counts": {
+        "tests": 50,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "command": [
+        "./gradlew",
+        "--console=plain",
+        "--no-build-cache",
+        "--init-script",
+        "benchmark/libraries/force-render.gradle",
+        "recordRoborazziDebug",
+        "--parallel",
+        "--max-workers=3"
+      ],
+      "golden_dimensions": [
+        [
+          320,
+          640
+        ]
+      ],
+      "changed_goldens": 1,
+      "round": 0
+    },
+    {
+      "tool": "google",
+      "topology": "single",
+      "scenario": "verify",
+      "label": "round-0-verify",
+      "seconds": 6.605903041985584,
+      "exit": 0,
+      "counts": {
+        "tests": 50,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "command": [
+        "./gradlew",
+        "--console=plain",
+        "--no-build-cache",
+        "--init-script",
+        "benchmark/libraries/force-render.gradle",
+        "testScreenshotTestDefaultDebugTestSuite",
+        "--parallel",
+        "--max-workers=3"
+      ],
+      "golden_dimensions": [
+        [
+          320,
+          640
+        ]
+      ],
+      "round": 0
+    },
+    {
+      "tool": "google",
+      "topology": "single",
+      "scenario": "record",
+      "label": "round-0-record",
+      "seconds": 6.74219654200715,
+      "exit": 0,
+      "counts": {
+        "tests": 50,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "command": [
+        "./gradlew",
+        "--console=plain",
+        "--no-build-cache",
+        "--init-script",
+        "benchmark/libraries/force-render.gradle",
+        "updateScreenshotTestDefaultDebugTestSuite",
+        "--parallel",
+        "--max-workers=3"
+      ],
+      "golden_dimensions": [
+        [
+          320,
+          640
+        ]
+      ],
+      "changed_goldens": 1,
+      "round": 0
+    },
+    {
+      "tool": "google",
+      "topology": "multi",
+      "scenario": "verify",
+      "label": "round-0-verify",
+      "seconds": 10.579686040990055,
+      "exit": 0,
+      "counts": {
+        "tests": 50,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "command": [
+        "./gradlew",
+        "--console=plain",
+        "--no-build-cache",
+        "--init-script",
+        "benchmark/libraries/force-render.gradle",
+        "testScreenshotTestDefaultDebugTestSuite",
+        "--parallel",
+        "--max-workers=3"
+      ],
+      "golden_dimensions": [
+        [
+          320,
+          640
+        ]
+      ],
+      "round": 0
+    },
+    {
+      "tool": "google",
+      "topology": "multi",
+      "scenario": "record",
+      "label": "round-0-record",
+      "seconds": 10.543867458996829,
+      "exit": 0,
+      "counts": {
+        "tests": 50,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "command": [
+        "./gradlew",
+        "--console=plain",
+        "--no-build-cache",
+        "--init-script",
+        "benchmark/libraries/force-render.gradle",
+        "updateScreenshotTestDefaultDebugTestSuite",
+        "--parallel",
+        "--max-workers=3"
+      ],
+      "golden_dimensions": [
+        [
+          320,
+          640
+        ]
+      ],
+      "changed_goldens": 1,
+      "round": 0
+    },
+    {
+      "tool": "medusa",
+      "topology": "multi",
+      "scenario": "verify",
+      "label": "round-1-verify",
+      "seconds": 14.198178542021196,
+      "exit": 0,
+      "counts": {
+        "tests": 50,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "command": [
+        "./gradlew",
+        "--console=plain",
+        "--no-build-cache",
+        "--init-script",
+        "benchmark/libraries/force-render.gradle",
+        "medusaVerify",
+        "--parallel",
+        "--max-workers=3"
+      ],
+      "golden_dimensions": [
+        [
+          320,
+          640
+        ]
+      ],
+      "round": 1
+    },
+    {
+      "tool": "medusa",
+      "topology": "multi",
+      "scenario": "record",
+      "label": "round-1-record",
+      "seconds": 7.250986334023764,
+      "exit": 0,
+      "counts": {
+        "tests": 50,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "command": [
+        "./gradlew",
+        "--console=plain",
+        "--no-build-cache",
+        "--init-script",
+        "benchmark/libraries/force-render.gradle",
+        "medusaRecord",
+        "--parallel",
+        "--max-workers=3"
+      ],
+      "golden_dimensions": [
+        [
+          320,
+          640
+        ]
+      ],
+      "changed_goldens": 1,
+      "round": 1
+    },
+    {
+      "tool": "paparazzi",
+      "topology": "single",
+      "scenario": "verify",
+      "label": "round-1-verify",
+      "seconds": 8.259918208001181,
+      "exit": 0,
+      "counts": {
+        "tests": 50,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "command": [
+        "./gradlew",
+        "--console=plain",
+        "--no-build-cache",
+        "--init-script",
+        "benchmark/libraries/force-render.gradle",
+        "verifyPaparazziDebug",
+        "--parallel",
+        "--max-workers=3"
+      ],
+      "golden_dimensions": [
+        [
+          320,
+          640
+        ]
+      ],
+      "round": 1
+    },
+    {
+      "tool": "paparazzi",
+      "topology": "single",
+      "scenario": "record",
+      "label": "round-1-record",
+      "seconds": 7.648387916997308,
+      "exit": 0,
+      "counts": {
+        "tests": 50,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "command": [
+        "./gradlew",
+        "--console=plain",
+        "--no-build-cache",
+        "--init-script",
+        "benchmark/libraries/force-render.gradle",
+        "recordPaparazziDebug",
+        "--parallel",
+        "--max-workers=3"
+      ],
+      "golden_dimensions": [
+        [
+          320,
+          640
+        ]
+      ],
+      "changed_goldens": 1,
+      "round": 1
+    },
+    {
+      "tool": "paparazzi",
+      "topology": "multi",
+      "scenario": "verify",
+      "label": "round-1-verify",
+      "seconds": 10.406569625018165,
+      "exit": 0,
+      "counts": {
+        "tests": 50,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "command": [
+        "./gradlew",
+        "--console=plain",
+        "--no-build-cache",
+        "--init-script",
+        "benchmark/libraries/force-render.gradle",
+        "verifyPaparazziDebug",
+        "--parallel",
+        "--max-workers=3"
+      ],
+      "golden_dimensions": [
+        [
+          320,
+          640
+        ]
+      ],
+      "round": 1
+    },
+    {
+      "tool": "paparazzi",
+      "topology": "multi",
+      "scenario": "record",
+      "label": "round-1-record",
+      "seconds": 10.2679041250085,
+      "exit": 0,
+      "counts": {
+        "tests": 50,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "command": [
+        "./gradlew",
+        "--console=plain",
+        "--no-build-cache",
+        "--init-script",
+        "benchmark/libraries/force-render.gradle",
+        "recordPaparazziDebug",
+        "--parallel",
+        "--max-workers=3"
+      ],
+      "golden_dimensions": [
+        [
+          320,
+          640
+        ]
+      ],
+      "changed_goldens": 1,
+      "round": 1
+    },
+    {
+      "tool": "roborazzi",
+      "topology": "single",
+      "scenario": "verify",
+      "label": "round-1-verify",
+      "seconds": 9.50235649998649,
+      "exit": 0,
+      "counts": {
+        "tests": 50,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "command": [
+        "./gradlew",
+        "--console=plain",
+        "--no-build-cache",
+        "--init-script",
+        "benchmark/libraries/force-render.gradle",
+        "verifyRoborazziDebug",
+        "--parallel",
+        "--max-workers=3"
+      ],
+      "golden_dimensions": [
+        [
+          320,
+          640
+        ]
+      ],
+      "round": 1
+    },
+    {
+      "tool": "roborazzi",
+      "topology": "single",
+      "scenario": "record",
+      "label": "round-1-record",
+      "seconds": 9.251942750008311,
+      "exit": 0,
+      "counts": {
+        "tests": 50,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "command": [
+        "./gradlew",
+        "--console=plain",
+        "--no-build-cache",
+        "--init-script",
+        "benchmark/libraries/force-render.gradle",
+        "recordRoborazziDebug",
+        "--parallel",
+        "--max-workers=3"
+      ],
+      "golden_dimensions": [
+        [
+          320,
+          640
+        ]
+      ],
+      "changed_goldens": 1,
+      "round": 1
+    },
+    {
+      "tool": "roborazzi",
+      "topology": "multi",
+      "scenario": "verify",
+      "label": "round-1-verify",
+      "seconds": 14.821288917009952,
+      "exit": 0,
+      "counts": {
+        "tests": 50,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "command": [
+        "./gradlew",
+        "--console=plain",
+        "--no-build-cache",
+        "--init-script",
+        "benchmark/libraries/force-render.gradle",
+        "verifyRoborazziDebug",
+        "--parallel",
+        "--max-workers=3"
+      ],
+      "golden_dimensions": [
+        [
+          320,
+          640
+        ]
+      ],
+      "round": 1
+    },
+    {
+      "tool": "roborazzi",
+      "topology": "multi",
+      "scenario": "record",
+      "label": "round-1-record",
+      "seconds": 14.184691375005059,
+      "exit": 0,
+      "counts": {
+        "tests": 50,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "command": [
+        "./gradlew",
+        "--console=plain",
+        "--no-build-cache",
+        "--init-script",
+        "benchmark/libraries/force-render.gradle",
+        "recordRoborazziDebug",
+        "--parallel",
+        "--max-workers=3"
+      ],
+      "golden_dimensions": [
+        [
+          320,
+          640
+        ]
+      ],
+      "changed_goldens": 1,
+      "round": 1
+    },
+    {
+      "tool": "google",
+      "topology": "single",
+      "scenario": "verify",
+      "label": "round-1-verify",
+      "seconds": 6.596076292014914,
+      "exit": 0,
+      "counts": {
+        "tests": 50,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "command": [
+        "./gradlew",
+        "--console=plain",
+        "--no-build-cache",
+        "--init-script",
+        "benchmark/libraries/force-render.gradle",
+        "testScreenshotTestDefaultDebugTestSuite",
+        "--parallel",
+        "--max-workers=3"
+      ],
+      "golden_dimensions": [
+        [
+          320,
+          640
+        ]
+      ],
+      "round": 1
+    },
+    {
+      "tool": "google",
+      "topology": "single",
+      "scenario": "record",
+      "label": "round-1-record",
+      "seconds": 6.6539580829849,
+      "exit": 0,
+      "counts": {
+        "tests": 50,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "command": [
+        "./gradlew",
+        "--console=plain",
+        "--no-build-cache",
+        "--init-script",
+        "benchmark/libraries/force-render.gradle",
+        "updateScreenshotTestDefaultDebugTestSuite",
+        "--parallel",
+        "--max-workers=3"
+      ],
+      "golden_dimensions": [
+        [
+          320,
+          640
+        ]
+      ],
+      "changed_goldens": 1,
+      "round": 1
+    },
+    {
+      "tool": "google",
+      "topology": "multi",
+      "scenario": "verify",
+      "label": "round-1-verify",
+      "seconds": 10.585293000011006,
+      "exit": 0,
+      "counts": {
+        "tests": 50,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "command": [
+        "./gradlew",
+        "--console=plain",
+        "--no-build-cache",
+        "--init-script",
+        "benchmark/libraries/force-render.gradle",
+        "testScreenshotTestDefaultDebugTestSuite",
+        "--parallel",
+        "--max-workers=3"
+      ],
+      "golden_dimensions": [
+        [
+          320,
+          640
+        ]
+      ],
+      "round": 1
+    },
+    {
+      "tool": "google",
+      "topology": "multi",
+      "scenario": "record",
+      "label": "round-1-record",
+      "seconds": 10.632286000007298,
+      "exit": 0,
+      "counts": {
+        "tests": 50,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "command": [
+        "./gradlew",
+        "--console=plain",
+        "--no-build-cache",
+        "--init-script",
+        "benchmark/libraries/force-render.gradle",
+        "updateScreenshotTestDefaultDebugTestSuite",
+        "--parallel",
+        "--max-workers=3"
+      ],
+      "golden_dimensions": [
+        [
+          320,
+          640
+        ]
+      ],
+      "changed_goldens": 1,
+      "round": 1
+    },
+    {
+      "tool": "medusa",
+      "topology": "single",
+      "scenario": "verify",
+      "label": "round-1-verify",
+      "seconds": 12.535388417018112,
+      "exit": 0,
+      "counts": {
+        "tests": 50,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "command": [
+        "./gradlew",
+        "--console=plain",
+        "--no-build-cache",
+        "--init-script",
+        "benchmark/libraries/force-render.gradle",
+        "medusaVerify",
+        "--parallel",
+        "--max-workers=3"
+      ],
+      "golden_dimensions": [
+        [
+          320,
+          640
+        ]
+      ],
+      "round": 1
+    },
+    {
+      "tool": "medusa",
+      "topology": "single",
+      "scenario": "record",
+      "label": "round-1-record",
+      "seconds": 6.47506841699942,
+      "exit": 0,
+      "counts": {
+        "tests": 50,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "command": [
+        "./gradlew",
+        "--console=plain",
+        "--no-build-cache",
+        "--init-script",
+        "benchmark/libraries/force-render.gradle",
+        "medusaRecord",
+        "--parallel",
+        "--max-workers=3"
+      ],
+      "golden_dimensions": [
+        [
+          320,
+          640
+        ]
+      ],
+      "changed_goldens": 1,
+      "round": 1
+    },
+    {
+      "tool": "paparazzi",
+      "topology": "single",
+      "scenario": "verify",
+      "label": "round-2-verify",
+      "seconds": 8.11113012500573,
+      "exit": 0,
+      "counts": {
+        "tests": 50,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "command": [
+        "./gradlew",
+        "--console=plain",
+        "--no-build-cache",
+        "--init-script",
+        "benchmark/libraries/force-render.gradle",
+        "verifyPaparazziDebug",
+        "--parallel",
+        "--max-workers=3"
+      ],
+      "golden_dimensions": [
+        [
+          320,
+          640
+        ]
+      ],
+      "round": 2
+    },
+    {
+      "tool": "paparazzi",
+      "topology": "single",
+      "scenario": "record",
+      "label": "round-2-record",
+      "seconds": 7.588617915986106,
+      "exit": 0,
+      "counts": {
+        "tests": 50,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "command": [
+        "./gradlew",
+        "--console=plain",
+        "--no-build-cache",
+        "--init-script",
+        "benchmark/libraries/force-render.gradle",
+        "recordPaparazziDebug",
+        "--parallel",
+        "--max-workers=3"
+      ],
+      "golden_dimensions": [
+        [
+          320,
+          640
+        ]
+      ],
+      "changed_goldens": 1,
+      "round": 2
+    },
+    {
+      "tool": "paparazzi",
+      "topology": "multi",
+      "scenario": "verify",
+      "label": "round-2-verify",
+      "seconds": 10.276991958002327,
+      "exit": 0,
+      "counts": {
+        "tests": 50,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "command": [
+        "./gradlew",
+        "--console=plain",
+        "--no-build-cache",
+        "--init-script",
+        "benchmark/libraries/force-render.gradle",
+        "verifyPaparazziDebug",
+        "--parallel",
+        "--max-workers=3"
+      ],
+      "golden_dimensions": [
+        [
+          320,
+          640
+        ]
+      ],
+      "round": 2
+    },
+    {
+      "tool": "paparazzi",
+      "topology": "multi",
+      "scenario": "record",
+      "label": "round-2-record",
+      "seconds": 10.418629374995362,
+      "exit": 0,
+      "counts": {
+        "tests": 50,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "command": [
+        "./gradlew",
+        "--console=plain",
+        "--no-build-cache",
+        "--init-script",
+        "benchmark/libraries/force-render.gradle",
+        "recordPaparazziDebug",
+        "--parallel",
+        "--max-workers=3"
+      ],
+      "golden_dimensions": [
+        [
+          320,
+          640
+        ]
+      ],
+      "changed_goldens": 1,
+      "round": 2
+    },
+    {
+      "tool": "roborazzi",
+      "topology": "single",
+      "scenario": "verify",
+      "label": "round-2-verify",
+      "seconds": 9.280003208987182,
+      "exit": 0,
+      "counts": {
+        "tests": 50,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "command": [
+        "./gradlew",
+        "--console=plain",
+        "--no-build-cache",
+        "--init-script",
+        "benchmark/libraries/force-render.gradle",
+        "verifyRoborazziDebug",
+        "--parallel",
+        "--max-workers=3"
+      ],
+      "golden_dimensions": [
+        [
+          320,
+          640
+        ]
+      ],
+      "round": 2
+    },
+    {
+      "tool": "roborazzi",
+      "topology": "single",
+      "scenario": "record",
+      "label": "round-2-record",
+      "seconds": 8.957608459022595,
+      "exit": 0,
+      "counts": {
+        "tests": 50,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "command": [
+        "./gradlew",
+        "--console=plain",
+        "--no-build-cache",
+        "--init-script",
+        "benchmark/libraries/force-render.gradle",
+        "recordRoborazziDebug",
+        "--parallel",
+        "--max-workers=3"
+      ],
+      "golden_dimensions": [
+        [
+          320,
+          640
+        ]
+      ],
+      "changed_goldens": 1,
+      "round": 2
+    },
+    {
+      "tool": "roborazzi",
+      "topology": "multi",
+      "scenario": "verify",
+      "label": "round-2-verify",
+      "seconds": 14.459950666991062,
+      "exit": 0,
+      "counts": {
+        "tests": 50,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "command": [
+        "./gradlew",
+        "--console=plain",
+        "--no-build-cache",
+        "--init-script",
+        "benchmark/libraries/force-render.gradle",
+        "verifyRoborazziDebug",
+        "--parallel",
+        "--max-workers=3"
+      ],
+      "golden_dimensions": [
+        [
+          320,
+          640
+        ]
+      ],
+      "round": 2
+    },
+    {
+      "tool": "roborazzi",
+      "topology": "multi",
+      "scenario": "record",
+      "label": "round-2-record",
+      "seconds": 14.10310529198614,
+      "exit": 0,
+      "counts": {
+        "tests": 50,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "command": [
+        "./gradlew",
+        "--console=plain",
+        "--no-build-cache",
+        "--init-script",
+        "benchmark/libraries/force-render.gradle",
+        "recordRoborazziDebug",
+        "--parallel",
+        "--max-workers=3"
+      ],
+      "golden_dimensions": [
+        [
+          320,
+          640
+        ]
+      ],
+      "changed_goldens": 1,
+      "round": 2
+    },
+    {
+      "tool": "google",
+      "topology": "single",
+      "scenario": "verify",
+      "label": "round-2-verify",
+      "seconds": 6.6491000420064665,
+      "exit": 0,
+      "counts": {
+        "tests": 50,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "command": [
+        "./gradlew",
+        "--console=plain",
+        "--no-build-cache",
+        "--init-script",
+        "benchmark/libraries/force-render.gradle",
+        "testScreenshotTestDefaultDebugTestSuite",
+        "--parallel",
+        "--max-workers=3"
+      ],
+      "golden_dimensions": [
+        [
+          320,
+          640
+        ]
+      ],
+      "round": 2
+    },
+    {
+      "tool": "google",
+      "topology": "single",
+      "scenario": "record",
+      "label": "round-2-record",
+      "seconds": 6.62916645797668,
+      "exit": 0,
+      "counts": {
+        "tests": 50,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "command": [
+        "./gradlew",
+        "--console=plain",
+        "--no-build-cache",
+        "--init-script",
+        "benchmark/libraries/force-render.gradle",
+        "updateScreenshotTestDefaultDebugTestSuite",
+        "--parallel",
+        "--max-workers=3"
+      ],
+      "golden_dimensions": [
+        [
+          320,
+          640
+        ]
+      ],
+      "changed_goldens": 1,
+      "round": 2
+    },
+    {
+      "tool": "google",
+      "topology": "multi",
+      "scenario": "verify",
+      "label": "round-2-verify",
+      "seconds": 10.598036083974876,
+      "exit": 0,
+      "counts": {
+        "tests": 50,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "command": [
+        "./gradlew",
+        "--console=plain",
+        "--no-build-cache",
+        "--init-script",
+        "benchmark/libraries/force-render.gradle",
+        "testScreenshotTestDefaultDebugTestSuite",
+        "--parallel",
+        "--max-workers=3"
+      ],
+      "golden_dimensions": [
+        [
+          320,
+          640
+        ]
+      ],
+      "round": 2
+    },
+    {
+      "tool": "google",
+      "topology": "multi",
+      "scenario": "record",
+      "label": "round-2-record",
+      "seconds": 10.52243075001752,
+      "exit": 0,
+      "counts": {
+        "tests": 50,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "command": [
+        "./gradlew",
+        "--console=plain",
+        "--no-build-cache",
+        "--init-script",
+        "benchmark/libraries/force-render.gradle",
+        "updateScreenshotTestDefaultDebugTestSuite",
+        "--parallel",
+        "--max-workers=3"
+      ],
+      "golden_dimensions": [
+        [
+          320,
+          640
+        ]
+      ],
+      "changed_goldens": 1,
+      "round": 2
+    },
+    {
+      "tool": "medusa",
+      "topology": "single",
+      "scenario": "verify",
+      "label": "round-2-verify",
+      "seconds": 12.53229645799729,
+      "exit": 0,
+      "counts": {
+        "tests": 50,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "command": [
+        "./gradlew",
+        "--console=plain",
+        "--no-build-cache",
+        "--init-script",
+        "benchmark/libraries/force-render.gradle",
+        "medusaVerify",
+        "--parallel",
+        "--max-workers=3"
+      ],
+      "golden_dimensions": [
+        [
+          320,
+          640
+        ]
+      ],
+      "round": 2
+    },
+    {
+      "tool": "medusa",
+      "topology": "single",
+      "scenario": "record",
+      "label": "round-2-record",
+      "seconds": 6.500334667012794,
+      "exit": 0,
+      "counts": {
+        "tests": 50,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "command": [
+        "./gradlew",
+        "--console=plain",
+        "--no-build-cache",
+        "--init-script",
+        "benchmark/libraries/force-render.gradle",
+        "medusaRecord",
+        "--parallel",
+        "--max-workers=3"
+      ],
+      "golden_dimensions": [
+        [
+          320,
+          640
+        ]
+      ],
+      "changed_goldens": 1,
+      "round": 2
+    },
+    {
+      "tool": "medusa",
+      "topology": "multi",
+      "scenario": "verify",
+      "label": "round-2-verify",
+      "seconds": 6.796128374990076,
+      "exit": 0,
+      "counts": {
+        "tests": 50,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "command": [
+        "./gradlew",
+        "--console=plain",
+        "--no-build-cache",
+        "--init-script",
+        "benchmark/libraries/force-render.gradle",
+        "medusaVerify",
+        "--parallel",
+        "--max-workers=3"
+      ],
+      "golden_dimensions": [
+        [
+          320,
+          640
+        ]
+      ],
+      "round": 2
+    },
+    {
+      "tool": "medusa",
+      "topology": "multi",
+      "scenario": "record",
+      "label": "round-2-record",
+      "seconds": 6.1745574999949895,
+      "exit": 0,
+      "counts": {
+        "tests": 50,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "command": [
+        "./gradlew",
+        "--console=plain",
+        "--no-build-cache",
+        "--init-script",
+        "benchmark/libraries/force-render.gradle",
+        "medusaRecord",
+        "--parallel",
+        "--max-workers=3"
+      ],
+      "golden_dimensions": [
+        [
+          320,
+          640
+        ]
+      ],
+      "changed_goldens": 1,
+      "round": 2
+    },
+    {
+      "tool": "dropshots",
+      "topology": "single",
+      "scenario": "verify",
+      "label": "round--1-verify",
+      "seconds": 40.8638147089805,
+      "exit": 0,
+      "counts": {
+        "tests": 50,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "command": [
+        "./gradlew",
+        "--console=plain",
+        "--no-build-cache",
+        "--init-script",
+        "benchmark/libraries/force-render.gradle",
+        "connectedDebugAndroidTest"
+      ],
+      "golden_dimensions": [
+        [
+          320,
+          640
+        ]
+      ],
+      "round": -1
+    },
+    {
+      "tool": "dropshots",
+      "topology": "single",
+      "scenario": "record",
+      "label": "round--1-record",
+      "seconds": 42.56322729101521,
+      "exit": 0,
+      "counts": {
+        "tests": 50,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "command": [
+        "./gradlew",
+        "--console=plain",
+        "--no-build-cache",
+        "--init-script",
+        "benchmark/libraries/force-render.gradle",
+        "recordDebugAndroidTestScreenshots"
+      ],
+      "golden_dimensions": [
+        [
+          320,
+          640
+        ]
+      ],
+      "changed_goldens": 1,
+      "round": -1
+    },
+    {
+      "tool": "dropshots",
+      "topology": "multi",
+      "scenario": "verify",
+      "label": "round--1-verify",
+      "seconds": 74.6222945410118,
+      "exit": 0,
+      "counts": {
+        "tests": 50,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "command": [
+        "./gradlew",
+        "--console=plain",
+        "--no-build-cache",
+        "--init-script",
+        "benchmark/libraries/force-render.gradle",
+        "connectedDebugAndroidTest"
+      ],
+      "golden_dimensions": [
+        [
+          320,
+          640
+        ]
+      ],
+      "round": -1
+    },
+    {
+      "tool": "dropshots",
+      "topology": "multi",
+      "scenario": "record",
+      "label": "round--1-record",
+      "seconds": 77.48535587498918,
+      "exit": 0,
+      "counts": {
+        "tests": 50,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "command": [
+        "./gradlew",
+        "--console=plain",
+        "--no-build-cache",
+        "--init-script",
+        "benchmark/libraries/force-render.gradle",
+        "recordDebugAndroidTestScreenshots"
+      ],
+      "golden_dimensions": [
+        [
+          320,
+          640
+        ]
+      ],
+      "changed_goldens": 1,
+      "round": -1
+    },
+    {
+      "tool": "shot",
+      "topology": "single",
+      "scenario": "verify",
+      "label": "round--1-verify",
+      "seconds": 42.678123707999475,
+      "exit": 0,
+      "counts": {
+        "tests": 50,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "command": [
+        "./gradlew",
+        "--console=plain",
+        "--no-build-cache",
+        "--init-script",
+        "benchmark/libraries/force-render.gradle",
+        "executeScreenshotTests"
+      ],
+      "golden_dimensions": [
+        [
+          320,
+          640
+        ]
+      ],
+      "round": -1
+    },
+    {
+      "tool": "shot",
+      "topology": "single",
+      "scenario": "record",
+      "label": "round--1-record",
+      "seconds": 41.77736066599027,
+      "exit": 0,
+      "counts": {
+        "tests": 50,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "command": [
+        "./gradlew",
+        "--console=plain",
+        "--no-build-cache",
+        "--init-script",
+        "benchmark/libraries/force-render.gradle",
+        "executeScreenshotTests",
+        "-Precord"
+      ],
+      "golden_dimensions": [
+        [
+          320,
+          640
+        ]
+      ],
+      "changed_goldens": 1,
+      "round": -1
+    },
+    {
+      "tool": "shot",
+      "topology": "multi",
+      "scenario": "verify",
+      "label": "round--1-verify",
+      "seconds": 80.69125691702357,
+      "exit": 0,
+      "counts": {
+        "tests": 50,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "command": [
+        "./gradlew",
+        "--console=plain",
+        "--no-build-cache",
+        "--init-script",
+        "benchmark/libraries/force-render.gradle",
+        "executeScreenshotTests"
+      ],
+      "golden_dimensions": [
+        [
+          320,
+          640
+        ]
+      ],
+      "round": -1
+    },
+    {
+      "tool": "shot",
+      "topology": "multi",
+      "scenario": "record",
+      "label": "round--1-record",
+      "seconds": 77.6771477079892,
+      "exit": 0,
+      "counts": {
+        "tests": 50,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "command": [
+        "./gradlew",
+        "--console=plain",
+        "--no-build-cache",
+        "--init-script",
+        "benchmark/libraries/force-render.gradle",
+        "executeScreenshotTests",
+        "-Precord"
+      ],
+      "golden_dimensions": [
+        [
+          320,
+          640
+        ]
+      ],
+      "changed_goldens": 1,
+      "round": -1
+    },
+    {
+      "tool": "dropshots",
+      "topology": "single",
+      "scenario": "verify",
+      "label": "round-0-verify",
+      "seconds": 39.653226416005054,
+      "exit": 0,
+      "counts": {
+        "tests": 50,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "command": [
+        "./gradlew",
+        "--console=plain",
+        "--no-build-cache",
+        "--init-script",
+        "benchmark/libraries/force-render.gradle",
+        "connectedDebugAndroidTest"
+      ],
+      "golden_dimensions": [
+        [
+          320,
+          640
+        ]
+      ],
+      "round": 0
+    },
+    {
+      "tool": "dropshots",
+      "topology": "single",
+      "scenario": "record",
+      "label": "round-0-record",
+      "seconds": 41.170495124999434,
+      "exit": 0,
+      "counts": {
+        "tests": 50,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "command": [
+        "./gradlew",
+        "--console=plain",
+        "--no-build-cache",
+        "--init-script",
+        "benchmark/libraries/force-render.gradle",
+        "recordDebugAndroidTestScreenshots"
+      ],
+      "golden_dimensions": [
+        [
+          320,
+          640
+        ]
+      ],
+      "changed_goldens": 1,
+      "round": 0
+    },
+    {
+      "tool": "dropshots",
+      "topology": "multi",
+      "scenario": "verify",
+      "label": "round-0-verify",
+      "seconds": 72.36469366698293,
+      "exit": 0,
+      "counts": {
+        "tests": 50,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "command": [
+        "./gradlew",
+        "--console=plain",
+        "--no-build-cache",
+        "--init-script",
+        "benchmark/libraries/force-render.gradle",
+        "connectedDebugAndroidTest"
+      ],
+      "golden_dimensions": [
+        [
+          320,
+          640
+        ]
+      ],
+      "round": 0
+    },
+    {
+      "tool": "dropshots",
+      "topology": "multi",
+      "scenario": "record",
+      "label": "round-0-record",
+      "seconds": 77.92875175000518,
+      "exit": 0,
+      "counts": {
+        "tests": 50,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "command": [
+        "./gradlew",
+        "--console=plain",
+        "--no-build-cache",
+        "--init-script",
+        "benchmark/libraries/force-render.gradle",
+        "recordDebugAndroidTestScreenshots"
+      ],
+      "golden_dimensions": [
+        [
+          320,
+          640
+        ]
+      ],
+      "changed_goldens": 1,
+      "round": 0
+    },
+    {
+      "tool": "shot",
+      "topology": "single",
+      "scenario": "verify",
+      "label": "round-0-verify",
+      "seconds": 40.68224320799345,
+      "exit": 0,
+      "counts": {
+        "tests": 50,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "command": [
+        "./gradlew",
+        "--console=plain",
+        "--no-build-cache",
+        "--init-script",
+        "benchmark/libraries/force-render.gradle",
+        "executeScreenshotTests"
+      ],
+      "golden_dimensions": [
+        [
+          320,
+          640
+        ]
+      ],
+      "round": 0
+    },
+    {
+      "tool": "shot",
+      "topology": "single",
+      "scenario": "record",
+      "label": "round-0-record",
+      "seconds": 39.99574770900654,
+      "exit": 0,
+      "counts": {
+        "tests": 50,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "command": [
+        "./gradlew",
+        "--console=plain",
+        "--no-build-cache",
+        "--init-script",
+        "benchmark/libraries/force-render.gradle",
+        "executeScreenshotTests",
+        "-Precord"
+      ],
+      "golden_dimensions": [
+        [
+          320,
+          640
+        ]
+      ],
+      "changed_goldens": 1,
+      "round": 0
+    },
+    {
+      "tool": "shot",
+      "topology": "multi",
+      "scenario": "verify",
+      "label": "round-0-verify",
+      "seconds": 77.4958982920216,
+      "exit": 0,
+      "counts": {
+        "tests": 50,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "command": [
+        "./gradlew",
+        "--console=plain",
+        "--no-build-cache",
+        "--init-script",
+        "benchmark/libraries/force-render.gradle",
+        "executeScreenshotTests"
+      ],
+      "golden_dimensions": [
+        [
+          320,
+          640
+        ]
+      ],
+      "round": 0
+    },
+    {
+      "tool": "shot",
+      "topology": "multi",
+      "scenario": "record",
+      "label": "round-0-record",
+      "seconds": 76.88227912498405,
+      "exit": 0,
+      "counts": {
+        "tests": 50,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "command": [
+        "./gradlew",
+        "--console=plain",
+        "--no-build-cache",
+        "--init-script",
+        "benchmark/libraries/force-render.gradle",
+        "executeScreenshotTests",
+        "-Precord"
+      ],
+      "golden_dimensions": [
+        [
+          320,
+          640
+        ]
+      ],
+      "changed_goldens": 1,
+      "round": 0
+    },
+    {
+      "tool": "dropshots",
+      "topology": "multi",
+      "scenario": "verify",
+      "label": "round-1-verify",
+      "seconds": 75.42220158298733,
+      "exit": 0,
+      "counts": {
+        "tests": 50,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "command": [
+        "./gradlew",
+        "--console=plain",
+        "--no-build-cache",
+        "--init-script",
+        "benchmark/libraries/force-render.gradle",
+        "connectedDebugAndroidTest"
+      ],
+      "golden_dimensions": [
+        [
+          320,
+          640
+        ]
+      ],
+      "round": 1
+    },
+    {
+      "tool": "dropshots",
+      "topology": "multi",
+      "scenario": "record",
+      "label": "round-1-record",
+      "seconds": 75.3025082910026,
+      "exit": 0,
+      "counts": {
+        "tests": 50,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "command": [
+        "./gradlew",
+        "--console=plain",
+        "--no-build-cache",
+        "--init-script",
+        "benchmark/libraries/force-render.gradle",
+        "recordDebugAndroidTestScreenshots"
+      ],
+      "golden_dimensions": [
+        [
+          320,
+          640
+        ]
+      ],
+      "changed_goldens": 1,
+      "round": 1
+    },
+    {
+      "tool": "shot",
+      "topology": "single",
+      "scenario": "verify",
+      "label": "round-1-verify",
+      "seconds": 41.14544287501485,
+      "exit": 0,
+      "counts": {
+        "tests": 50,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "command": [
+        "./gradlew",
+        "--console=plain",
+        "--no-build-cache",
+        "--init-script",
+        "benchmark/libraries/force-render.gradle",
+        "executeScreenshotTests"
+      ],
+      "golden_dimensions": [
+        [
+          320,
+          640
+        ]
+      ],
+      "round": 1
+    },
+    {
+      "tool": "shot",
+      "topology": "single",
+      "scenario": "record",
+      "label": "round-1-record",
+      "seconds": 42.04011108301347,
+      "exit": 0,
+      "counts": {
+        "tests": 50,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "command": [
+        "./gradlew",
+        "--console=plain",
+        "--no-build-cache",
+        "--init-script",
+        "benchmark/libraries/force-render.gradle",
+        "executeScreenshotTests",
+        "-Precord"
+      ],
+      "golden_dimensions": [
+        [
+          320,
+          640
+        ]
+      ],
+      "changed_goldens": 1,
+      "round": 1
+    },
+    {
+      "tool": "shot",
+      "topology": "multi",
+      "scenario": "verify",
+      "label": "round-1-verify",
+      "seconds": 78.1143748750037,
+      "exit": 0,
+      "counts": {
+        "tests": 50,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "command": [
+        "./gradlew",
+        "--console=plain",
+        "--no-build-cache",
+        "--init-script",
+        "benchmark/libraries/force-render.gradle",
+        "executeScreenshotTests"
+      ],
+      "golden_dimensions": [
+        [
+          320,
+          640
+        ]
+      ],
+      "round": 1
+    },
+    {
+      "tool": "shot",
+      "topology": "multi",
+      "scenario": "record",
+      "label": "round-1-record",
+      "seconds": 76.1312947080005,
+      "exit": 0,
+      "counts": {
+        "tests": 50,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "command": [
+        "./gradlew",
+        "--console=plain",
+        "--no-build-cache",
+        "--init-script",
+        "benchmark/libraries/force-render.gradle",
+        "executeScreenshotTests",
+        "-Precord"
+      ],
+      "golden_dimensions": [
+        [
+          320,
+          640
+        ]
+      ],
+      "changed_goldens": 1,
+      "round": 1
+    },
+    {
+      "tool": "dropshots",
+      "topology": "single",
+      "scenario": "verify",
+      "label": "round-1-verify",
+      "seconds": 41.1273127500026,
+      "exit": 0,
+      "counts": {
+        "tests": 50,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "command": [
+        "./gradlew",
+        "--console=plain",
+        "--no-build-cache",
+        "--init-script",
+        "benchmark/libraries/force-render.gradle",
+        "connectedDebugAndroidTest"
+      ],
+      "golden_dimensions": [
+        [
+          320,
+          640
+        ]
+      ],
+      "round": 1
+    },
+    {
+      "tool": "dropshots",
+      "topology": "single",
+      "scenario": "record",
+      "label": "round-1-record",
+      "seconds": 41.850221875007264,
+      "exit": 0,
+      "counts": {
+        "tests": 50,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "command": [
+        "./gradlew",
+        "--console=plain",
+        "--no-build-cache",
+        "--init-script",
+        "benchmark/libraries/force-render.gradle",
+        "recordDebugAndroidTestScreenshots"
+      ],
+      "golden_dimensions": [
+        [
+          320,
+          640
+        ]
+      ],
+      "changed_goldens": 1,
+      "round": 1
+    },
+    {
+      "tool": "shot",
+      "topology": "single",
+      "scenario": "verify",
+      "label": "round-2-verify",
+      "seconds": 44.89589854099904,
+      "exit": 0,
+      "counts": {
+        "tests": 50,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "command": [
+        "./gradlew",
+        "--console=plain",
+        "--no-build-cache",
+        "--init-script",
+        "benchmark/libraries/force-render.gradle",
+        "executeScreenshotTests"
+      ],
+      "golden_dimensions": [
+        [
+          320,
+          640
+        ]
+      ],
+      "round": 2
+    },
+    {
+      "tool": "shot",
+      "topology": "single",
+      "scenario": "record",
+      "label": "round-2-record",
+      "seconds": 41.06010241698823,
+      "exit": 0,
+      "counts": {
+        "tests": 50,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "command": [
+        "./gradlew",
+        "--console=plain",
+        "--no-build-cache",
+        "--init-script",
+        "benchmark/libraries/force-render.gradle",
+        "executeScreenshotTests",
+        "-Precord"
+      ],
+      "golden_dimensions": [
+        [
+          320,
+          640
+        ]
+      ],
+      "changed_goldens": 1,
+      "round": 2
+    },
+    {
+      "tool": "shot",
+      "topology": "multi",
+      "scenario": "verify",
+      "label": "round-2-verify",
+      "seconds": 82.92096037499141,
+      "exit": 0,
+      "counts": {
+        "tests": 50,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "command": [
+        "./gradlew",
+        "--console=plain",
+        "--no-build-cache",
+        "--init-script",
+        "benchmark/libraries/force-render.gradle",
+        "executeScreenshotTests"
+      ],
+      "golden_dimensions": [
+        [
+          320,
+          640
+        ]
+      ],
+      "round": 2
+    },
+    {
+      "tool": "shot",
+      "topology": "multi",
+      "scenario": "record",
+      "label": "round-2-record",
+      "seconds": 80.01694883301388,
+      "exit": 0,
+      "counts": {
+        "tests": 50,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "command": [
+        "./gradlew",
+        "--console=plain",
+        "--no-build-cache",
+        "--init-script",
+        "benchmark/libraries/force-render.gradle",
+        "executeScreenshotTests",
+        "-Precord"
+      ],
+      "golden_dimensions": [
+        [
+          320,
+          640
+        ]
+      ],
+      "changed_goldens": 1,
+      "round": 2
+    },
+    {
+      "tool": "dropshots",
+      "topology": "single",
+      "scenario": "verify",
+      "label": "round-2-verify",
+      "seconds": 40.949461332987994,
+      "exit": 0,
+      "counts": {
+        "tests": 50,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "command": [
+        "./gradlew",
+        "--console=plain",
+        "--no-build-cache",
+        "--init-script",
+        "benchmark/libraries/force-render.gradle",
+        "connectedDebugAndroidTest"
+      ],
+      "golden_dimensions": [
+        [
+          320,
+          640
+        ]
+      ],
+      "round": 2
+    },
+    {
+      "tool": "dropshots",
+      "topology": "single",
+      "scenario": "record",
+      "label": "round-2-record",
+      "seconds": 41.603202375001274,
+      "exit": 0,
+      "counts": {
+        "tests": 50,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "command": [
+        "./gradlew",
+        "--console=plain",
+        "--no-build-cache",
+        "--init-script",
+        "benchmark/libraries/force-render.gradle",
+        "recordDebugAndroidTestScreenshots"
+      ],
+      "golden_dimensions": [
+        [
+          320,
+          640
+        ]
+      ],
+      "changed_goldens": 1,
+      "round": 2
+    },
+    {
+      "tool": "dropshots",
+      "topology": "multi",
+      "scenario": "verify",
+      "label": "round-2-verify",
+      "seconds": 75.75947383299354,
+      "exit": 0,
+      "counts": {
+        "tests": 50,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "command": [
+        "./gradlew",
+        "--console=plain",
+        "--no-build-cache",
+        "--init-script",
+        "benchmark/libraries/force-render.gradle",
+        "connectedDebugAndroidTest"
+      ],
+      "golden_dimensions": [
+        [
+          320,
+          640
+        ]
+      ],
+      "round": 2
+    },
+    {
+      "tool": "dropshots",
+      "topology": "multi",
+      "scenario": "record",
+      "label": "round-2-record",
+      "seconds": 74.64406004198827,
+      "exit": 0,
+      "counts": {
+        "tests": 50,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "command": [
+        "./gradlew",
+        "--console=plain",
+        "--no-build-cache",
+        "--init-script",
+        "benchmark/libraries/force-render.gradle",
+        "recordDebugAndroidTestScreenshots"
+      ],
+      "golden_dimensions": [
+        [
+          320,
+          640
+        ]
+      ],
+      "changed_goldens": 1,
+      "round": 2
+    }
+  ],
+  "harness_sha256": {
+    "run.py": "b888725bfef79311c7cbaf3bd7d5606fdef55b7d10ae8425704a258106f5d475",
+    "generate.py": "7e9e521b4b366c8d19dbff52a6429b4688ece43b32106a21044c9c999b2594c4",
+    "report.py": "7195b437dd4be2720b7a0724ca33bae26d6a560067934fa34f193daf301cfb26"
+  }
+}

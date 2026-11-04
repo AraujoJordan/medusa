@@ -3,16 +3,20 @@
 Checked on **2026-11-04** against each tool's own repository and documentation (linked below). These projects move fast, and Medusa's author
 is not neutral, so if something here is out of date or unfair, please [open an issue](https://github.com/AraujoJordan/medusa/issues).
 
-## At a glance
+## Benchmarks
 
-| | Renders with | What you write | Needs a device | Goldens | Status |
-|---|---|---|---|---|---|
-| **Medusa** | the Android CLI's preview renderer (it bundles layoutlib) | nothing: every `@Preview` is a test | no | next to the `.kt` file | 0.2.0 |
-| **[Paparazzi](https://github.com/cashapp/paparazzi)** | layoutlib on the JVM | a JUnit test with the `Paparazzi` rule and `snapshot { }` per screen (Compose or Views) | no | `src/test/snapshots` | 2.0.0-alpha05.1 (2026-09-28), Apache-2.0 |
-| **[Roborazzi](https://github.com/takahirom/roborazzi)** | Robolectric Native Graphics on the JVM | a Robolectric test; or the *experimental* generator that turns `@Preview`s into tests | no | `build/outputs/roborazzi` by default | 1.77.0 (2026-10-22), Apache-2.0 |
-| **[Compose Preview Screenshot Testing](https://developer.android.com/studio/preview/compose-screenshot-testing)** (Google) | host-side, layoutlib | `@PreviewTest` on previews placed in a separate `screenshotTest` source set | no | `src/<suite>.../reference/` | the standalone plugin is **no longer maintained**; its replacement (AGP test suites) is **experimental** and needs AGP 9.5.0-alpha03 or newer |
-| **[Shot](https://github.com/pedrovgs/Shot)** | on a device or emulator | an instrumented test per screen | **yes** | recorded with `-Precord` | 6.1.0 (2024-02-12), Apache-2.0 |
-| **[Dropshots](https://github.com/dropbox/dropshots)** | on a device or emulator, asserted inside the instrumentation test | an instrumented test with the `Dropshots` rule | **yes** | stored in the repository | 0.6.0 (2026-03-25), Apache-2.0 |
+| Library | Single record | Single verify | Multi record | Multi verify |
+|---|---:|---:|---:|---:|
+| **Medusa** | 6.5 s | 12.5 s | 6.2 s | 6.9 s |
+| [Paparazzi](https://github.com/cashapp/paparazzi) | 7.6 s | 8.3 s | 10.3 s | 10.3 s |
+| [Roborazzi](https://github.com/takahirom/roborazzi) | 9.2 s | 9.5 s | 14.1 s | 14.5 s |
+| [Google Compose Screenshot Testing](https://developer.android.com/studio/preview/compose-screenshot-testing-with-testsuites) | 6.7 s | 6.6 s | 10.5 s | 10.6 s |
+| [Shot](https://github.com/pedrovgs/Shot) | 41.1 s | 41.1 s | 76.9 s | 78.1 s |
+| [Dropshots](https://github.com/dropbox/dropshots) | 41.6 s | 40.9 s | 75.3 s | 75.4 s |
+
+50 screenshots in each project: **single** is one app; **multi** is an app plus four libraries with 10 screenshots each. Wall-clock medians of three runs on M1 Max / JDK 21, after an untimed warm-up. Record includes editing one composable; verify forces fresh rendering. Build/configuration caches are off. Host tools use three parallel Gradle workers; Shot and Dropshots use one already-booted API 35 emulator, including installation and image transfer.
+
+All fixtures passed a deliberate-mismatch control. Renderers and default tolerances differ; these results compare full workflows, not equivalent pixels or maximum throughput. [Versions, setup and methodology](../benchmark/libraries/README.md) · [Ranges](../benchmark/libraries/RESULTS.md) · [Raw runs](../benchmark/libraries/results.json).
 
 ## What each one does that Medusa does not
 
@@ -60,20 +64,4 @@ more.
 
 ## Speed
 
-Latest isolated measurement (50 previews, five runs per scenario, M1 Max, JDK 21, build cache off;
-Gradle and Medusa renderer daemons warm, odiff default, Paparazzi one fork):
-
-| Task | Medusa | Paparazzi | Less elapsed time |
-|---|---|---|---|
-| Verify, rendering forced | 4.8 s | 6.9 s | 30% |
-| Clean build then verify | 5.6 s | 7.6 s | 27% |
-| Record after editing one composable | 5.1 s | 7.7 s | 34% |
-
-These measurements do **not** establish a 2× speedup or a win at every suite size. The existing synthetic fixture
-uses different device framing and night-mode settings between renderers: this measures time to a verdict, not equivalent
-image fidelity. Clean build does not mean a cold renderer. Other tools were not benchmarked.
-Raw measurements: [50-preview results](../benchmark/results/N50.json); full tables: [benchmark results](../benchmark/RESULTS.md).
-
-Daemon reuse is now enabled by default (`useDaemon = false` opts out). Source reads are reused within discovery,
-clean-record discovers once, polling visits expected output directories, and comparison tools initialize only when needed.
-Record still preserves goldens within the configured tolerance; verify still renders previews on each invocation.
+The table above uses the new single- and multi-module fixtures. Earlier measurements use different image framing and cache policies and remain documented as historical results in [benchmarks](benchmarks.md).
