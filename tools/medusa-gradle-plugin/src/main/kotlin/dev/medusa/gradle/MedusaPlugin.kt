@@ -46,6 +46,11 @@ class MedusaPlugin : Plugin<Project> {
     extension.autoAggregate.convention(project.providers.gradleProperty("medusa.autoAggregate").map(String::toBoolean).orElse(true))
     AutoAggregation.install(project)
     extension.useDaemon.convention(project.providers.gradleProperty("medusa.useDaemon").map(String::toBoolean).orElse(true))
+    extension.discoveryTimeoutSeconds.convention(prop("discoveryTimeoutSeconds").map(String::toLong).orElse(600L))
+    extension.renderTimeoutSeconds.convention(prop("renderTimeoutSeconds").map(String::toLong).orElse(1800L))
+    extension.comparisonTimeoutSeconds.convention(prop("comparisonTimeoutSeconds").map(String::toLong).orElse(60L))
+    extension.visualRetryCount.convention(prop("visualRetryCount").map(String::toInt).orElse(0))
+    extension.allowRecoveredPass.convention(prop("allowRecoveredPass").map(String::toBoolean).orElse(false))
     extension.verifyOnCheck.convention(true)
     extension.sourceDirs.from(
       listOf("main", "debug").flatMap { variant ->
@@ -130,9 +135,13 @@ class MedusaPlugin : Plugin<Project> {
               autoInstall = extension.autoInstall.get(),
               fallbackToYiq = extension.fallbackToYiq.get(),
               installDir = extension.installDir.orNull,
+              comparisonTimeoutSeconds = extension.comparisonTimeoutSeconds.get(),
             )
           },
         )
+        t.reliability.set(project.provider { dev.medusa.core.ReliabilityOptions(
+          extension.discoveryTimeoutSeconds.get(), extension.renderTimeoutSeconds.get(), extension.comparisonTimeoutSeconds.get(),
+          extension.visualRetryCount.get(), extension.allowRecoveredPass.get()) })
         t.androidCliPath.set(extension.androidCliPath)
         t.includeDependentModules.set(extension.includeDependentModules)
         t.useDaemon.set(extension.useDaemon)
@@ -162,11 +171,13 @@ class MedusaPlugin : Plugin<Project> {
             autoInstall = true,
             fallbackToYiq = false,
             installDir = extension.installDir.orNull,
+              comparisonTimeoutSeconds = extension.comparisonTimeoutSeconds.get(),
           )
         },
       )
     }
 
+    task("medusaDiagnose", MedusaDiagnoseTask::class.java)
     task("medusaList", MedusaListTask::class.java)
     task("medusaRecord", MedusaRecordTask::class.java)
     task("medusaCleanRecord", MedusaCleanRecordTask::class.java)

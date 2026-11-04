@@ -52,7 +52,7 @@ internal object AutoAggregation {
         val task = p.tasks.named("medusaVerify", MedusaTask::class.java).get()
         p.path to GroupModule(p.path, task.sourceRoots.files.map { it.absolutePath }, task.medusaOutputDir.get().asFile.absolutePath,
           ModuleSettings(task.androidCliPath.orNull, task.comparerSpec.get(), task.useDaemon.get(),
-            task.renderParallelism.get(), task.compareParallelism.get(), task.accessibilitySnapshots.get()), task.includeDependentModules.get())
+            task.renderParallelism.get(), task.compareParallelism.get(), task.accessibilitySnapshots.get(), task.reliability.get()), task.includeDependentModules.get())
       }
       var graphKnown = true
       val nodes = androidProjects.map { p ->
@@ -80,7 +80,7 @@ internal object AutoAggregation {
       }
       val normalPlan = plan(false)
       val checkPlan = plan(true)
-      val operations = listOf("List", "Record", "Verify", "Delete", "CleanRecord")
+      val operations = listOf("List", "Record", "Verify", "Delete", "CleanRecord", "Diagnose")
       for (operation in operations) {
         val rootName = "medusa$operation"
         if (root.tasks.findByName(rootName) != null) continue

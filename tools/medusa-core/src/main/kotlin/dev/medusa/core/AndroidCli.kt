@@ -17,6 +17,8 @@ import kotlinx.serialization.json.Json
 /** Source of previews and rendered images. The real one shells out to the Android CLI; tests fake it. */
 interface PreviewBackend {
   fun list(): ListResult
+  fun withDaemon(enabled: Boolean): PreviewBackend = this
+  val events: List<String> get() = emptyList()
 
   /**
    * Renders [fqns] into [outputDir] and emits every image **as soon as it is complete**, while the
@@ -26,7 +28,11 @@ interface PreviewBackend {
   fun render(fqns: List<String>, outputDir: File): Flow<RenderedPreview>
 }
 
-class MedusaException(message: String, cause: Throwable? = null) : RuntimeException(message, cause)
+class MedusaException(message: String, cause: Throwable? = null) : RuntimeException(DiagnosticText.redact(message), cause?.let { sanitizedCause(it) })
+
+private fun sanitizedCause(failure: Throwable, depth: Int = 0): Throwable =
+  RuntimeException("${failure.javaClass.name}: ${DiagnosticText.redact(failure.message.orEmpty())}",
+    failure.cause?.takeIf { depth < 8 }?.let { sanitizedCause(it, depth + 1) }).apply { stackTrace = failure.stackTrace }
 
 private val json = Json { ignoreUnknownKeys = true }
 
@@ -37,7 +43,7 @@ private val json = Json { ignoreUnknownKeys = true }
 internal fun extractJson(stdout: String): String {
   val lines = stdout.lines()
   val start = lines.indexOfFirst { it.trim() == "{" }
-  if (start < 0) throw MedusaException("Android CLI printed no JSON. Output was:\n$stdout")
+  if (start < 0) throw MedusaException("Android CLI printed no JSON. Output was:\n${DiagnosticText.redact(stdout).takeLast(32768)}")
   return lines.drop(start).joinToString("\n")
 }
 
@@ -60,7 +66,14 @@ class AndroidCliBackend(
   private val buildArgs: List<String> = emptyList(),
   private val pollMillis: Long = 20,
   private val log: (String) -> Unit = {},
+  private val reliability: ReliabilityOptions = ReliabilityOptions(),
+  private val notice: (String) -> Unit = {},
 ) : PreviewBackend {
+  private val recoveryEvents = java.util.concurrent.ConcurrentLinkedQueue<String>()
+  override val events: List<String> get() = recoveryEvents.toList()
+
+  override fun withDaemon(enabled: Boolean): PreviewBackend = AndroidCliBackend(workingDir, moduleRef, androidCli,
+    includeDependentModules, enabled, componentTree, buildArgs, pollMillis, log, reliability, notice)
 
   override fun list(): ListResult {
     val args = buildList {
@@ -71,7 +84,9 @@ class AndroidCliBackend(
       add(moduleRef)
       addBuildArgs()
     }
-    val result = parseListResult(runBlocking(args))
+    val result = try { parseListResult(runBlocking(args)) } catch (failure: Exception) {
+      throw MedusaException("Android CLI discovery failed: ${failure.message}", failure)
+    }
     if (!result.success) {
       throw MedusaException("`android preview list` failed: ${result.globalError ?: "unknown error"}")
     }
@@ -96,11 +111,13 @@ class AndroidCliBackend(
         addBuildArgs()
       },
     )
+    val deadline = ProcessSupervisor.watch(process, reliability.renderTimeoutSeconds, daemon)
+    val stderr = ProcessSupervisor.stderr(process)
     try {
       // The result list only arrives when the process ends, but the PNGs appear one by one before that.
       val stdout = async(Dispatchers.IO) {
         try {
-          process.inputStream.bufferedReader().readText()
+          kotlinx.coroutines.runInterruptible { ProcessSupervisor.bounded(process, reliability.renderTimeoutSeconds) { process.inputStream.bufferedReader().readText() } }
         } catch (e: java.io.IOException) {
           // Cancelling (the collector stopped early) kills the process, which closes this stream under a blocked read.
           // That is expected then, and must not turn a clean cancellation into a failure.
@@ -120,12 +137,15 @@ class AndroidCliBackend(
 
       // A non-zero exit still carries a JSON body with the reason, so only fail when there is none.
       if (exit != 0 && output.lines().none { it.trim() == "{" }) {
-        throw MedusaException("`android preview render` exited with $exit:\n$output")
+        throw MedusaException("`android preview render` exited with $exit:\n${DiagnosticText.redact(output).takeLast(32768)}")
       }
       val result = parseRenderResult(output)
-      if (!result.success && result.results.isEmpty()) {
+      if (result.globalError != null || ((exit != 0 || !result.success) && result.results.none { it.error != null })) {
         throw MedusaException("`android preview render` failed: ${result.globalError ?: "unknown error"}")
       }
+      val authoritative = result.results.mapNotNull { it.imagePath?.let { path -> File(path).canonicalPath } }.toSet()
+      if (emitted.any { it !in authoritative }) throw MedusaException("CLI final manifest omitted an image that was streamed")
+      if (result.results.any { it.methodFqn !in wanted }) throw MedusaException("CLI returned an unrequested preview")
       // The CLI daemon can retain a classloader that cannot see a newly added dependency class.
       // Retry only wholly failed class-not-found groups, once, in a fresh renderer. Successful
       // images and other errors are never retried or hidden.
@@ -136,16 +156,23 @@ class AndroidCliBackend(
         }
       }.keys else emptySet()
       for (r in result.results) {
-        if (r.methodFqn !in retry && (r.imagePath == null || emitted.add(File(r.imagePath).canonicalPath))) send(r)
+        if (r.methodFqn !in retry && (r.error != null || r.imagePath == null || emitted.add(File(r.imagePath).canonicalPath))) send(r)
       }
       if (retry.isNotEmpty()) {
+        val recovery = "Retrying ${retry.size} preview(s) with a fresh renderer after daemon classpath failure"
+        recoveryEvents.add(recovery)
+        notice(recovery)
         log("Medusa: retrying ${retry.size} preview(s) in a fresh renderer after daemon classpath validation failed")
         AndroidCliBackend(workingDir, moduleRef, androidCli, includeDependentModules,
-          daemon = false, componentTree = componentTree, buildArgs = buildArgs, pollMillis = pollMillis, log = log)
+          daemon = false, componentTree = componentTree, buildArgs = buildArgs, pollMillis = pollMillis, log = log, reliability = reliability, notice = notice)
           .render(retry.toList(), File(outputDir, "fresh-renderer")).collect { send(it) }
       }
+    } catch (failure: Exception) {
+      if (failure is kotlinx.coroutines.CancellationException) throw failure
+      throw MedusaException("${DiagnosticText.redact(failure.message ?: "CLI failure")}\nCLI stderr: ${stderr()}", failure)
     } finally {
-      if (process.isAlive) process.destroyForcibly()
+      if (process.isAlive) ProcessSupervisor.stop(process)
+      deadline.close()
     }
   }
 
@@ -181,22 +208,27 @@ class AndroidCliBackend(
 
   private fun start(args: List<String>): Process {
     val command = listOf(androidCli.absolutePath, "--no-metrics") + args
-    log("$ ${command.joinToString(" ")}")
+    log(DiagnosticText.redact("$ ${command.joinToString(" ")}"))
     return ProcessBuilder(command)
       .directory(workingDir)
-      .redirectError(ProcessBuilder.Redirect.DISCARD)
       .start()
   }
 
   private fun runBlocking(args: List<String>): String {
     val process = start(args)
-    // The JSON document can be large, so drain stdout fully before waiting.
-    val stdout = process.inputStream.bufferedReader().readText()
-    val exit = process.waitFor()
-    if (exit != 0 && stdout.lines().none { it.trim() == "{" }) {
-      throw MedusaException("`android ${args.take(2).joinToString(" ")}` exited with $exit:\n$stdout")
+    val stderr = ProcessSupervisor.stderr(process)
+    ProcessSupervisor.watch(process, reliability.discoveryTimeoutSeconds).use {
+      try {
+        return ProcessSupervisor.bounded(process, reliability.discoveryTimeoutSeconds) {
+          val stdout = process.inputStream.bufferedReader().readText()
+          val exit = process.waitFor()
+          if (exit != 0) throw MedusaException("Android CLI exited with $exit: ${DiagnosticText.redact(stdout)}")
+          stdout
+        }
+      } catch (failure: Exception) {
+        throw MedusaException("${DiagnosticText.redact(failure.message ?: "CLI failure")}\nCLI stderr: ${stderr()}", failure)
+      } finally { if (process.isAlive) ProcessSupervisor.stop(process) }
     }
-    return stdout
   }
 
   internal companion object {

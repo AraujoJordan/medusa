@@ -39,7 +39,7 @@ pluginManagement {
 // build.gradle.kts of a module with previews
 plugins {
   id("com.android.library") // or com.android.application
-  id("io.github.araujojordan.medusa") version "0.2.0"
+  id("io.github.araujojordan.medusa") version "0.3.0"
 }
 ```
 
@@ -74,7 +74,7 @@ pluginManagement {
     }
   }
 }
-// build.gradle.kts: id("io.github.araujojordan.medusa") version "v0.2.0"
+// build.gradle.kts: id("io.github.araujojordan.medusa") version "v0.3.0"
 ```
 
 JitPack also needs `maven("https://jitpack.io")` in `dependencyResolutionManagement { repositories { ... } }`, because the plugin depends on `medusa-core`.
@@ -118,12 +118,23 @@ The images land in `build/medusa/failures/`, with an HTML report in `build/medus
 
 All fixtures passed a deliberate-mismatch control. Renderers and default tolerances differ; these results compare full workflows, not equivalent pixels or maximum throughput. [Versions, setup and methodology](benchmark/libraries/README.md) · [Ranges](benchmark/libraries/RESULTS.md) · [Raw runs](benchmark/libraries/results.json).
 
-### Upgrading to 0.2.0
+### Upgrading to 0.3.0
+
+Verification stays strict by default. Configure `visualRetryCount` and `allowRecoveredPass` explicitly
+if recovered screenshots should pass CI. `medusaDiagnose` repeats renders without updating goldens.
+Recording now commits a validated batch, so failed renders leave existing goldens intact. Failure
+artifacts moved to `build/medusa/failures/<run-id>/<attempt>/`; use recursive CI artifact globs or the
+HTML report links. See [reliability settings and recovery](docs/reliability.md).
+
+### Upgrading from 0.1.x
 
 The renderer daemon and automatic app-host aggregation are enabled by default. App resource overrides or
 dependency resolution can change library preview pixels. Review changes before re-recording; use
 `medusa { autoAggregate = false }` to preserve standalone module rendering. Qualified module Medusa tasks
 remain standalone. Details: [multi-module behavior](docs/multi-module.md).
+
+For timeouts, safe recording, optional recovered passes and repeated-render diagnosis, see
+[flakiness and recovery](docs/reliability.md).
 
 ## 🏎️ Performance
 
@@ -147,7 +158,7 @@ See [the full benchmark](benchmark/libraries/RESULTS.md) and [performance detail
 ## 📋 Requirements and status
 
 - JDK 17+, Gradle 9.1+, Android Gradle Plugin 9.x, and the Android CLI (`medusaSetup` installs it).
-- **Version 0.2.0.** Compose `@Preview`s only, debug variant only, no animations.
+- **Version 0.3.0.** Compose `@Preview`s only, debug variant only, no animations.
 - Verified on macOS arm64, and in CI (unit and Gradle TestKit tests) on Ubuntu and macOS. Rendering on Linux was checked in an amd64
   container under emulation. **Windows is untested**, and one Linux question (`android-37`) is still open. Full list: [docs/limitations.md](docs/limitations.md).
 

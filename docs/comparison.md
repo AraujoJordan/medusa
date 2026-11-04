@@ -53,7 +53,7 @@ Sources: [Shot](https://github.com/pedrovgs/Shot#readme), [Dropshots](https://gi
 ## Which one should you use?
 
 - **Use Medusa** if you already write Compose `@Preview`s, want screenshot tests without writing tests, and can live with the debug variant, no
-  animations and a tool at version 0.2.0 that depends on Google's new Android CLI.
+  animations and a tool at version 0.3.0 that depends on Google's new Android CLI.
 - **Use Paparazzi** if you have XML Views, need per-test device configuration or animation snapshots, or want the most established option.
 - **Use Roborazzi** if you need Robolectric (interaction, dependency injection) or GIFs and video, or you want to test behaviour, not only appearance.
 - **Use Google's tool** if you want first-party support and the IDE workflow and can accept an experimental setup.

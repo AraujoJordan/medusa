@@ -44,6 +44,7 @@ class AutomaticAggregationFunctionalTest {
     ImageIO.write(BufferedImage(8, 8, BufferedImage.TYPE_INT_ARGB), "png", File(root, "image.png"))
     write("android", """
       #!/bin/bash
+      if [ "§1" = -V ] || [ "§2" = -V ]; then echo "fake-cli 1.0"; exit 0; fi
       here="§(cd "§(dirname "§0")" && pwd)"
       echo "§*" >> "§here/calls.log"
       ref="§{@: -1}"
@@ -118,7 +119,7 @@ class AutomaticAggregationFunctionalTest {
     GradleRunner.create().withProjectDir(root).withPluginClasspath()
       .withArguments("medusaVerify", "--stacktrace").buildAndFail()
     for (module in listOf("app", "lib")) {
-      val failures = File(root, "$module/build/medusa/failures").listFiles().orEmpty()
+      val failures = File(root, "$module/build/medusa/failures").walkTopDown().filter { it.isFile }.toList()
       assertEquals(2, failures.size)
       assertTrue(failures.all { "${module}Preview" in it.name })
       val xml = File(root, "$module/build/medusa/test-results/medusa.xml").readText()

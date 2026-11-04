@@ -90,6 +90,7 @@ class MedusaPluginFunctionalTest {
       "android",
       """
       #!/bin/bash
+      if [ "${'$'}1" = -V ] || [ "${'$'}2" = -V ]; then echo "fake-cli 1.0"; exit 0; fi
       here="${'$'}(cd "${'$'}(dirname "${'$'}0")" && pwd)"
       echo "${'$'}*" >> "${'$'}here/calls.log"
       if [ "${'$'}3" = list ]; then
@@ -164,8 +165,8 @@ class MedusaPluginFunctionalTest {
 
     assertTrue("2 of 2 preview(s) failed" in result.output, result.output)
     assertTrue(File(project, "build/medusa/report/index.html").isFile)
-    assertTrue(File(project, "build/medusa/failures/delta-dev.app.ButtonKt.PrimaryPreview.png").isFile)
-    assertTrue(File(project, "build/medusa/failures/dev.app.ButtonKt.PrimaryPreview_actual.png").isFile)
+    assertTrue(File(project, "build/medusa/failures").walkTopDown().first { it.name == "delta-dev.app.ButtonKt.PrimaryPreview.png" }.isFile)
+    assertTrue(File(project, "build/medusa/failures").walkTopDown().first { it.name == "dev.app.ButtonKt.PrimaryPreview_actual.png" }.isFile)
   }
 
   @Test
@@ -200,7 +201,7 @@ class MedusaPluginFunctionalTest {
     assertFalse(goldenDark.exists())
 
     val clean = gradle("medusaCleanRecord").build()
-    assertTrue("Deleted 1 golden image(s)" in clean.output, clean.output)
+    assertTrue("Re-recorded 2 golden image(s)" in clean.output, clean.output)
     assertTrue(goldenPrimary.isFile && goldenDark.isFile)
   }
 
@@ -250,7 +251,7 @@ class MedusaPluginFunctionalTest {
     val result = gradle("medusaVerify", "-Pa11y").buildAndFail()
 
     assertTrue("accessibility tree changed" in result.output, result.output)
-    assertTrue(File(project, "build/medusa/failures/dev.app.ButtonKt.PrimaryPreview.semantics.actual.txt").isFile)
+    assertTrue(File(project, "build/medusa/failures").walkTopDown().first { it.name == "dev.app.ButtonKt.PrimaryPreview.semantics.actual.txt" }.isFile)
   }
 
   @Test
@@ -276,7 +277,7 @@ class MedusaPluginFunctionalTest {
     val result = gradle("medusaVerify", "-Pmedusa.differ=$differ", *extra).buildAndFail()
 
     assertTrue("2 of 2 preview(s) failed" in result.output, result.output)
-    val delta = ImageIO.read(File(project, "build/medusa/failures/delta-dev.app.ButtonKt.PrimaryPreview.png"))
+    val delta = ImageIO.read(File(project, "build/medusa/failures").walkTopDown().first { it.name == "delta-dev.app.ButtonKt.PrimaryPreview.png" })
     assertEquals(18, delta.width, "expected | delta | actual of 6px wide images, whatever differ drew the middle")
   }
 
@@ -376,4 +377,21 @@ class MedusaPluginFunctionalTest {
 
     assertTrue("Android CLI not found at the configured androidCliPath" in result.output, result.output)
   }
+  @Test fun `diagnosis repeats without modifying goldens and supports configuration cache`() {
+    gradle("medusaRecord").build()
+    val before = goldenPrimary.readBytes()
+    val result = gradle("medusaDiagnose", "--preview=PrimaryPreview", "--configuration-cache").build()
+    assertTrue("stable-match" in result.output, result.output)
+    assertEquals(11, File(project, "calls.log").readLines().count { "preview render" in it })
+    assertTrue(before.contentEquals(goldenPrimary.readBytes()))
+    val second = gradle("medusaDiagnose", "--preview=PrimaryPreview", "--configuration-cache").build()
+    assertTrue("Reusing configuration cache" in second.output)
+  }
+
+  @Test fun `invalid recovered pass policy fails before rendering`() {
+    val result = gradle("medusaVerify", "-Pmedusa.allowRecoveredPass=true").buildAndFail()
+    assertTrue("requires visualRetryCount" in result.output)
+    assertFalse(File(project, "calls.log").exists())
+  }
+
 }

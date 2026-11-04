@@ -44,3 +44,6 @@ Android CLI 1.1.16717390 can report a newly added dependency preview class missi
 retains an older classloader. Medusa retries that specific validation error once without the daemon,
 without stopping the shared service. Other rendering errors are not retried; a failed retry still fails
 the task. The retry costs a fresh renderer startup for the affected previews.
+
+See [flakiness and recovery](reliability.md) for deadlines, transaction recovery, opt-in visual retries
+and repeated-render diagnostics. Provider cardinality detection remains limited by the CLI manifest.

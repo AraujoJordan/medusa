@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.3.0 — reliability
+
+- Bound CLI and comparer execution, cancellation and pool acquisition with configurable deadlines.
+- Validate final CLI manifests and known variant coverage; recover odiff transport failures without leaking pool capacity.
+- Stage golden updates and journal replacements/deletions for rollback and recovery, with cross-process locking.
+- Isolate attempt artifacts, replace stale reports on infrastructure failures, and record redacted diagnostics and effective tool identities.
+- Add opt-in visual retries and explicitly allowed recovered passes, preserving original failure evidence.
+- Add `medusaDiagnose`: five warm and five fresh-renderer repetitions, without changing goldens.
+- Reject YIQ fallback when configured odiff ignore regions cannot be preserved.
+
+Failure artifact paths now include run and attempt IDs; use recursive collection globs. Strict verification, daemon reuse and automatic aggregation defaults remain unchanged.
+
 ## 0.2.0 — 2026-11-04
 
 - Enable the shared Android CLI renderer daemon by default, retaining `useDaemon=false`.

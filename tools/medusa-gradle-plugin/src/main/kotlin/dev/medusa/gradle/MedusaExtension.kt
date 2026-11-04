@@ -69,6 +69,15 @@ abstract class MedusaExtension @Inject constructor(objects: ObjectFactory) {
   /** Aggregate compatible uniquely-owned libraries through their app for root commands and check. */
   abstract val autoAggregate: Property<Boolean>
 
+  /** Whole-process deadlines, in seconds. */
+  abstract val discoveryTimeoutSeconds: Property<Long>
+  abstract val renderTimeoutSeconds: Property<Long>
+  abstract val comparisonTimeoutSeconds: Property<Long>
+  /** Optional visual rerenders. Zero keeps ordinary verification strict and fast. */
+  abstract val visualRetryCount: Property<Int>
+  /** Permit a passing visual retry to recover the verdict, reporting it as flaky. */
+  abstract val allowRecoveredPass: Property<Boolean>
+
   /** Run medusaVerify as part of `check`. */
   abstract val verifyOnCheck: Property<Boolean>
 

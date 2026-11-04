@@ -12,6 +12,7 @@ import java.io.Serializable
  * Must be safe to call from several threads at once (the pipeline compares many images concurrently).
  */
 interface ImageComparer : AutoCloseable {
+  val environment: Map<String, String> get() = mapOf("effectiveComparer" to javaClass.simpleName)
   fun compare(golden: File, actual: File): Comparison
 
   /** Stops helper processes (the `odiff --server` pool). */
@@ -33,6 +34,7 @@ data class ComparerSpec(
   val fallbackToYiq: Boolean = true,
   /** Where Medusa installs tools, default `~/.medusa/bin`. */
   val installDir: String? = null,
+  val comparisonTimeoutSeconds: Long = 60,
 ) : Serializable
 
 data class YiqOptions(

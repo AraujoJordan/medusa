@@ -11,6 +11,7 @@ object ImageComparers {
 
   /** Validate options without downloading tools or starting comparison processes. */
   fun validate(spec: ComparerSpec) {
+    require(spec.comparisonTimeoutSeconds > 0) { "Comparison timeout must be positive" }
     val name = spec.differ.lowercase()
     if (name !in names + listOf("", "default")) throw MedusaException("Unknown differ '${spec.differ}'. Use one of: ${names.joinToString()}")
     require(spec.maxPercentDifference in 0.0..100.0) { "maxPercentDifference must be between 0 and 100" }
@@ -58,6 +59,7 @@ object ImageComparers {
           workDir = workDir,
           parallelism = parallelism,
           useServer = spec.odiff.useServer,
+          timeoutSeconds = spec.comparisonTimeoutSeconds,
         )
       }
     }
@@ -68,6 +70,7 @@ object ImageComparers {
       minPsnr = spec.magick.minPsnr,
       maxPercentDifference = spec.maxPercentDifference,
       workDir = workDir,
+      timeoutSeconds = spec.comparisonTimeoutSeconds,
     )
     in Differs.names -> PaparazziImageComparer(Differs.byName(name), spec.maxPercentDifference)
     else -> throw MedusaException("Unknown differ '${spec.differ}'. Use one of: ${names.joinToString()}")
@@ -107,6 +110,7 @@ object ImageComparers {
     }
     val hint = "Install it with `./gradlew medusaSetup` or `brew install odiff`."
     if (!spec.fallbackToYiq) throw MedusaException("$reason. $hint")
+    if (spec.odiff.ignoreRegions.isNotEmpty()) throw MedusaException("$reason. Cannot fall back to yiq with configured ignore regions; install odiff or remove the regions.")
     notice("WARNING: $reason. Comparing with the built-in `yiq` differ instead, which counts the same differing pixels as odiff. $hint")
     return null
   }
