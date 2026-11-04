@@ -97,7 +97,15 @@ class AndroidCliBackend(
     )
     try {
       // The result list only arrives when the process ends, but the PNGs appear one by one before that.
-      val stdout = async(Dispatchers.IO) { process.inputStream.bufferedReader().readText() }
+      val stdout = async(Dispatchers.IO) {
+        try {
+          process.inputStream.bufferedReader().readText()
+        } catch (e: java.io.IOException) {
+          // Cancelling (the collector stopped early) kills the process, which closes this stream under a blocked read.
+          // That is expected then, and must not turn a clean cancellation into a failure.
+          if (!isActive) "" else throw e
+        }
+      }
       val watcher = launch(Dispatchers.IO) {
         while (isActive) {
           sweep(outputDir, wanted, emitted) { send(it) }
