@@ -9,6 +9,7 @@ import kotlinx.coroutines.cancelAndJoin
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.channelFlow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import kotlinx.serialization.json.Json
@@ -125,9 +126,23 @@ class AndroidCliBackend(
       if (!result.success && result.results.isEmpty()) {
         throw MedusaException("`android preview render` failed: ${result.globalError ?: "unknown error"}")
       }
-      // Whatever the watcher could not attribute (or an error entry) comes from the authoritative JSON.
+      // The CLI daemon can retain a classloader that cannot see a newly added dependency class.
+      // Retry only wholly failed class-not-found groups, once, in a fresh renderer. Successful
+      // images and other errors are never retried or hidden.
+      val retry = if (daemon) result.results.groupBy { it.methodFqn }.filterValues { entries ->
+        entries.all { r ->
+          r.imagePath == null && r.error?.status == "VALIDATION_ERROR" &&
+            r.error.message?.contains("could not be found on the classpath") == true
+        }
+      }.keys else emptySet()
       for (r in result.results) {
-        if (r.imagePath == null || emitted.add(File(r.imagePath).canonicalPath)) send(r)
+        if (r.methodFqn !in retry && (r.imagePath == null || emitted.add(File(r.imagePath).canonicalPath))) send(r)
+      }
+      if (retry.isNotEmpty()) {
+        log("Medusa: retrying ${retry.size} preview(s) in a fresh renderer after daemon classpath validation failed")
+        AndroidCliBackend(workingDir, moduleRef, androidCli, includeDependentModules,
+          daemon = false, componentTree = componentTree, buildArgs = buildArgs, pollMillis = pollMillis, log = log)
+          .render(retry.toList(), File(outputDir, "fresh-renderer")).collect { send(it) }
       }
     } finally {
       if (process.isAlive) process.destroyForcibly()
@@ -136,7 +151,9 @@ class AndroidCliBackend(
 
   /** Emits every complete, wanted PNG under [root] that was not emitted before. */
   private suspend fun sweep(root: File, wanted: Set<String>, emitted: MutableSet<String>, send: suspend (RenderedPreview) -> Unit) {
-    root.walkTopDown().filter { it.isFile && it.extension == "png" }.sortedBy { it.path }.forEach { file ->
+    wanted.map { it.substringBeforeLast('.').replace('.', File.separatorChar) }.distinct()
+      .flatMap { File(root, it).listFiles().orEmpty().asList() }
+      .filter { it.isFile && it.extension == "png" }.sortedBy { it.path }.forEach { file ->
       val fqn = fqnOf(root, file) ?: return@forEach
       if (fqn.first !in wanted) return@forEach
       if (file.canonicalPath in emitted || !isCompletePng(file)) return@forEach

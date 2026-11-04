@@ -30,6 +30,7 @@ GEN0 = ROOT / "bench/src/main/kotlin/bench/Gen0.kt"
 # name -> (tool, extra gradle args). Order matters: configurations that start the CLI daemon come last.
 CONFIGS = {
     "medusa": ("medusa", []),
+    "medusa-no-daemon": ("medusa", ["-Pmedusa.useDaemon=false"]),
     "paparazzi-1": ("paparazzi", ["-Pforks=1"]),
     f"paparazzi-{CORES}": ("paparazzi", [f"-Pforks={CORES}"]),
     "medusa-daemon": ("medusa", ["-Pmedusa.useDaemon=true"]),
@@ -171,10 +172,10 @@ def report() -> None:
         "",
     ]
     lines += [
-        "**Reading these numbers.** One machine, 2-3 measured runs per cell, synthetic composables, Gradle build cache off.",
+        "**Reading these numbers.** One machine, run counts shown per table, synthetic composables, Gradle build cache off.",
         "Each call includes about 1-2 s of Gradle start-up for both tools. The tools do not render identical pixels:",
         "Paparazzi renders with layoutlib in a `Pixel 5` frame, the Android CLI with its own renderer on `medium_phone`,",
-        "so this compares time to a verdict, not image fidelity. Paparazzi is 2.0.0-alpha05.1, Medusa is unreleased.",
+        "so this compares time to a verdict, not image fidelity. Paparazzi is 2.0.0-alpha05.1, Medusa is the local working tree.",
         "",
     ]
     names = {"verify": "verify, nothing changed (rendering forced to rerun)", "cold": "cold: `clean`, then verify", "record": "record after editing one composable"}
@@ -200,7 +201,7 @@ if __name__ == "__main__":
     sub = p.add_subparsers(dest="cmd", required=True)
     r = sub.add_parser("run")
     r.add_argument("--n", type=int, required=True)
-    r.add_argument("--runs", type=int, default=3)
+    r.add_argument("--runs", type=int, default=5)
     r.add_argument("--configs", default="")
     r.add_argument("--scenarios", default="verify,cold,record")
     sub.add_parser("report")

@@ -63,8 +63,11 @@ abstract class MedusaExtension @Inject constructor(objects: ObjectFactory) {
   /** Also render previews from the modules this module depends on (`android preview list --all`). Also `-Pmedusa.includeDependentModules=true`. */
   abstract val includeDependentModules: Property<Boolean>
 
-  /** Keep the CLI's preview renderer running between invocations (`--daemon`). Also `-Pmedusa.useDaemon=true`. */
+  /** Keep the CLI's preview renderer running between invocations (`--daemon`, default true; expires after 10 idle minutes). Also `-Pmedusa.useDaemon=true`. */
   abstract val useDaemon: Property<Boolean>
+
+  /** Aggregate compatible uniquely-owned libraries through their app for root commands and check. */
+  abstract val autoAggregate: Property<Boolean>
 
   /** Run medusaVerify as part of `check`. */
   abstract val verifyOnCheck: Property<Boolean>

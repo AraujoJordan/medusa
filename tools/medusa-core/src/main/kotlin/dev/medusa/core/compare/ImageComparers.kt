@@ -9,6 +9,25 @@ object ImageComparers {
   /** Every value `differ` accepts: Paparazzi's six, the in-process `yiq`, and the external `odiff` and `magick`. */
   val names: List<String> = Differs.names + listOf("yiq", "odiff", "magick")
 
+  /** Validate options without downloading tools or starting comparison processes. */
+  fun validate(spec: ComparerSpec) {
+    val name = spec.differ.lowercase()
+    if (name !in names + listOf("", "default")) throw MedusaException("Unknown differ '${spec.differ}'. Use one of: ${names.joinToString()}")
+    require(spec.maxPercentDifference in 0.0..100.0) { "maxPercentDifference must be between 0 and 100" }
+    when (name) {
+      "odiff", "", "default" -> {
+        require(spec.odiff.threshold in 0.0..1.0) { "odiff threshold must be between 0 and 1" }
+        spec.odiff.ignoreRegions.forEach(Region::parse)
+        if (spec.odiff.binary != null) OdiffImageComparer.locate(spec.odiff.binary)
+      }
+      "yiq" -> require(spec.yiq.threshold in 0.0..1.0) { "yiq threshold must be between 0 and 1" }
+      "magick" -> {
+        require(spec.magick.metric.uppercase() in listOf("AE", "RMSE", "MAE", "DSSIM", "PSNR")) { "Unsupported ImageMagick metric '${spec.magick.metric}'" }
+        if (spec.magick.binary != null) MagickImageComparer.locate(spec.magick.binary)
+      }
+    }
+  }
+
   /**
    * @param workDir where the external tools write their diff images (temporary)
    * @param parallelism how many comparisons run at once, which sizes the `odiff --server` pool

@@ -54,7 +54,8 @@ medusa {
   // odiff { threshold = 0.1; antialiasing = true; ignoreRegions = listOf("0:0-100:24") }
   // magick { metric = "AE"; fuzz = "2%" }
   // accessibilitySnapshots = true     // also snapshot the accessibility tree
-  // useDaemon = true                  // keep the CLI's renderer warm between runs
+  // autoAggregate = false             // opt out of app-host grouping for root commands and check
+  // useDaemon = false                 // opt out of the default persistent renderer
   // renderParallelism = 1             // concurrent render processes
   // compareParallelism = <cores>      // images compared at once
   // androidCliPath = "/path/to/android"
@@ -64,7 +65,7 @@ medusa {
 }
 ```
 
-`differ`, `maxPercentDifference`, `useDaemon`, `renderParallelism`, `compareParallelism`, `includeDependentModules`,
+`differ`, `maxPercentDifference`, `useDaemon`, `autoAggregate`, `renderParallelism`, `compareParallelism`, `includeDependentModules`,
 `accessibilitySnapshots` and the differ options can also be set from the command line, for example
 `./gradlew medusaVerify -Pmedusa.differ=odiff -Pmedusa.odiff.threshold=0` (`medusa.yiq.*`, `medusa.odiff.*`, `medusa.magick.*`).
 

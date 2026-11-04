@@ -540,6 +540,20 @@ class MedusaRunnerTest {
   }
 
   @Test
+  fun `pipeline reports processing and queue timings separately`() {
+    runner().record()
+    val logs = mutableListOf<String>()
+    val result = MedusaRunner(config().copy(log = { logs.add(it) })).verify()
+    assertTrue(result.ok)
+    val pipeline = logs.single { it.startsWith("Medusa pipeline:") }
+    assertTrue("6 image(s)" in pipeline)
+    assertTrue("processing worker-sum=" in pipeline)
+    assertTrue("ready-to-processing sum=" in pipeline)
+    assertTrue("post-render drain=" in pipeline)
+    assertTrue("compare workers=2" in pipeline)
+  }
+
+  @Test
   fun `a single compare worker still handles everything`() {
     val summary = MedusaRunner(config(compareParallelism = 1)).record()
 

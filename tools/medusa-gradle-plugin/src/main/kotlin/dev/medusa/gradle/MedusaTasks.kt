@@ -71,7 +71,7 @@ abstract class MedusaTask : DefaultTask() {
       moduleRef = moduleRef.get(),
       androidCli = cli,
       includeDependentModules = includeDependentModules.getOrElse(false),
-      daemon = useDaemon.getOrElse(false),
+      daemon = useDaemon.getOrElse(true),
       componentTree = accessibility,
       log = { logger.info(it) },
     )
@@ -96,9 +96,12 @@ abstract class MedusaTask : DefaultTask() {
   fun execute() {
     try {
       val spec = comparerSpec.get()
+      validateComparer(spec)
       // Closing stops the `odiff --server` processes, if that is what compares.
       val parallelism = compareParallelism.getOrElse(Runtime.getRuntime().availableProcessors())
-      ImageComparers.create(spec, File(medusaOutputDir.get().asFile, "compare"), parallelism, notice = { logger.lifecycle(it) }).use {
+      dev.medusa.core.compare.DeferredImageComparer {
+        ImageComparers.create(spec, File(medusaOutputDir.get().asFile, "compare"), parallelism, notice = { logger.lifecycle(it) })
+      }.use {
         run(newRunner(it))
       }
     } catch (e: MedusaException) {
@@ -146,9 +149,7 @@ abstract class MedusaCleanRecordTask : MedusaTask() {
   }
 
   override fun run(runner: MedusaRunner) {
-    val deleted = runner.delete()
-    logger.lifecycle("Deleted ${deleted.count { it.extension == "png" }} golden image(s)")
-    record(runner)
+    record(runner, clean = true)
   }
 }
 
@@ -190,8 +191,8 @@ abstract class MedusaVerifyTask : MedusaTask() {
   }
 }
 
-internal fun MedusaTask.record(runner: MedusaRunner) {
-  val summary = runner.record()
+internal fun MedusaTask.record(runner: MedusaRunner, clean: Boolean = false) {
+  val summary = if (clean) runner.cleanRecord() else runner.record()
   summary.recorded.forEach {
     val tag = when (it.status) {
       RecordStatus.NEW -> "new      "
@@ -206,3 +207,5 @@ internal fun MedusaTask.record(runner: MedusaRunner) {
     throw GradleException("Medusa: ${summary.errors.size} preview(s) could not be recorded:\n" + summary.errors.joinToString("\n") { "  $it" })
   }
 }
+
+internal fun validateComparer(spec: ComparerSpec) = ImageComparers.validate(spec)

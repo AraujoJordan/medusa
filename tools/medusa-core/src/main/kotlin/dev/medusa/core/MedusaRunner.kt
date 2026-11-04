@@ -47,6 +47,8 @@ data class MedusaConfig(
    * The caller owns it and closes it ([ImageComparer] may hold helper processes).
    */
   val comparer: ImageComparer? = null,
+  /** Aggregated runs keep reports and artifacts in each source module's output directory. */
+  val outputBySourceRoot: Map<File, File> = emptyMap(),
 )
 
 /** Previews that matched the filter, and previews whose source file could not be found. */
@@ -82,17 +84,23 @@ data class VerifySummary(
 class MedusaRunner(private val config: MedusaConfig) {
   private val comparer: ImageComparer = config.comparer ?: PaparazziImageComparer(config.differ, config.maxPercentDifference)
   private val renderedDir = File(config.outputDir, "rendered")
-  private val failuresDir = File(config.outputDir, "failures")
+
+  private fun outputFor(file: File): File = config.outputBySourceRoot.entries
+    .filter { file.canonicalFile.toPath().startsWith(it.key.canonicalFile.toPath()) }
+    .maxByOrNull { it.key.canonicalPath.length }?.value ?: config.outputDir
 
   fun discover(): Discovery {
+    val started = System.nanoTime()
     val all = config.backend.list().previews
+    val listed = System.nanoTime()
     // Golden names must not depend on the filter, so locate every preview and detect name collisions among all of
     // them first; only then apply `--preview`.
     val located = mutableListOf<Snapshot>()
     val unlocated = mutableListOf<PreviewInfo>()
+    val sources = SourceLocator.Index(config.sourceRoots)
     for ((_, entries) in all.groupBy { it.methodFqn }) {
       val preview = entries.first()
-      val source = SourceLocator.locate(preview, config.sourceRoots)
+      val source = sources.locate(preview)
       if (source == null) unlocated += preview else located += Snapshot(preview, source, entries.size)
     }
     val snapshots = qualifyCollisions(located).filter { config.filter.matches(it.preview) }
@@ -105,6 +113,7 @@ class MedusaRunner(private val config: MedusaConfig) {
       }
       throw MedusaException("No preview matches the --preview filter. Available: ${available.joinToString()}")
     }
+    config.log("Medusa discovery: list=${(listed - started) / 1_000_000} ms, sources=${(System.nanoTime() - listed) / 1_000_000} ms")
     return Discovery(snapshots, missing)
   }
 
@@ -124,8 +133,9 @@ class MedusaRunner(private val config: MedusaConfig) {
     }
   }
 
-  fun record(): RecordSummary {
-    val discovery = discover()
+  fun record(): RecordSummary = record(discover())
+
+  private fun record(discovery: Discovery): RecordSummary {
     val errors = discovery.unlocated.map(::unlocatedMessage).toMutableList()
     val outcomes = pipeline(discovery.snapshots, ::recordOne)
     val recorded = outcomes.mapNotNull { it.second.first }
@@ -136,7 +146,7 @@ class MedusaRunner(private val config: MedusaConfig) {
 
   fun verify(): VerifySummary {
     val discovery = discover()
-    failuresDir.deleteRecursively()
+    (config.outputBySourceRoot.values + config.outputDir).distinct().forEach { File(it, "failures").deleteRecursively() }
     val results = mutableListOf<VerifyResult>()
     discovery.unlocated.forEach {
       results += VerifyResult(it.methodFqn, null, Outcome.Failed(unlocatedMessage(it), null, null))
@@ -147,11 +157,22 @@ class MedusaRunner(private val config: MedusaConfig) {
       listOfNotNull(g, File(g.path.removeSuffix(".png") + ".semantics.txt").takeIf { config.accessibility })
     }.map { it.canonicalFile }.toSet()
     val orphans = if (config.filter.isEmpty) findOrphans(expected) else emptyList()
-    val report = Report.write(config.outputDir, results, orphans)
+    for (output in config.outputBySourceRoot.values.distinct()) {
+      Report.write(output, results.filter { it.golden?.let(::outputFor) == output }, orphans.filter { outputFor(it) == output })
+    }
+    val report = if (config.outputBySourceRoot.isEmpty()) Report.write(config.outputDir, results, orphans)
+      else File(config.outputDir, "report/index.html")
     return VerifySummary(results, orphans, report)
   }
 
   /** Deletes the goldens of the matching previews (every index). Returns the files removed. */
+  fun cleanRecord(): RecordSummary {
+    val discovery = discover()
+    val deleted = discovery.snapshots.flatMap { it.existingGoldens() }.filter { it.delete() }
+    config.notice("Deleted ${deleted.count { it.extension == "png" }} golden image(s)")
+    return record(discovery)
+  }
+
   fun delete(): List<File> =
     discover().snapshots.flatMap { it.existingGoldens() }.filter { it.delete() }
 
@@ -205,7 +226,7 @@ class MedusaRunner(private val config: MedusaConfig) {
     } ?: return imageOutcome
     val base = r.name.replace(Regex("""[^A-Za-z0-9._-]"""), "_")
     // Kept beside the image failures so the new snapshot can be diffed against the golden by hand.
-    File(failuresDir, "$base.semantics.actual.txt").also { it.parentFile.mkdirs() }.writeText(actual)
+    File(File(outputFor(r.golden), "failures"), "$base.semantics.actual.txt").also { it.parentFile.mkdirs() }.writeText(actual)
     return when (imageOutcome) {
       Outcome.Passed -> Outcome.Failed(problem, null, null)
       is Outcome.Failed -> imageOutcome.copy(message = "${imageOutcome.message}; $problem")
@@ -216,6 +237,7 @@ class MedusaRunner(private val config: MedusaConfig) {
   private fun compare(name: String, golden: File, actual: File): Outcome {
     val result = comparer.compare(golden, actual)
     if (result !is Comparison.Failed) return Outcome.Passed
+    val failuresDir = File(outputFor(golden), "failures")
     val base = name.replace(Regex("""[^A-Za-z0-9._-]"""), "_")
     val delta = File(failuresDir, "delta-$base.png").also { Images.write(result.delta, it) }
     val actualCopy = File(failuresDir, "${base}_actual.png").also { actual.copyTo(it, overwrite = true) }
@@ -262,6 +284,10 @@ class MedusaRunner(private val config: MedusaConfig) {
     val started = System.nanoTime()
     val firstCompared = AtomicLong(-1)
     val lastRendered = AtomicLong(-1)
+    val processingNanos = AtomicLong()
+    val sendNanos = AtomicLong()
+    val readyAt = ConcurrentHashMap<Rendered, Long>()
+    val queueNanos = AtomicLong()
     fun sinceStart() = (System.nanoTime() - started) / 1_000_000
 
     val handled = runBlocking {
@@ -272,7 +298,10 @@ class MedusaRunner(private val config: MedusaConfig) {
             buildList {
               for (r in rendered) {
                 firstCompared.compareAndSet(-1, sinceStart())
+                val processingStarted = System.nanoTime()
+                readyAt.remove(r)?.let { queueNanos.addAndGet(processingStarted - it) }
                 add(r to handle(r))
+                processingNanos.addAndGet(System.nanoTime() - processingStarted)
               }
             }
           }
@@ -281,7 +310,12 @@ class MedusaRunner(private val config: MedusaConfig) {
           launch(Dispatchers.IO) {
             val out = File(renderedDir, "$i")
             config.backend.render(chunk.map { it.preview.methodFqn }, out).collect { preview ->
-              toRendered(preview)?.let { rendered.send(it) }
+              toRendered(preview)?.let {
+                val ready = System.nanoTime()
+                readyAt[it] = ready
+                rendered.send(it)
+                sendNanos.addAndGet(System.nanoTime() - ready)
+              }
             }
           }
         }.joinAll()
@@ -290,9 +324,14 @@ class MedusaRunner(private val config: MedusaConfig) {
         comparers.awaitAll().flatten()
       }
     }
+    val completedMillis = sinceStart()
     config.log(
       "Medusa pipeline: ${handled.size} image(s); first image compared after ${firstCompared.get()} ms, " +
-        "last image rendered after ${lastRendered.get()} ms, all done after ${sinceStart()} ms",
+        "render stream closed after ${lastRendered.get()} ms, all done after $completedMillis ms; " +
+        "post-render drain=${completedMillis - lastRendered.get()} ms, " +
+        "processing worker-sum=${processingNanos.get() / 1_000_000} ms, " +
+        "ready-to-processing sum=${queueNanos.get() / 1_000_000} ms, " +
+        "send sum=${sendNanos.get() / 1_000_000} ms, compare workers=$compareCount",
     )
 
     // A requested preview that produced no result at all must not pass silently.
@@ -312,15 +351,19 @@ class MedusaRunner(private val config: MedusaConfig) {
   }
 
   /** Golden-looking PNGs (`<Stem>_*.png` beside `<Stem>.kt`) that no preview produces any more. */
-  private fun findOrphans(expected: Set<File>): List<File> =
-    config.sourceRoots.asSequence()
+  private fun findOrphans(expected: Set<File>): List<File> {
+    val stemsByDirectory = mutableMapOf<File, List<String>>()
+    return config.sourceRoots.asSequence()
       .filter { it.isDirectory }
       .flatMap { it.walkTopDown().filter { f -> f.isFile && (f.extension == "png" || f.name.endsWith(".semantics.txt")) } }
       .filter { golden ->
-        val stems = golden.parentFile.listFiles { f -> f.extension == "kt" }.orEmpty().map { it.nameWithoutExtension }
+        val stems = stemsByDirectory.getOrPut(golden.parentFile) {
+          golden.parentFile.listFiles { f -> f.extension == "kt" }.orEmpty().map { it.nameWithoutExtension }
+        }
         stems.any { golden.name.startsWith("${it}_") } && golden.canonicalFile !in expected
       }
       .toList()
+  }
 
   private fun unlocatedMessage(preview: PreviewInfo) =
     "${preview.methodFqn}: could not find the .kt file that declares ${preview.name} in " +

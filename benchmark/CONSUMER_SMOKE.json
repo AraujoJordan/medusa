@@ -1,0 +1,18 @@
+{
+  "version": "0.2.0",
+  "repository": "mavenLocal",
+  "results": [
+    {
+      "run": 1,
+      "exit": 0,
+      "configuration_cache_reused": false,
+      "grouped": true
+    },
+    {
+      "run": 2,
+      "exit": 0,
+      "configuration_cache_reused": true,
+      "grouped": true
+    }
+  ]
+}

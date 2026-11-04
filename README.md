@@ -39,7 +39,7 @@ pluginManagement {
 // build.gradle.kts of a module with previews
 plugins {
   id("com.android.library") // or com.android.application
-  id("io.github.araujojordan.medusa") version "0.1.0"
+  id("io.github.araujojordan.medusa") version "0.2.0"
 }
 ```
 
@@ -74,7 +74,7 @@ pluginManagement {
     }
   }
 }
-// build.gradle.kts: id("io.github.araujojordan.medusa") version "v0.1.0"
+// build.gradle.kts: id("io.github.araujojordan.medusa") version "v0.2.0"
 ```
 
 JitPack also needs `maven("https://jitpack.io")` in `dependencyResolutionManagement { repositories { ... } }`, because the plugin depends on `medusa-core`.
@@ -97,9 +97,9 @@ The images land in `build/medusa/failures/`, with an HTML report in `build/medus
 ## ✨ Features
 
 - **Zero test code.** Multipreviews, `@PreviewLightDark`, `@PreviewParameter` and your own custom preview annotations all work ([how](docs/how-it-works.md)).
-- **Fast pipeline.** Rendering never waits for comparing: finished images are compared while the CLI is still rendering ([numbers](docs/benchmarks.md)).
+- **Fast pipeline.** Rendering and comparison overlap: finished images are compared while the CLI is still rendering ([numbers](docs/benchmarks.md)).
 - **Pick your comparer.** odiff by default (installed and checksum-verified for you), or Paparazzi's own differs, an in-process port, or ImageMagick ([differs](docs/differs.md)).
-- **Multi-module.** One command from the root, each golden beside its own source, and the parallelism is chosen from your cores and memory ([multi-module](docs/multi-module.md)).
+- **Multi-module.** Root commands and `check` automatically batch compatible modules through their unique app; goldens and reports stay with their source module ([multi-module](docs/multi-module.md)).
 - **Accessibility snapshots** as an opt-in text file next to each golden.
 - **Honest about its limits**: [what works and what was verified where](docs/limitations.md).
 
@@ -107,38 +107,51 @@ The images land in `build/medusa/failures/`, with an HTML report in `build/medus
 
 Checked on 2026-11-04 from each project's own repo and docs. Details, sources and "pick X if" advice: [docs/comparison.md](docs/comparison.md).
 
-| | You write | Needs a device | Goldens | Status |
-|---|---|---|---|---|
-| **Medusa** | nothing, `@Preview`s are the tests | no | next to the `.kt` file | 0.1.0 |
-| **[Paparazzi](https://github.com/cashapp/paparazzi)** | a JUnit test per screen | no | `src/test/snapshots` | 2.0.0-alpha05.1 |
-| **[Roborazzi](https://github.com/takahirom/roborazzi)** | a Robolectric test (preview generator is experimental) | no | `build/outputs/roborazzi` by default | 1.77.0 |
-| **[Google's Compose Preview Screenshot Testing](https://developer.android.com/studio/preview/compose-screenshot-testing)** | `@PreviewTest` in a separate source set | no | `src/<suite>.../reference/` | standalone plugin unmaintained, replacement experimental |
-| **[Shot](https://github.com/pedrovgs/Shot)** | an instrumented test per screen | **yes** | recorded with `-Precord` | 6.1.0 |
-| **[Dropshots](https://github.com/dropbox/dropshots)** | an instrumented test per screen | **yes** | in the repository | 0.6.0 |
+| | You write | Needs a device | Goldens | Status | Record (50) | Verify (50) |
+|---|---|---|---|---|---|---|
+| **Medusa** | nothing, `@Preview`s are the tests | no | next to the `.kt` file | 0.2.0 | 5.1 s | 4.8 s |
+| **[Paparazzi](https://github.com/cashapp/paparazzi)** | a JUnit test per screen | no | `src/test/snapshots` | 2.0.0-alpha05.1 | 7.7 s | 6.9 s |
+| **[Roborazzi](https://github.com/takahirom/roborazzi)** | a Robolectric test (preview generator is experimental) | no | `build/outputs/roborazzi` by default | 1.77.0 | not benchmarked | not benchmarked |
+| **[Google's Compose Preview Screenshot Testing](https://developer.android.com/studio/preview/compose-screenshot-testing)** | `@PreviewTest` in a separate source set | no | `src/<suite>.../reference/` | standalone plugin unmaintained, replacement experimental | not benchmarked | not benchmarked |
+| **[Shot](https://github.com/pedrovgs/Shot)** | an instrumented test per screen | **yes** | recorded with `-Precord` | 6.1.0 | not benchmarked | not benchmarked |
+| **[Dropshots](https://github.com/dropbox/dropshots)** | an instrumented test per screen | **yes** | in the repository | 0.6.0 | not benchmarked | not benchmarked |
+
+Timings: warm daemons, five runs, median; record after an edit, verify forced to render. See caveats below.
 
 What the others do that Medusa **doesn't**: XML Views, per-test device configuration and animation snapshots (Paparazzi); Robolectric
 interaction, GIFs and video (Roborazzi); IDE gutter icons and an in-IDE diff viewer (Google); real-device rendering (Shot, Dropshots).
 Pick Medusa if you have Compose previews and don't want to write tests for them. Pick something else if you need any of the above.
 
+### Upgrading to 0.2.0
+
+The renderer daemon and automatic app-host aggregation are enabled by default. App resource overrides or
+dependency resolution can change library preview pixels. Review changes before re-recording; use
+`medusa { autoAggregate = false }` to preserve standalone module rendering. Qualified module Medusa tasks
+remain standalone. Details: [multi-module behavior](docs/multi-module.md).
+
 ## 🏎️ Performance
 
-The only rival I benchmarked head to head is Paparazzi (same generated composables, one `./gradlew` call, build cache off, M1 Max,
-median seconds, "verify, rendering forced to rerun"):
+Latest isolated measurement (50 previews, five runs per scenario, M1 Max, JDK 21, build cache off;
+Gradle and Medusa renderer daemons warm, odiff default, Paparazzi one fork):
 
-| | 50 previews | 200 previews |
-|---|---|---|
-| Paparazzi (1 fork) | 7.0 s | 15.4 s |
-| Medusa | 9.2 s | 13.7 s |
-| Medusa with `useDaemon = true` | **6.1 s** | **10.8 s** |
+| Task | Medusa | Paparazzi | Less elapsed time |
+|---|---|---|---|
+| Verify, rendering forced | 4.8 s | 6.9 s | 30% |
+| Clean build then verify | 5.6 s | 7.6 s | 27% |
+| Record after editing one composable | 5.1 s | 7.7 s | 34% |
 
-So: Medusa pays a bigger fixed cost per call but about half the cost per extra preview (roughly 30 ms vs 56 ms). With the daemon it was
-**13% faster at 50 previews and 30% faster at 200**; without it, slower at 50 and about 11% faster at 200. **Below a few dozen
-previews, Paparazzi wins.**
+These measurements do **not** establish a 2× speedup or a win at every suite size. The existing synthetic fixture
+uses different device framing and night-mode settings between renderers: this measures time to a verdict, not equivalent
+image fidelity. Clean build does not mean a cold renderer. Other tools were not benchmarked.
+Raw measurements: [50-preview results](benchmark/results/N50.json); full tables: [benchmark results](benchmark/RESULTS.md).
 
-The caveats are real: one machine, 2-3 runs per cell, synthetic composables, different renderers (so this is time to a verdict, not
-fidelity), and the runs predate odiff becoming the default. Roborazzi, Google's tool, Shot and Dropshots were **not** benchmarked, so I
-make no speed claim against them; the device-based ones also pay for an emulator, which this test does not measure. Full tables and
-method: [docs/benchmarks.md](docs/benchmarks.md). Run `python3 benchmark/bench.py run --n 50` to check it on your machine.
+Daemon reuse is now enabled by default (`useDaemon = false` opts out). Source reads are reused within discovery,
+clean-record discovers once, polling visits expected output directories, and comparison tools initialize only when needed.
+Record still preserves goldens within the configured tolerance; verify still renders previews on each invocation.
+
+The 0.2.0 multi-module release benchmark (22 previews, three rounds, warm caches) reduced root record
+from **8.34 s to 6.67 s** and verify from **9.43 s to 6.83 s** with automatic aggregation enabled.
+These compare Medusa configurations; [methodology and raw results](docs/benchmarks.md#020-end-to-end-release-measurement).
 
 ## 🔁 Coming from Paparazzi
 
@@ -156,7 +169,7 @@ method: [docs/benchmarks.md](docs/benchmarks.md). Run `python3 benchmark/bench.p
 ## 📋 Requirements and status
 
 - JDK 17+, Gradle 9.1+, Android Gradle Plugin 9.x, and the Android CLI (`medusaSetup` installs it).
-- **Version 0.1.0.** Compose `@Preview`s only, debug variant only, no animations.
+- **Version 0.2.0.** Compose `@Preview`s only, debug variant only, no animations.
 - Verified on macOS arm64, and in CI (unit and Gradle TestKit tests) on Ubuntu and macOS. Rendering on Linux was checked in an amd64
   container under emulation. **Windows is untested**, and one Linux question (`android-37`) is still open. Full list: [docs/limitations.md](docs/limitations.md).
 

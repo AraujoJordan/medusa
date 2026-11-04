@@ -43,7 +43,9 @@ class MedusaPlugin : Plugin<Project> {
     extension.includeDependentModules.convention(
       project.providers.gradleProperty("medusa.includeDependentModules").map(String::toBoolean).orElse(false),
     )
-    extension.useDaemon.convention(project.providers.gradleProperty("medusa.useDaemon").map(String::toBoolean).orElse(false))
+    extension.autoAggregate.convention(project.providers.gradleProperty("medusa.autoAggregate").map(String::toBoolean).orElse(true))
+    AutoAggregation.install(project)
+    extension.useDaemon.convention(project.providers.gradleProperty("medusa.useDaemon").map(String::toBoolean).orElse(true))
     extension.verifyOnCheck.convention(true)
     extension.sourceDirs.from(
       listOf("main", "debug").flatMap { variant ->
@@ -171,10 +173,6 @@ class MedusaPlugin : Plugin<Project> {
     task("medusaDelete", MedusaDeleteTask::class.java)
     val verify = task("medusaVerify", MedusaVerifyTask::class.java)
 
-    project.afterEvaluate {
-      if (extension.verifyOnCheck.get()) {
-        project.tasks.matching { it.name == "check" }.configureEach { it.dependsOn(verify) }
-      }
-    }
+
   }
 }

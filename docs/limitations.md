@@ -37,3 +37,10 @@ Checked against the real CLI with [`sample/.../PreviewParams.kt`](../sample/src/
 - **Not verified:** Windows; Linux on real hardware; GitHub-hosted runners running a full Medusa build of an Android project.
 - **Open question:** AGP 9.0.1 could not find `android-37` in an SDK installed by the new Android CLI on Linux (the platform files match
   the Mac's, which works). The Linux checks used `android-36`.
+
+## Warm renderer classloader
+
+Android CLI 1.1.16717390 can report a newly added dependency preview class missing when its daemon
+retains an older classloader. Medusa retries that specific validation error once without the daemon,
+without stopping the shared service. Other rendering errors are not retried; a failed retry still fails
+the task. The retry costs a fresh renderer startup for the affected previews.

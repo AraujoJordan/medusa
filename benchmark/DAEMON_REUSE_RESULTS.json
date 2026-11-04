@@ -1,0 +1,171 @@
+[
+  {
+    "module": ":app",
+    "daemon": true,
+    "seconds": 1.6298043749993667,
+    "images": 1,
+    "before": [
+      {
+        "pid": 80021,
+        "ppid": 1
+      }
+    ],
+    "seen_pids": [
+      80021
+    ],
+    "after": [
+      {
+        "pid": 80021,
+        "ppid": 1
+      }
+    ]
+  },
+  {
+    "module": ":feature:home",
+    "daemon": true,
+    "seconds": 1.919297541026026,
+    "images": 17,
+    "before": [
+      {
+        "pid": 80021,
+        "ppid": 1
+      }
+    ],
+    "seen_pids": [
+      80021
+    ],
+    "after": [
+      {
+        "pid": 80021,
+        "ppid": 1
+      }
+    ]
+  },
+  {
+    "module": ":core:designsystem",
+    "daemon": true,
+    "seconds": 1.7268092919839546,
+    "images": 3,
+    "before": [
+      {
+        "pid": 80021,
+        "ppid": 1
+      }
+    ],
+    "seen_pids": [
+      80021
+    ],
+    "after": [
+      {
+        "pid": 80021,
+        "ppid": 1
+      }
+    ]
+  },
+  {
+    "module": ":app",
+    "daemon": true,
+    "seconds": 1.6505602080142125,
+    "images": 1,
+    "before": [
+      {
+        "pid": 80021,
+        "ppid": 1
+      }
+    ],
+    "seen_pids": [
+      80021
+    ],
+    "after": [
+      {
+        "pid": 80021,
+        "ppid": 1
+      }
+    ]
+  },
+  {
+    "module": ":feature:home",
+    "daemon": true,
+    "seconds": 6.542532958992524,
+    "images": 17,
+    "before": [
+      {
+        "pid": 80021,
+        "ppid": 1
+      }
+    ],
+    "seen_pids": [
+      80021
+    ],
+    "after": [
+      {
+        "pid": 80021,
+        "ppid": 1
+      }
+    ]
+  },
+  {
+    "module": ":core:designsystem",
+    "daemon": true,
+    "seconds": 1.847553291998338,
+    "images": 3,
+    "before": [
+      {
+        "pid": 80021,
+        "ppid": 1
+      }
+    ],
+    "seen_pids": [
+      80021
+    ],
+    "after": [
+      {
+        "pid": 80021,
+        "ppid": 1
+      }
+    ]
+  },
+  {
+    "module": ":bench",
+    "daemon": true,
+    "seconds": 3.619027292006649,
+    "images": 50,
+    "before": [
+      {
+        "pid": 80021,
+        "ppid": 1
+      }
+    ],
+    "seen_pids": [
+      80021
+    ],
+    "after": [
+      {
+        "pid": 80021,
+        "ppid": 1
+      }
+    ]
+  },
+  {
+    "module": ":app",
+    "daemon": false,
+    "seconds": 4.373159167007543,
+    "images": 1,
+    "before": [
+      {
+        "pid": 80021,
+        "ppid": 1
+      }
+    ],
+    "seen_pids": [
+      80021,
+      89550
+    ],
+    "after": [
+      {
+        "pid": 80021,
+        "ppid": 1
+      }
+    ]
+  }
+]
