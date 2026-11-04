@@ -31,8 +31,8 @@ plugins {
 }
 ```
 
-Published as `io.github.araujojordan:medusa-gradle-plugin` and `io.github.araujojordan:medusa-core` (Maven Central, once the
-release has been approved there; see `RELEASING.md`). Until then, or for any tag, use JitPack:
+Published on Maven Central as `io.github.araujojordan:medusa-gradle-plugin` and `io.github.araujojordan:medusa-core`. Every tag is also built by
+JitPack, with the tag as the version (`v0.1.0`) and the group `com.github.AraujoJordan.medusa`:
 
 ```kotlin
 // settings.gradle.kts
@@ -46,7 +46,10 @@ pluginManagement {
     }
   }
 }
+// build.gradle.kts: id("io.github.araujojordan.medusa") version "v0.1.0"
 ```
+
+JitPack also needs `maven("https://jitpack.io")` in `dependencyResolutionManagement { repositories { ... } }`, because the plugin depends on `medusa-core`.
 
 Run `./gradlew medusaSetup` once (see Setup), then `./gradlew medusaRecord`.
 

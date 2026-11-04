@@ -1,5 +1,17 @@
 # Releasing
 
+0.1.0 was published from a maintainer machine, signing with the local gpg agent (the private key never leaves it):
+
+```sh
+git checkout v0.1.0          # the tagged commit
+cd tools
+ORG_GRADLE_PROJECT_mavenCentralUsername=<token user> ORG_GRADLE_PROJECT_mavenCentralPassword=<token password> \
+  ./gradlew publishAndReleaseToMavenCentral --no-configuration-cache -Pmedusa.gpgAgent=true -Psigning.gnupg.keyName=<key id>
+```
+
+The `io.github.araujojordan` namespace is verified on Central. Create a short-lived token for each release at
+https://central.sonatype.com/usertoken and revoke it afterwards. The CI route below is the alternative if you prefer not to publish by hand.
+
 Version numbers come from the git tag. `./gradlew` in `tools/` reads `-PmedusaVersion` (default `0.1.0`).
 
 ## Every release
